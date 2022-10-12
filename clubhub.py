@@ -7,11 +7,11 @@
 
 import time
 import flask
-import database
+#import database
 
 #-------------------------------------------------------------------
 
-app= flask.Flask(__name__)
+app = flask.Flask(__name__)
 
 #-------------------------------------------------------------------
 
@@ -22,13 +22,21 @@ def index():
     response = flask.make_response(html_code)
     return response
 
-@app.route('/searchform', method=['GET'])
+
+@app.route('/searchform', methods=['GET'])
 def searchform():
     html_code = flask.render_template('searchform.html')
     response = flask.make_response(html_code)
     return response
 
 
+@app.route('/searchresults', methods=['GET'])
+def searchresults():
+    html_code = flask.render_template('searchresults.html')
+    response = flask.make_response(html_code)
+    return response
+
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
