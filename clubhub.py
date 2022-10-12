@@ -32,11 +32,12 @@ def searchform():
 
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
-    html_code = flask.render_template('searchresults.html')
+    clubquery = flask.request.args.get('clubquery')
+    html_code = flask.render_template('searchresults.html', results=clubquery)
     response = flask.make_response(html_code)
     return response
 
 
 
 #if __name__ == '__main__':
-#app.run(debug=True)
+    #app.run(debug=True)
