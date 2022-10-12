@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+      <title>ClubHub.com</title>
+      </head>
+   <body>
+      {% include 'header.html' %} <br>
+        <h1>Club Search</h1>
+        <form action = "/searchresults" method="get">
+            Search for clubs:<br>
+         <!---<button type="submit"><i class="fa fa-search"></i></button> --->
+            <input type="text" placeholder="Search for clubs, tags..." name="clubquery">
+            <input type="submit" value="Go">
+        </form>
+      <br>
+      {% include 'footer.html' %}
+   </body>
+ </html>
