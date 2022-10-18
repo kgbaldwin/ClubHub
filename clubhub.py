@@ -43,8 +43,8 @@ def searchform():
 
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
-    clubquery = flask.request.args.get('clubquery')
-    #clubquery = "Princeton Lettuce Fellowship"
+    #clubquery = flask.request.args.get('clubquery')
+    clubquery = "Princeton Lttuce Fellowship"
     conn = None
     cur = None
     try:
@@ -59,10 +59,15 @@ def searchresults():
 
         cur = conn.cursor()
 
-        script = """select description from clubs where clubname=%s"""
+        script = """select description from clubs where clubname ILIKE %s"""
         cur.execute(script, [clubquery])
 
-        retval = cur.fetchall()[0][0]
+        retval = cur.fetchall()
+        #print(retval)
+        if not retval:
+            retval = "NONE FOUND"
+        else:
+            retval = retval[0][0]
         #print(retval)
 
     except Exception as ex:
