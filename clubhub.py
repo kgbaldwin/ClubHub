@@ -12,10 +12,7 @@ import psycopg2
 import urllib.parse as up
 
 
-hostname = "postgres://avgqxjcj:lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1@peanut.db.elephantsql.com/avgqxjcj"
-dbname = "avgqxjcj"
-user = "avgqxjcj"
-password = "lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1"
+database = "postgres://avgqxjcj:lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1@peanut.db.elephantsql.com/avgqxjcj"
 
 
 #-------------------------------------------------------------------
@@ -43,40 +40,34 @@ def searchform():
 
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
-    #clubquery = flask.request.args.get('clubquery')
-    clubquery = "Princeton Lttuce Fellowship"
+    clubquery = flask.request.args.get('clubquery')
+    #clubquery = "Princeton Lettuce Fellowship"
     conn = None
     cur = None
     try:
         up.uses_netloc.append("postgres")
-        url = up.urlparse(hostname)
-        conn = psycopg2.connect(database=url.path[1:],
+        url = up.urlparse(database)
+        with psycopg2.connect(database=url.path[1:],
                                 user=url.username,
                                 password=url.password,
                                 host=url.hostname,
                                 port=url.port
-                                )
+                                ) as conn:
+            with conn.cursor() as cur:
 
-        cur = conn.cursor()
+                script = """select description from clubs where clubname ILIKE %s"""
+                cur.execute(script, [clubquery])
 
-        script = """select description from clubs where clubname ILIKE %s"""
-        cur.execute(script, [clubquery])
-
-        retval = cur.fetchall()
-        #print(retval)
-        if not retval:
-            retval = "NONE FOUND"
-        else:
-            retval = retval[0][0]
-        #print(retval)
+                retval = cur.fetchall()
+                #print(retval)
+                if not retval:
+                    retval = "NONE FOUND"
+                else:
+                    retval = retval[0][0]
+                print(retval)
 
     except Exception as ex:
         print(ex)
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
 
     html_code = flask.render_template('searchresults.html', results=retval)
     response = flask.make_response(html_code)
