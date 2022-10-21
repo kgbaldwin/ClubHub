@@ -5,7 +5,6 @@
 # Authors: Kevin Kim, Priya Naphade, Katie Baldwin, Lance Yoder
 #-------------------------------------------------------------------
 
-from ctypes.wintypes import tagMSG
 import flask
 import psycopg2
 #import database
