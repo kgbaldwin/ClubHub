@@ -12,7 +12,7 @@ import psycopg2
 import urllib.parse as up
 
 
-database = "postgres://avgqxjcj:lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1@peanut.db.elephantsql.com/avgqxjcj"
+database_url = "postgres://avgqxjcj:lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1@peanut.db.elephantsql.com/avgqxjcj"
 
 
 #-------------------------------------------------------------------
@@ -40,19 +40,11 @@ def searchform():
 
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
-    clubquery = flask.request.args.get('clubquery')
-    #clubquery = "Princeton Lettuce Fellowship"
-    conn = None
-    cur = None
+    #clubquery = flask.request.args.get('clubquery')
+    clubquery = "PrincetOn Christian Fellowship"
+
     try:
-        up.uses_netloc.append("postgres")
-        url = up.urlparse(database)
-        with psycopg2.connect(database=url.path[1:],
-                                user=url.username,
-                                password=url.password,
-                                host=url.hostname,
-                                port=url.port
-                                ) as conn:
+        with psycopg2.connect(database_url) as conn:
             with conn.cursor() as cur:
 
                 script = """select description from clubs where clubname ILIKE %s"""
