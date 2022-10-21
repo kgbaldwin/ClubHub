@@ -5,7 +5,7 @@
 # Authors: Kevin Kim, Priya Naphade, Katie Baldwin, Lance Yoder
 #-------------------------------------------------------------------
 
-import time
+from ctypes.wintypes import tagMSG
 import flask
 import psycopg2
 #import database
@@ -40,23 +40,31 @@ def searchform():
 
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
-    #clubquery = flask.request.args.get('clubquery')
-    clubquery = "PrincetOn Christian Fellowship"
-
+    clubquery = '%' + flask.request.args.get('clubquery') + '%'
+    tags = flask.request.args.getlist('tags')
+    print("cq: ", clubquery)
+    print("tags: ", tags)
+    args = [clubquery] + tags
+    print("args: ", args)
     try:
         with psycopg2.connect(database_url) as conn:
             with conn.cursor() as cur:
 
-                script = """select description from clubs where clubname ILIKE %s"""
-                cur.execute(script, [clubquery])
+                script = "select clubname from clubs WHERE clubname ILIKE %s "
+                if tags:
+                    script += "AND clubs.clubid=ANY(SELECT clubid from tags where tag=%s "
+                    for tag in tags[1:]:
+                        print("added a tag: ", tag)
+                        script += "or tag=%s "
+                    script +=")"
+
+                #script = "select clubname from clubs where clubname ILIKE %s AND clubs.clubid=ANY(SELECT clubid from tags where tag=%s or tag=%s)"
+                #print("script: ", script)
+                cur.execute(script, args)
 
                 retval = cur.fetchall()
+                #print("retval: ")
                 #print(retval)
-                if not retval:
-                    retval = "NONE FOUND"
-                else:
-                    retval = retval[0][0]
-                print(retval)
 
     except Exception as ex:
         print(ex)
@@ -69,5 +77,5 @@ def searchresults():
 
 
 if __name__ == '__main__':
-    searchresults()
+    #searchresults()
     app.run(debug=True)

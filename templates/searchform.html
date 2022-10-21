@@ -9,8 +9,13 @@
         <form action = "/searchresults" method="get">
             Search for clubs:<br>
          <!---<button type="submit"><i class="fa fa-search"></i></button> --->
-            <input type="text" placeholder="Search for clubs, tags..." name="clubquery">
-            <input type="submit" value="Go">
+            <input type="text" placeholder="Search for clubs, keywords..." name="clubquery">
+            <input type="submit" value="Go"> 
+            <br>
+            <input type="checkbox" name="tags" id="religious" value="religious">
+            <label for="religious">Religious</label>
+            <input type="checkbox" name="tags" id="food" value="food">
+            <label for="food">Food</label>
         </form>
       <br>
       {% include 'footer.html' %}
