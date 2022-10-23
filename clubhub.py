@@ -72,9 +72,6 @@ def searchresults():
     response = flask.make_response(html_code)
     return response
 
-
-
-
 if __name__ == '__main__':
     #searchresults()
     app.run(debug=True)
