@@ -72,6 +72,12 @@ def searchresults():
     response = flask.make_response(html_code)
     return response
 
+@app.errorhandler(404)
+def page_not_found(e):
+    html_code = flask.render_template('404.html')
+    response = flask.make_response(html_code)
+    return response
+
 if __name__ == '__main__':
     #searchresults()
     app.run(debug=True)
