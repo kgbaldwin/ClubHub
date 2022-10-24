@@ -7,21 +7,31 @@
 <body>
     <style>
         body{
-            background-image: url('../assets/404img.jpg');
+            color:white;
+            background-image: url('404img.jpg');
             background-size: cover;
             background-repeat: no-repeat;
         }
+        h1{
+            color:white;
+            text-align:center;
+            padding-top: 5rem;
+        }
+        h2{
+            text-align:center;
+            vertical-align:middle;
+        }
+        a{
+            color:white;
+        }
     </style>
-   {% include 'header.html' %} <br>
-   Ruh-roh! It seems like the page you were looking for doesn't exist.
+   <h1>
+   Ruh-roh! It seems like the page you were looking for doesn't exist. </h1>
    <br>
    <!--<img src="../assets/404img.jpg" width = "100" height="100">-->
    <!--<img src="404img.jpg" width = "100" height="100">-->
-   <br>
-
-   <a href="index" > Click here to go home! </a>
-   <br>
-   {% include 'footer.html' %}
+    <h2>
+   <a href="index" > Click here to go home! </a></h2>
 
    <!---Keep the JS below at the bottom of body. For loading bootstrap-->
    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
