@@ -7,7 +7,6 @@
 
 import flask
 import psycopg2
-#import database
 import urllib.parse as up
 
 
@@ -49,7 +48,7 @@ def searchresults():
         with psycopg2.connect(database_url) as conn:
             with conn.cursor() as cur:
 
-                script = "select clubname from clubs WHERE clubname ILIKE %s "
+                script = "select clubname, clubid from clubs WHERE clubname ILIKE %s "
                 if tags:
                     script += "AND clubs.clubid=ANY(SELECT clubid from tags where tag=%s "
                     for tag in tags[1:]:
@@ -62,8 +61,7 @@ def searchresults():
                 cur.execute(script, args)
 
                 retval = cur.fetchall()
-                #print("retval: ")
-                #print(retval)
+                print("retval:", retval)
 
     except Exception as ex:
         print(ex)
