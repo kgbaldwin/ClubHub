@@ -21,7 +21,7 @@ def get_clubs(clubquery, tags):
 
             with conn.cursor() as cur:
 
-                script = "select clubname from clubs WHERE clubname ILIKE %s "
+                script = "select clubname, clubid from clubs WHERE clubname ILIKE %s "
                 if tags:
                     script += "AND clubs.clubid=ANY(SELECT clubid from tags where tag=%s "
                     for tag in tags[1:]:
@@ -38,6 +38,31 @@ def get_clubs(clubquery, tags):
                     row = cur.fetchone()
 
                 return clubs
+
+    except Exception as ex:
+        print(ex)
+        return "server"
+
+def database_get_info(clubid):
+
+    print("clubid:", clubid)
+
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select clubname, description, meets, commitment, website, verified, lastupdated, imlink from clubs WHERE clubid=%s"
+
+                cur.execute(script, [clubid])
+
+                row = cur.fetchone()
+                info = []
+                while row is not None:
+                    info.append(row)
+                    row = cur.fetchone()
+
+                return info
 
     except Exception as ex:
         print(ex)

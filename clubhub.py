@@ -59,7 +59,6 @@ def searchresults2():
     clubs = database.get_clubs(clubquery, tags)
 
     if clubs == "server":
-        print("hello there")
         html_code = flask.render_template('error.html', error="server")
         response = flask.make_response(html_code)
         return response
@@ -67,6 +66,24 @@ def searchresults2():
     html_code = flask.render_template('searchresults2.html', results=clubs)
     response = flask.make_response(html_code)
     return response
+
+@app.route('/get_info', methods=['GET'])
+def get_info():
+    print("entered get_info")
+    clubid = flask.request.args.get('clubid')
+    if clubid == "":
+        print("AAAAAHHHHHHH NO CLUBID")
+        return []
+    info = database.database_get_info(clubid)
+    print("after searching database")
+
+    if info == "server":
+        html_code = flask.render_template('error.html', error="server")
+        response = flask.make_response(html_code)
+        return response
+    print("about to return info: ", info)
+    return info
+
 
 @app.errorhandler(404)
 def page_not_found(e):

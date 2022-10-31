@@ -24,7 +24,7 @@
                      Search for clubs:<br>
                   <!---<button type="submit"><i class="fa fa-search"></i></button> --->
                      <input type="text" placeholder="Search for clubs, keywords..." name="clubquery">
-                     <input type="submit" value="Go"> 
+                     <input type="submit" value="Go">
                      <br>
                      <input type="checkbox" name="tags" id="religious" value="religious">
                      <label for="religious">Religious</label>
@@ -40,10 +40,8 @@
                 {% set i = namespace(value=0) %}
                   <ul>
                   {% for each in results: %}
-                     {% set id="club" + i.value|string %}
-                     {% set i.value = i.value + 1 %}
-                     <li><strong><label for={{id}}>{{each[0]}}</label></strong></li>
-                     <input type="radio" id={{id}} name="clubname" value="{{each[1]}}" onclick="changeInfo(id)">
+                     <li><strong><label for={{each[1]}}>{{each[0]}}</label></strong></li>
+                     <input type="radio" id={{each[1]}} name="clubname" value="{{each[1]}}" onclick="changeInfo()">
                   {% endfor %}
                   </ul>
                {% endif %}<br>
@@ -51,21 +49,53 @@
             <!--Split Screen-->
             <td style="border-left: 5px solid black;">
                <h1>Club Info</h1>
-                <div id="clubinfo"></div>
+               <div id="clubinfo"></div>
+               <!--
+                <small>name:</small><div id="clubname">
+                </div><br>
+                <small>desc:</small><div id="clubdesc">
+               </div><br>
+               <small>meets:</small><div id="meets">
+               </div><br>
+               <small>commitment:</small><div id="commitment">
+               </div><br>
+               <small>website:</small><div id="website">
+               </div><br>
+               <small>verified:</small><div id="verified">
+               </div><br>
+               <small>lastupdated:</small><div id="lastupdated">
+               </div><br>
+               <small>imlink:</small><div id="imlink">
+               </div><br> -->
             </td>
          </tr>
    </table>
    <script>
-        function changeInfo(selected_id){
-            alert("selected element " + selected_id)
-            document.getElementById("clubinfo").innerHTML = getInfo(selected_id)
-        }
-        function getInfo() {
-            output = 'output of getInfo()'
-            return output
+        function changeInfo(){
+
+            //document.getElementById("clubinfo").innerHTML = getInfo(selected_id)
+
+            clubid = document.querySelector('input[name="clubname"]:checked').value
+            // alert("selected element " + clubid)
+
+            fetch("/get_info?clubid="+clubid)
+            .then((response) => response.text())
+            .then((text) => document.getElementById("clubinfo").innerHTML=text);
+            //update_info(blob.arrayBuffer())
         }
 
-   </script> 
+        function update_info(blob) {
+            document.getElementById("clubname").innerHTML = blob[0].text()
+            document.getElementById("clubdesc").innerHTML = blob[1].text()
+            document.getElementById("meets").innerHTML = blob[2]
+            document.getElementById("commitment").innerHTML = blob[3]
+            document.getElementById("website").innerHTML = blob[4]
+            document.getElementById("verified").innerHTML = blob[5]
+            document.getElementById("lastupdated").innerHTML = blob[6]
+            document.getElementById("imlink").innerHTML = blob[7]
+      }
+
+   </script>
       {% include 'footer.html' %}
       <!---Keep the JS below at the bottom of body. For loading bootstrap-->
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
