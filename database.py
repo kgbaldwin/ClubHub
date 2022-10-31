@@ -27,7 +27,7 @@ def get_clubs(clubquery, tags):
                     for tag in tags[1:]:
                         print("added a tag: ", tag)
                         script += "or tag=%s "
-                        script +=")"
+                    script +=")"
 
                 cur.execute(script, args)
 
