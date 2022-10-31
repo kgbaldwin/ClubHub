@@ -5,8 +5,6 @@
     </head>
 
     <body>
-        {%include 'header.html'%}
-
         <h1>Club Search Results</h1>
 
         {% if results|length == 0: %}
@@ -36,10 +34,7 @@
             <input type="checkbox" name="tags" id="food" value="food">
             <label for="food">Food</label>
         </form>
-
         <div id="clubinfo"></div>
-
-
         <!---Keep the JS below at the bottom of body. For loading bootstrap-->
         <script src="/JS/searchresults.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

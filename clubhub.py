@@ -48,6 +48,26 @@ def searchresults():
     response = flask.make_response(html_code)
     return response
 
+
+@app.route('/searchresults2', methods=['GET'])
+def searchresults2():
+    clubquery = '%' + flask.request.args.get('clubquery') + '%'
+    tags = flask.request.args.getlist('tags')
+    print("cq: ", clubquery)
+    print("tags: ", tags)
+
+    clubs = database.get_clubs(clubquery, tags)
+
+    if clubs == "server":
+        print("hello there")
+        html_code = flask.render_template('error.html', error="server")
+        response = flask.make_response(html_code)
+        return response
+
+    html_code = flask.render_template('searchresults2.html', results=clubs)
+    response = flask.make_response(html_code)
+    return response
+
 @app.errorhandler(404)
 def page_not_found(e):
     html_code = flask.render_template('error.html', error="404")
