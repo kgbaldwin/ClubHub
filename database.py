@@ -5,11 +5,11 @@
 # Authors: Kevin Kim, Priya Naphade, Katie Baldwin, Lance Yoder
 #-------------------------------------------------------------------
 
-import flask
 import psycopg2
 
 database_url = "postgres://avgqxjcj:lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1@peanut.db.elephantsql.com/avgqxjcj"
 
+# gets clubs corresponding matching the given phrase and/or tags
 def get_clubs(clubquery, tags):
 
     args = [clubquery] + tags
@@ -43,6 +43,8 @@ def get_clubs(clubquery, tags):
         print(ex)
         return "server"
 
+
+# gets club details of a selected club
 def database_get_info(clubid):
 
     print("clubid:", clubid)

@@ -1,20 +1,28 @@
-'use strict'
-
-var clubinfo = document.getElementById("clubinfo")
-
-// link radio buttons to clubinfo
-var clublinks = document.getElementsByName("clubname")
-for (var i = 0; i < clublinks.length; i++) {
-
-}
-
+//'use strict'
 
 // https://stackoverflow.com/questions/9618504/how-to-get-the-selected-radio-button-s-value
 //document.querySelector('input[name="clubname"]:checked').value;
 
 function changeInfo() {
-    alert("hi")
-    var info = document.getElementById("clubinfo")
-    //info.innerHTML
+
+    //document.getElementById("clubinfo").innerHTML = getInfo(selected_id)
+
+    clubid = document.querySelector('input[name="clubname"]:checked').value
+    // alert("selected element " + clubid)
+
+    fetch("/get_info?clubid="+clubid)
+    .then((response) => response.text())
+    .then((text) => document.getElementById("clubinfo").innerHTML=text);
+    //update_info(blob.arrayBuffer())
 }
 
+function update_info(blob) {
+    document.getElementById("clubname").innerHTML = blob[0].text()
+    document.getElementById("clubdesc").innerHTML = blob[1].text()
+    document.getElementById("meets").innerHTML = blob[2]
+    document.getElementById("commitment").innerHTML = blob[3]
+    document.getElementById("website").innerHTML = blob[4]
+    document.getElementById("verified").innerHTML = blob[5]
+    document.getElementById("lastupdated").innerHTML = blob[6]
+    document.getElementById("imlink").innerHTML = blob[7]
+}

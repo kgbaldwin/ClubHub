@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>ClubHub.com</title>
 </head>
+
 <body>
     {% include 'header.html' %} <br>
 
@@ -13,8 +15,13 @@
     {% elif error == "404" %}
         Ruh-roh! It seems like the page you were looking for doesn't exist.
         <br>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQupiSx4rI8_Anv5kWeBVWkv38nVunJQkHyRQ&usqp=CAU">
+        <!--img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQupiSx4rI8_Anv5kWeBVWkv38nVunJQkHyRQ&usqp=CAU"-->
+        <img src="{{ url_for('static', filename='images/404img.jpg') }}">
         <br>
+
+    {% elif error == "query" %}
+        Please enter a club query.
+        <br><br>
 
     {%endif%}
 
@@ -27,4 +34,5 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
    <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
 </body>
+
 </html>

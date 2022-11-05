@@ -1,5 +1,6 @@
 <!DOCTYPE html>
- <html>
+<html>
+
    <head>
       <title>ClubHub.com</title>
    </head>
@@ -8,6 +9,7 @@
          padding: 15px;
       }
    </style>
+
    <body>
       <style>
          td {
@@ -15,7 +17,9 @@
             padding: 2rem;
          }
       </style>
+
       {% include 'header.html' %} <br>
+
       <table>
          <tr>
             <td>
@@ -37,15 +41,17 @@
                {% if results|length == 0: %}
                   <strong>None Found</strong>
                {% else %}
-                {% set i = namespace(value=0) %}
+                <!--{% set i = namespace(value=0) %}-->
                   <ul>
                   {% for each in results: %}
                      <li><strong><label for={{each[1]}}>{{each[0]}}</label></strong></li>
-                     <input type="radio" id={{each[1]}} name="clubname" value="{{each[1]}}" onclick="changeInfo()">
+                     <input type="radio" id={{each[1]}} name="clubname"
+                     value="{{each[1]}}" onclick="changeInfo()" style="display: none">
                   {% endfor %}
                   </ul>
                {% endif %}<br>
             </td>
+
             <!--Split Screen-->
             <td style="border-left: 5px solid black;">
                <h1>Club Info</h1>
@@ -70,36 +76,15 @@
             </td>
          </tr>
    </table>
-   <script>
-        function changeInfo(){
 
-            //document.getElementById("clubinfo").innerHTML = getInfo(selected_id)
+   {% include 'footer.html' %}
 
-            clubid = document.querySelector('input[name="clubname"]:checked').value
-            // alert("selected element " + clubid)
+      <script type="text/javascript" src="{{ url_for('static', filename='JS/searchresults.js') }}"></script>
 
-            fetch("/get_info?clubid="+clubid)
-            .then((response) => response.text())
-            .then((text) => document.getElementById("clubinfo").innerHTML=text);
-            //update_info(blob.arrayBuffer())
-        }
-
-        function update_info(blob) {
-            document.getElementById("clubname").innerHTML = blob[0].text()
-            document.getElementById("clubdesc").innerHTML = blob[1].text()
-            document.getElementById("meets").innerHTML = blob[2]
-            document.getElementById("commitment").innerHTML = blob[3]
-            document.getElementById("website").innerHTML = blob[4]
-            document.getElementById("verified").innerHTML = blob[5]
-            document.getElementById("lastupdated").innerHTML = blob[6]
-            document.getElementById("imlink").innerHTML = blob[7]
-      }
-
-   </script>
-      {% include 'footer.html' %}
       <!---Keep the JS below at the bottom of body. For loading bootstrap-->
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
       <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
    </body>
+
  </html>

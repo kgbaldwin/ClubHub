@@ -6,13 +6,15 @@
 #-------------------------------------------------------------------
 
 import flask
-import psycopg2
 import database
-import urllib.parse as up
+# import urllib.parse as up
 
-#-------------------------------------------------------------------
+# -------------------------------------------------------------------
 
-app = flask.Flask(__name__)
+app = flask.Flask(__name__, template_folder='static/templates')
+
+# -------------------------------------------------------------------
+
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
@@ -31,6 +33,13 @@ def searchform():
 
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
+
+    # if tried to navigate to /searchresults without giving a query
+    if flask.request.args.get('clubquery') == None:
+        html_code = flask.render_template('error.html', error="query")
+        response = flask.make_response(html_code)
+        return response
+
     clubquery = '%' + flask.request.args.get('clubquery') + '%'
     tags = flask.request.args.getlist('tags')
     print("cq: ", clubquery)
@@ -67,6 +76,7 @@ def searchresults2():
     response = flask.make_response(html_code)
     return response
 
+
 @app.route('/get_info', methods=['GET'])
 def get_info():
     print("entered get_info")
@@ -91,6 +101,6 @@ def page_not_found(e):
     response = flask.make_response(html_code)
     return response
 
+
 if __name__ == '__main__':
-    #searchresults()
     app.run(debug=True)
