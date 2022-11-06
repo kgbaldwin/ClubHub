@@ -79,20 +79,19 @@ def searchresults2():
 
 @app.route('/get_info', methods=['GET'])
 def get_info():
-    print("entered get_info")
     clubid = flask.request.args.get('clubid')
     if clubid == "":
         print("AAAAAHHHHHHH NO CLUBID")
-        return []
+        return ["invalid clubid"]
     info = database.database_get_info(clubid)
-    print("after searching database")
-
     if info == "server":
         html_code = flask.render_template('error.html', error="server")
         response = flask.make_response(html_code)
         return response
     print("about to return info: ", info)
+    print(info[0][1])
     return info
+
 
 
 @app.errorhandler(404)
@@ -100,6 +99,73 @@ def page_not_found(e):
     html_code = flask.render_template('error.html', error="404")
     response = flask.make_response(html_code)
     return response
+
+#get attributes
+"""
+@app.route('/get_name', methods=['GET'])
+def get_name():
+    clubid = flask.request.args.get('clubid')
+    if clubid == "":
+        return ["invalid clubid"]
+    name = database.database_get_info(clubid)[0][0]
+    return name
+    
+@app.route('/get_desc', methods=['GET'])
+def get_desc():
+    clubid = flask.request.args.get('clubid')
+    if clubid == "":
+        return ["invalid clubid"]
+    desc = database.database_get_info(clubid)[0][1]
+    return desc
+    
+@app.route('/get_meets', methods=['GET'])
+def get_meets():
+    clubid = flask.request.args.get('clubid')
+    if clubid == "":
+        return ["invalid clubid"]
+    meets = database.database_get_info(clubid)[0][2]
+    return meets
+    
+@app.route('/get_commit', methods=['GET'])
+def get_commit():
+    clubid = flask.request.args.get('clubid')
+    if clubid == "":
+        return ["invalid clubid"]
+    commit = database.database_get_info(clubid)[0][3]
+    return commit
+    
+@app.route('/get_website', methods=['GET'])
+def get_website():
+    clubid = flask.request.args.get('clubid')
+    if clubid == "":
+        return ["invalid clubid"]
+    website = database.database_get_info(clubid)[0][4]
+    print("website:", website)
+    return website
+    
+@app.route('/get_verified', methods=['GET'])
+def get_verified():
+    clubid = flask.request.args.get('clubid')
+    if clubid == "":
+        return ["invalid clubid"]
+    verified = database.database_get_info(clubid)[0][5]
+    return verified
+    
+@app.route('/get_lastup', methods=['GET'])
+def get_lastup():
+    clubid = flask.request.args.get('clubid')
+    if clubid == "":
+        return ["invalid clubid"]
+    lastup = database.database_get_info(clubid)[0][6]
+    return lastup
+@app.route('/get_imlink', methods=['GET'])
+def get_imlink():
+    clubid = flask.request.args.get('clubid')
+    if clubid == "":
+        return ["invalid clubid"]
+    imlink = database.database_get_info(clubid)[0][7]
+    return imlink
+"""
 
 
 if __name__ == '__main__':

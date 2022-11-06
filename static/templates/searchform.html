@@ -3,11 +3,6 @@
    <head>
       <title>ClubHub.com</title>
    </head>
-   <style>
-      th, td {
-         padding: 15px;
-      }
-   </style>
    <body>
       <style>
          td {
@@ -16,9 +11,9 @@
          }
       </style>
       {% include 'header.html' %} <br>
-      <table>
+      <table width="100%">
          <tr>
-            <td>
+            <td width = "30%">
                <h1>Club Search</h1>
                <form action = "/searchresults2" method="get">
                      Search for clubs:<br>
@@ -30,30 +25,10 @@
                      <label for="religious">Religious</label>
                      <input type="checkbox" name="tags" id="food" value="food">
                      <label for="food">Food</label>
-               </form><br>
-
-
-               <br>
-
-               <h1>Club Search Results</h1>
-               {% if results|length == 0: %}
-                  <strong>None Found</strong>
-               {% else %}
-                  {%set i = 0%}
-                  <ul>
-                  <input type="radio" name="clubname" value=0 selected style="display: none">
-                  {% for each in results: %}
-                     {% set id="club" + i|string %}
-                     {% set i = i + 1 %}
-                     <li><strong><label for={{id}}>{{each[0]}}</label></strong></li>
-                     <input type="radio" id={{id}} name="clubname" value={{each[1]}} onclick=changeInfo()>
-                  {% endfor %}
-                  </ul>
-               {% endif %}<br>
-            <div id="clubinfo"></div>
+               </form>
             </td>
             <!--Split Screen-->
-            <td style="border-left: 5px solid black;">
+            <td width = "70%" style="border-left: 5px solid black;">
             </td>
          </tr>
    </table>

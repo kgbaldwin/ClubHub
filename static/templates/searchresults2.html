@@ -20,9 +20,9 @@
 
       {% include 'header.html' %} <br>
 
-      <table>
+      <table width = 100%>
          <tr>
-            <td>
+            <td width = "30%" >
                <h1>Club Search</h1>
                <form action = "/searchresults2" method="get">
                      Search for clubs:<br>
@@ -46,33 +46,31 @@
                   {% for each in results: %}
                      <li><strong><label for={{each[1]}}>{{each[0]}}</label></strong></li>
                      <input type="radio" id={{each[1]}} name="clubname"
-                     value="{{each[1]}}" onclick="changeInfo()" style="display: none">
+                     value="{{each[1]}}" onclick="changeInfo(); update_info();" style="display: none">
                   {% endfor %}
                   </ul>
                {% endif %}<br>
             </td>
 
             <!--Split Screen-->
-            <td style="border-left: 5px solid black;">
+            <td width = "70%" style="border-left: 5px solid black;">
                <h1>Club Info</h1>
-               <div id="clubinfo"></div>
-               <!--
-                <small>name:</small><div id="clubname">
-                </div><br>
-                <small>desc:</small><div id="clubdesc">
-               </div><br>
-               <small>meets:</small><div id="meets">
-               </div><br>
-               <small>commitment:</small><div id="commitment">
-               </div><br>
-               <small>website:</small><div id="website">
-               </div><br>
-               <small>verified:</small><div id="verified">
-               </div><br>
-               <small>lastupdated:</small><div id="lastupdated">
-               </div><br>
-               <small>imlink:</small><div id="imlink">
-               </div><br> -->
+               <style>
+                  div.scroll{
+                     width: auto;
+                     height: auto;
+                     overflow:scroll;
+                  }
+               </style>
+               <div class="scroll"><div id="clubinfo"></div></div>
+               name:<div id = "clubname"></div>
+               desc:<div id = "clubdesc"></div>
+               meets:<div id = "clubmeets"></div>
+               commitment:<div id = "clubcommit"></div>
+               website:<div id = "clubwebsite"></div>
+               verified:<div id = "clubverified"></div>
+               last updated:<div id = "clublastup"></div>
+               imlink:<div id = "clubimlink"></div>
             </td>
          </tr>
    </table>

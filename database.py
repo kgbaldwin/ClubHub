@@ -46,9 +46,7 @@ def get_clubs(clubquery, tags):
 
 # gets club details of a selected club
 def database_get_info(clubid):
-
     print("clubid:", clubid)
-
     try:
         with psycopg2.connect(database_url) as conn:
 
@@ -59,13 +57,12 @@ def database_get_info(clubid):
                 cur.execute(script, [clubid])
 
                 row = cur.fetchone()
+                
                 info = []
                 while row is not None:
                     info.append(row)
                     row = cur.fetchone()
-
                 return info
-
     except Exception as ex:
         print(ex)
         return "server"
