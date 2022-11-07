@@ -118,7 +118,9 @@ def get_info():
         return response
 
     string = ""
+    print(info[0])
     for item in info[0]:
+        print(item)
         string += str(item) + "\n"
 
     print("about to return info: ")
