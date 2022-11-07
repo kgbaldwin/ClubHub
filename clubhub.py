@@ -14,7 +14,7 @@ import auth
 # -------------------------------------------------------------------
 
 app = flask.Flask(__name__, template_folder='static/templates')
-os.environ['APP_SECRET_KEY'] = 12345 # not very secret???
+os.environ['APP_SECRET_KEY'] = "hello" # not very secret???
 app.secret_key = os.environ['APP_SECRET_KEY']
 
 # -------------------------------------------------------------------
