@@ -63,7 +63,7 @@ def authenticate():
     ticket = flask.request.args.get('ticket')
     if ticket is None:
         login_url = (_CAS_URL + 'login?service=' +
-            urllib.parse.quote(flask.request.url))
+            urllib.parse.quote(strip_ticket(flask.request.url)))
         flask.abort(flask.redirect(login_url))
 
     # If the login ticket is invalid, then redirect the browser
