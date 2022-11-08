@@ -3,6 +3,7 @@
   <head>
      <title>ClubHub.com</title>
   </head>
+
   <body>
      <style>
         td {
@@ -12,12 +13,15 @@
      </style>
      {% include 'header.html' %} <br>
 
-        <h1>Your Profile</h1>
-        Netid: {{username}} <br>
-        Name: <br>
-        Class Year: <br>
-        Subscribed Clubs: <br>
-
+     <table>
+           <td>
+              <h1>Your Profile</h1>
+              Netid: {{username}} <br>
+              Name: <br>
+              Class Year: <br>
+              Subscribed Clubs: <br>
+           </td>
+  </table>
 
      {% include 'footer.html' %}
 
