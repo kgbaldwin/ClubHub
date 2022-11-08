@@ -37,6 +37,12 @@ def index():
     response = flask.make_response(html_code)
     return response
 
+@app.route('/profile', methods=['GET'])
+def profile():
+    username = auth.authenticate()
+    html_code = flask.render_template('profile.html', username=username)
+    response = flask.make_response(html_code)
+    return response
 
 @app.route('/searchform', methods=['GET'])
 def searchform():
