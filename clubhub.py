@@ -9,6 +9,7 @@ import os
 import flask
 import database
 import auth
+from req_lib import ReqLib
 # import urllib.parse as up
 
 # -------------------------------------------------------------------
@@ -114,15 +115,23 @@ def get_info():
     if clubid == "":
         print("AAAAAHHHHHHH NO CLUBID")
         return ["invalid clubid"]
+
     info = database.database_get_info(clubid)
     if info == "server":
         html_code = flask.render_template('error.html', error="server",
                                             username=username)
         response = flask.make_response(html_code)
         return response
-    print("about to return info: ", info)
-    print(info[0][1])
-    return info
+
+    string = ""
+    print(info[0])
+    for item in info[0]:
+        print(item)
+        string += str(item) + "\n"
+
+    print("about to return info: ")
+    print(string)
+    return string
 
 
 
@@ -133,6 +142,29 @@ def page_not_found(e):
                                         username=username)
     response = flask.make_response(html_code)
     return response
+
+
+################
+# getting user infos from netid
+#######################
+#@app.route('/get_user', methods=['GET'])
+def get_user():
+    req_lib = ReqLib()
+
+    req = req_lib.getJSON(
+        req_lib.configs.USERS_BASIC,
+        uid="lyoder",
+    )
+    print(req)
+
+    req = req_lib.getXMLorTXT(
+        req_lib.configs.USERS_BASIC,
+        uid="lyoder",
+    )
+    print(req)
+
+    return
+
 
 #get attributes
 """
