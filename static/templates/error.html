@@ -8,15 +8,18 @@
 <body>
     {% include 'header.html' %} <br>
 
+    <div style="padding: 2rem">
+
     {% if error == "server" %}
         A server error ocurred. Please contact the system administrator.
         <br>
 
     {% elif error == "404" %}
         Ruh-roh! It seems like the page you were looking for doesn't exist.
-        <br>
-        <img src="{{ url_for('static', filename='images/404img.jpg') }}">
-        <br>
+        <br><br>
+        <img src="{{ url_for('static', filename='images/404img.jpg') }}"
+                width="400rem" height="250rem">
+        <br><br>
 
     {% elif error == "query" %}
         Please enter a club query.
@@ -25,7 +28,8 @@
     {%endif%}
 
    <a href="/index" > Click here to go home! </a>
-   <br>
+    </div>
+
    {% include 'footer.html' %}
 
    <!---Keep the JS below at the bottom of body. For loading bootstrap-->
@@ -35,7 +39,3 @@
 </body>
 
 </html>
-
-
-
-USE USERNAME
