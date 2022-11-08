@@ -52,12 +52,12 @@ def database_get_info(clubid):
 
             with conn.cursor() as cur:
 
-                script = "select clubname, description, meets, commitment, website, verified, lastupdated, imlink from clubs WHERE clubid=%s"
+                script = "select clubname, description, meets, commitment, website, verified, stamp, imlink from clubs WHERE clubid=%s"
 
                 cur.execute(script, [clubid])
 
                 row = cur.fetchone()
-                
+
                 info = []
                 while row is not None:
                     info.append(row)
