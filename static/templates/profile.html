@@ -17,9 +17,16 @@
            <td>
               <h1>Your Profile</h1>
               Netid: {{username}} <br>
-              Name: <br>
-              Class Year: <br>
-              Subscribed Clubs: <br>
+              Name: {{name}}<br>
+              Class Year: {{year}}<br>
+              Subscribed Clubs:<br>
+
+              <ul>
+              {% for each in subs: %}
+                  <li><label>{{each[0]}}</label></li>
+               {% endfor %}
+               </ul>
+
            </td>
   </table>
 

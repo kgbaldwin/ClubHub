@@ -25,9 +25,9 @@ def get_clubs(clubquery, tags):
                 if tags:
                     script += "AND clubs.clubid=ANY(SELECT clubid from tags where tag=%s "
                     for tag in tags[1:]:
-                        print("added a tag: ", tag)
                         script += "or tag=%s "
                     script +=")"
+
 
                 cur.execute(script, args)
 
@@ -63,6 +63,28 @@ def database_get_info(clubid):
                     info.append(row)
                     row = cur.fetchone()
                 return info
+    except Exception as ex:
+        print(ex)
+        return "server"
+
+def get_subs(netid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select clubname from subscriptions, clubs WHERE netid=%s AND clubs.clubid=subscriptions.clubid"
+
+                cur.execute(script, [netid])
+
+                row = cur.fetchone()
+                clubids = []
+                while row is not None:
+                    clubids.append(row)
+                    row = cur.fetchone()
+
+                return clubids
+
     except Exception as ex:
         print(ex)
         return "server"

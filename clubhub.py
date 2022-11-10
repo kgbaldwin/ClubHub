@@ -10,7 +10,6 @@ import flask
 import database
 import auth
 from req_lib import ReqLib
-# import urllib.parse as up
 
 # -------------------------------------------------------------------
 
@@ -38,12 +37,24 @@ def index():
     response = flask.make_response(html_code)
     return response
 
+
 @app.route('/profile', methods=['GET'])
 def profile():
     username = auth.authenticate()
-    html_code = flask.render_template('profile.html', username=username)
+
+    info = get_user()[0]
+    print(info["uid"])
+
+    year = info["dn"].split(" ")[3][:4]
+
+    subs=database.get_subs(username)
+    print(subs)
+
+    html_code = flask.render_template('profile.html', username=username,
+            name=info["displayname"], year=year, subs=subs)
     response = flask.make_response(html_code)
     return response
+
 
 @app.route('/searchform', methods=['GET'])
 def searchform():
@@ -134,7 +145,6 @@ def get_info():
     return string
 
 
-
 @app.errorhandler(404)
 def page_not_found(e):
     username = auth.authenticate()
@@ -147,92 +157,22 @@ def page_not_found(e):
 ################
 # getting user infos from netid
 #######################
-#@app.route('/get_user', methods=['GET'])
+@app.route('/get_user', methods=['GET'])
 def get_user():
     req_lib = ReqLib()
 
-    req = req_lib.getJSON(
+    username = auth.authenticate()
+
+    reqBasic = req_lib.getJSON(
         req_lib.configs.USERS_BASIC,
-        uid="lyoder",
+        uid=username,
     )
-    print(req)
+    print("req2: ", reqBasic)
 
-    req = req_lib.getXMLorTXT(
-        req_lib.configs.USERS_BASIC,
-        uid="lyoder",
-    )
-    print(req)
-
-    return
+    return reqBasic
 
 
-#get attributes
-"""
-@app.route('/get_name', methods=['GET'])
-def get_name():
-    clubid = flask.request.args.get('clubid')
-    if clubid == "":
-        return ["invalid clubid"]
-    name = database.database_get_info(clubid)[0][0]
-    return name
-
-@app.route('/get_desc', methods=['GET'])
-def get_desc():
-    clubid = flask.request.args.get('clubid')
-    if clubid == "":
-        return ["invalid clubid"]
-    desc = database.database_get_info(clubid)[0][1]
-    return desc
-
-@app.route('/get_meets', methods=['GET'])
-def get_meets():
-    clubid = flask.request.args.get('clubid')
-    if clubid == "":
-        return ["invalid clubid"]
-    meets = database.database_get_info(clubid)[0][2]
-    return meets
-
-@app.route('/get_commit', methods=['GET'])
-def get_commit():
-    clubid = flask.request.args.get('clubid')
-    if clubid == "":
-        return ["invalid clubid"]
-    commit = database.database_get_info(clubid)[0][3]
-    return commit
-
-@app.route('/get_website', methods=['GET'])
-def get_website():
-    clubid = flask.request.args.get('clubid')
-    if clubid == "":
-        return ["invalid clubid"]
-    website = database.database_get_info(clubid)[0][4]
-    print("website:", website)
-    return website
-
-@app.route('/get_verified', methods=['GET'])
-def get_verified():
-    clubid = flask.request.args.get('clubid')
-    if clubid == "":
-        return ["invalid clubid"]
-    verified = database.database_get_info(clubid)[0][5]
-    return verified
-
-@app.route('/get_lastup', methods=['GET'])
-def get_lastup():
-    clubid = flask.request.args.get('clubid')
-    if clubid == "":
-        return ["invalid clubid"]
-    lastup = database.database_get_info(clubid)[0][6]
-    return lastup
-@app.route('/get_imlink', methods=['GET'])
-def get_imlink():
-    clubid = flask.request.args.get('clubid')
-    if clubid == "":
-        return ["invalid clubid"]
-    imlink = database.database_get_info(clubid)[0][7]
-    return imlink
-"""
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)
