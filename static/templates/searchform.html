@@ -21,10 +21,10 @@
                      <input type="text" placeholder="Search for clubs, keywords..." name="clubquery">
                      <input type="submit" value="Go">
                      <br>
-                     <input type="checkbox" name="tags" id="religious" value="religious">
-                     <label for="religious">Religious</label>
-                     <input type="checkbox" name="tags" id="food" value="food">
-                     <label for="food">Food</label>
+                     {% for tag in tags: %}
+                     <input type="checkbox" name="tags" id={{tag}} value={{tag}}>
+                     <label for={{tag}}>{{tag}}</label>
+                     {% endfor %}
                </form>
             </td>
             <!--Split Screen-->

@@ -41,7 +41,7 @@ def get_clubs(clubquery, tags):
 
     except Exception as ex:
         print(ex)
-        return "server"
+        return "server get_clubs"
 
 
 # gets club details of a selected club
@@ -65,7 +65,7 @@ def database_get_info(clubid):
                 return info
     except Exception as ex:
         print(ex)
-        return "server"
+        return "server, get_info"
 
 def get_subs(netid):
     try:
@@ -87,4 +87,26 @@ def get_subs(netid):
 
     except Exception as ex:
         print(ex)
-        return "server"
+        return "server, get_subs"
+
+def get_tags():
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select DISTINCT tag from tags"
+
+                cur.execute(script)
+
+                row = cur.fetchone()
+                clubids = []
+                while row is not None:
+                    clubids.append(row)
+                    row = cur.fetchone()
+
+                return clubids
+
+    except Exception as ex:
+        print(ex)
+        return "server get_tags"

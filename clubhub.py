@@ -59,8 +59,11 @@ def profile():
 @app.route('/searchform', methods=['GET'])
 def searchform():
     username = auth.authenticate()
+    tags = database.get_tags()
+
     html_code = flask.render_template('searchform.html',
-                                    username=username)
+                                    username=username, tags=tags)
+    print("tags: ", tags)
     response = flask.make_response(html_code)
     return response
 
@@ -170,6 +173,21 @@ def get_user():
     print("req2: ", reqBasic)
 
     return reqBasic
+
+@app.route('/register_club', methods=['GET'])
+def register_club():
+    req_lib = ReqLib()
+
+    username = auth.authenticate()
+
+    reqBasic = req_lib.getJSON(
+        req_lib.configs.USERS_BASIC,
+        uid=username,
+    )
+    print("req2: ", reqBasic)
+
+    return reqBasic
+
 
 
 
