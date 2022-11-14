@@ -15,14 +15,33 @@ function changeInfo(id) {
     .then((text) => {
     var info = text.split("\n");
     document.getElementById("clubname").innerHTML = info[0];
+    if (info[0] != "none")
+        document.getElementById("clubname").style.display = "inline";
     document.getElementById("clubdesc").innerHTML = info[1];
+    if (info[1] != "none")
+        document.getElementById("clubdesc").style.display = "inline";
     document.getElementById("clubmeets").innerHTML = info[2];
+    if(info[0] != "none" || info[1] != "none"){
+        document.getElementById("namecard").style.backgroundColor = "gray";
+    }
+    if (info[2] != "none")
+        document.getElementById("clubmeets").style.display = "inline";
     document.getElementById("clubcommit").innerHTML = info[3];
+    if (info[3] != "none")
+        document.getElementById("clubcommit").style.display = "inline";
     document.getElementById("clubwebsite").innerHTML = info[4];
+    if (info[4] != "none")
+        document.getElementById("clubwebsite").style.display = "inline";
     document.getElementById("clubverified").innerHTML = info[5];
+    if (info[5] != "none")
+        document.getElementById("clubverified").style.display = "inline";
     document.getElementById("clublastup").innerHTML = info[6];
-    document.getElementById("clubimlink").innerHTML = info[7];
-    document.getElementById("clubimage").src = 'https://i0.wp.com/statisticsbyjim.com/wp-content/uploads/2020/09/association-152746_640.png?resize=300%2C300&ssl=1';
+    if (info[6] != "none")
+        document.getElementById("clublastup").style.display = "inline";
+    if(info[7] != "none")
+        document.getElementById("clubimlink").src = info[7];
+    else
+        document.getElementById('clubimlink').src = "";
 
     const previous = document.getElementsByClassName("search-results-card-selected");
     for (let i = 0; i < previous.length; i++){

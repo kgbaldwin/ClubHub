@@ -5,9 +5,7 @@
       <title>ClubHub.com</title>
    </head>
    <style>
-      th, td {
-         padding: 15px;
-      }
+      
       div.search-results-card{
          background-color: rgb(212, 212, 212);
          margin-top: 10px;
@@ -50,13 +48,23 @@
       div#search-results{
          overflow: scroll;
       }
+      /* for CLUB INFO section of searchresults. */
+      div.clubname{
+         font-size: 3rem;
+         font-weight:bold;
+      }
+      div.clubattribute{
+         display:none;
+      }
+      div.namecard{
+         background-color:white;
+      }
    </style>
 
    <body>
       <style>
          td {
             border-collapse: collapse;
-            padding: 2rem;
          }
       </style>
 
@@ -64,7 +72,7 @@
 
       <table width = 100%>
          <tr>
-            <td max-width = 30% width = 30% style="vertical-align:top;">
+            <td max-width = 30% width = 30% style="vertical-align:top;padding:2rem;">
                <div class="search_column">
                <h1>Club Search</h1>
                <form action = "/searchresults2" method="get">
@@ -107,8 +115,8 @@
             </td>
             </div>
             <!--Split Screen-->
-            <td max-width = "70%" width="70%" style="border-left: 5px solid black; vertical-align: top;">
-               <h1>Club Info</h1>
+            <td max-width = "70%" width="70%" style="border-left: 5px solid black; vertical-align: top;padding:2rem;">
+              <!-- <h1>Club Info</h1>-->
                <style>
                   div.scroll{
                      width: auto;
@@ -116,16 +124,25 @@
                      overflow:scroll;
                   }
                </style>
-               <div class="scroll"><div id="clubinfo"></div></div>
-               name:<div id = "clubname"></div>
-               desc:<div id = "clubdesc"></div>
-               meets:<div id = "clubmeets"></div>
-               commitment:<div id = "clubcommit"></div>
-               website:<div id = "clubwebsite"></div>
-               verified:<div id = "clubverified"></div>
-               last updated:<div id = "clublastup"></div>
-               imlink:<div id = "clubimlink"></div>
-               <img id = "clubimage">
+               <div class="namecard" id = "namecard">
+                  <table class = "namecard">
+                     <tr>
+                        <td class = "namecard" rowspan = "2">
+                           <img id = "clubimlink" style="max-width:200px;height:autdo;width:200px;max-height:200px;min-height:200px;border:0px;border-width:0px"></img>
+                        </td>
+                        <td class = "namecard"><div class="clubname" id = "clubname"></div><br></td>
+                     </tr>
+                     <tr>
+                        <td class = "namecard">
+                        <div class="clubattribute" id = "clubdesc"></div><br></td>
+                     </tr>
+                  </table>
+               </div>
+               <div class="clubattribute" id = "clubmeets"></div><br>
+               <div class="clubattribute" id = "clubcommit"></div><br>
+               <div class="clubattribute" id = "clubwebsite"></div><br>
+               <div class="clubattribute" id = "clubverified"></div><br>
+               <div class="clubattribute" id = "clublastup"></div><br>
             </td>
          </tr>
    </table>
