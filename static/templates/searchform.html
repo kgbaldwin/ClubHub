@@ -5,15 +5,17 @@
    </head>
    <body>
       <style>
+         .scrollable-menu {
+            height: auto;
+            max-height: 200px;
+            overflow-x: hidden;
+         }
          td {
             border-collapse: collapse;
             padding: 2rem;
          }
       </style>
-      {% include 'header.html' %} <br>
-      <table width="100%">
-         <tr>
-            <td width = "30%">
+      <div style="padding:2rem;">
                <h1>Club Search</h1>
                <form action = "/searchresults2" method="get">
                      Search for clubs:<br>
@@ -21,15 +23,25 @@
                      <input type="text" placeholder="Search for clubs, keywords..." name="clubquery">
                      <input type="submit" value="Go">
                      <br>
-                     {% for tag in tags: %}
-                     <input type="checkbox" name="tags" id={{tag}} value={{tag}}>
-                     <label for={{tag}}>{{tag}}</label>
-                     {% endfor %}
+                     <script>
+                     $('input, label').on('click', function(e){
+                        e.stopPropagation();
+                     });
+                    </script>
+                     <button class="btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
+                        Search With Tags
+                      </button>
+                      <ul class="dropdown-menu scrollable-menu">
+                        {% for tag in tags: %}
+                        <li><a class="dropdown-item" href="/profile">
+                           <input type="checkbox" name="tags" id={{tag[0]}} value={{tag[0]}}>
+                           <label for={{tag[0]}}>{{tag[0]}}</label>
+                        </a></li>
+                        {% endfor %}
+                      </ul>
                </form>
-            </td>
+            </div>
             <!--Split Screen-->
-         </tr>
-   </table>
 
       {% include 'footer.html' %}
 
