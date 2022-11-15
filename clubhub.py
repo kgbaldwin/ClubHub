@@ -123,6 +123,16 @@ def searchresults2():
     response = flask.make_response(html_code)
     return response
 
+@app.route('/announce', methods=['GET'])
+def announce():
+    username = auth.authenticate()
+    # Returns list of clubids for which this user in an officer
+    officer_clubids = database.get_officerships(username)
+    print(officer_clubids)
+    html_code = flask.render_template('announce.html', username=username,
+                                        officer_clubids = officer_clubids)
+    response = flask.make_response(html_code)
+    return response
 
 @app.route('/get_info', methods=['GET'])
 def get_info():

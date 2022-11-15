@@ -168,3 +168,26 @@ def is_subbed(netid, clubid):
     except Exception as ex:
         print(ex)
         return "server, is_subbed"
+
+def get_officerships(netid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select clubname, clubs.clubid from officers, clubs WHERE netid=%s AND clubs.clubid=officers.clubid"
+
+                cur.execute(script, [netid])
+
+                row = cur.fetchone()
+                clubids = {}
+                while row is not None:
+                    print(row)
+                    clubids[row[0]] = row[1]
+                    row = cur.fetchone()
+
+                return clubids
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_officerships"
