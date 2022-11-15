@@ -33,7 +33,8 @@ def logoutcas():
 @app.route('/index', methods=['GET'])
 def index():
     username = auth.authenticate()
-    html_code = flask.render_template('index.html', username=username)
+    tags = database.get_tags()
+    html_code = flask.render_template('index.html', username=username,tags=tags)
     response = flask.make_response(html_code)
     return response
 
@@ -109,6 +110,7 @@ def searchresults2():
     print("tags: ", tags)
 
     clubs = database.get_clubs(clubquery, tags)
+    tags_dropdown = database.get_tags()
 
     if clubs == "server":
         html_code = flask.render_template('error.html', error="server",
@@ -117,7 +119,7 @@ def searchresults2():
         return response
 
     html_code = flask.render_template('searchresults2.html', results=clubs,
-                                        username=username)
+                                        username=username,tags=tags_dropdown)
     response = flask.make_response(html_code)
     return response
 
