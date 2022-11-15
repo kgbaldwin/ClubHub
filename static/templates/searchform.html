@@ -5,7 +5,7 @@
    </head>
    <body>
       <style>
-         .scrollable-menu {
+         .scrollable-menu-dropdown {
             height: auto;
             max-height: 200px;
             overflow-x: hidden;
@@ -15,35 +15,41 @@
             padding: 2rem;
          }
       </style>
-      <div style="padding:2rem;">
                <h1>Club Search</h1>
                <form action = "/searchresults2" method="get">
                      Search for clubs:<br>
                   <!---<button type="submit"><i class="fa fa-search"></i></button> --->
                      <input type="text" placeholder="Search for clubs, keywords..." name="clubquery">
                      <input type="submit" value="Go">
-                     <br>
-                     <script>
-                     $('input, label').on('click', function(e){
-                        e.stopPropagation();
-                     });
-                    </script>
-                     <button class="btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
-                        Search With Tags
-                      </button>
-                      <ul class="dropdown-menu scrollable-menu">
-                        {% for tag in tags: %}
-                        <li><a class="dropdown-item" href="/profile">
-                           <input type="checkbox" name="tags" id={{tag[0]}} value={{tag[0]}}>
-                           <label for={{tag[0]}}>{{tag[0]}}</label>
-                        </a></li>
-                        {% endfor %}
-                      </ul>
-               </form>
-            </div>
-            <!--Split Screen-->
+                     <div style="padding-top:8px;">
+                        <button class="btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
+                           Search With Tags
+                        </button>
+                     
+                        <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+                           {% for tag in tags: %}
+                           
+                           <li onClick=toggle("{{tag[0]}}")>
+                              <a class="dropdown-item">
+                                 <input type="checkbox" name="tags" id={{tag[0]}} value={{tag[0]}} onClick=toggle("{{tag[0]}}")>
+                                 <label for={{tag[0]}} onClick=toggle("{{tag[0]}}")>{{tag[0]}}</label>
+                              </a>
+                           </li>
+                           {% endfor %}
+                        </ul>
+                        <script>
+                           document.getElementById("tagdropdown").addEventListener("click", function(e) {
+                              e.stopPropagation();
+                           });
+                           function toggle(tag) {
 
-      {% include 'footer.html' %}
+                              checkbox = document.getElementById(tag);
+                              checkbox.checked = !checkbox.checked;
+                           }
+                        </script>
+                     </div>
+               </form>
+            <!--Split Screen-->
 
       <!---Keep the JS below at the bottom of body. For loading bootstrap-->
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
