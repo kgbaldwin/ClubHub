@@ -110,3 +110,38 @@ def get_tags():
     except Exception as ex:
         print(ex)
         return "server get_tags"
+
+
+# subscribes user to club
+def add_sub(user, clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                # check for existence of row (may not be necessary)
+                script = "select * from subscriptions where netid=%s and clubid=%s"
+                cur.execute(script, [user, clubid])
+
+                if cur.rowcount == 0:
+                    script = "insert into subscriptions values (%s, %s)"
+                    cur.execute(script, [user, clubid])
+
+    except Exception as ex:
+        print(ex)
+        return "server, add_sub"
+
+# unsubscribes user from club
+def remove_sub(user, clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                # check for existence of row (may not be necessary)
+                script = "delete from subscriptions where netid=%s and clubid=%s"
+                cur.execute(script, [user, clubid])
+
+    except Exception as ex:
+        print(ex)
+        return "server, remove_sub"

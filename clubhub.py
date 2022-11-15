@@ -174,6 +174,25 @@ def get_user():
 
     return reqBasic
 
+
+# subscribes user to club or unsubscribes from
+@app.route('/subscribe', methods=['GET'])
+def subscribe():
+    username = auth.authenticate()
+    clubid = flask.request.args.get('clubid')
+    subscribe = flask.request.args.get('subscribe')
+
+    if subscribe:
+        response = database.add_sub(username, clubid)
+    else:
+        response = database.remove_sub(username, clubid)
+
+    if response:  # errored
+        return False
+
+    return True
+
+
 @app.route('/register_club', methods=['GET'])
 def register_club():
     req_lib = ReqLib()
