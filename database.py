@@ -63,9 +63,11 @@ def database_get_info(clubid):
                     info.append(row)
                     row = cur.fetchone()
                 return info
+
     except Exception as ex:
         print(ex)
         return "server, get_info"
+
 
 def get_subs(netid):
     try:
@@ -145,3 +147,24 @@ def remove_sub(user, clubid):
     except Exception as ex:
         print(ex)
         return "server, remove_sub"
+
+def is_subbed(netid, clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select netid from subscriptions WHERE netid=%s AND clubid=%s"
+
+                cur.execute(script, [netid, clubid])
+
+                row = cur.fetchone()
+
+                if row is None:
+                    return False
+
+                return True
+
+    except Exception as ex:
+        print(ex)
+        return "server, is_subbed"

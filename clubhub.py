@@ -142,11 +142,17 @@ def get_info():
     string = ""
     print(info[0])
     for item in info[0]:
-        print(item)
+        #print(item)
         string += str(item) + "\n"
 
-    print("about to return info: ")
-    print(string)
+    subbed = database.is_subbed(username, clubid)
+    if subbed:
+        string += "subscribed"
+    else:
+        string += "not subscribed"
+
+    #print("about to return info: ")
+    #print(string)
     return string
 
 
@@ -184,15 +190,15 @@ def subscribe():
     clubid = flask.request.args.get('clubid')
     subscribe = flask.request.args.get('subscribe')
 
-    if subscribe:
+    if subscribe=="1":
         response = database.add_sub(username, clubid)
     else:
         response = database.remove_sub(username, clubid)
 
     if response:  # errored
-        return False
+        return "error"
 
-    return True
+    return "success"
 
 
 @app.route('/register_club', methods=['GET'])
