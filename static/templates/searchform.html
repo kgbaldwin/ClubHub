@@ -25,14 +25,19 @@
                         <button class="btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
                            Search With Tags
                         </button>
-                     
+
                         <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
                            {% for tag in tags: %}
-                           
-                           <li onClick=toggle("{{tag[0]}}")>
+
+                           <li onClick="toggle('{{tag[0]}}')">
                               <a class="dropdown-item">
-                                 <input type="checkbox" name="tags" id={{tag[0]}} value={{tag[0]}} onClick=toggle("{{tag[0]}}")>
-                                 <label for={{tag[0]}} onClick=toggle("{{tag[0]}}")>{{tag[0]}}</label>
+                                 <label for={{tag[0]}} onClick="toggle('{{tag[0]}}')">{{tag[0]}}</label>
+
+                                 {% if tag[0] in checked: %}
+                                 <input type="checkbox" checked name="tags" id={{tag[0]}} value={{tag[0]}} onClick="toggle('{{tag[0]}}')">
+                                 {% else: %}
+                                 <input type="checkbox" name="tags" id={{tag[0]}} value={{tag[0]}} onClick="toggle('{{tag[0]}}')">
+                                 {% endif %}
                               </a>
                            </li>
                            {% endfor %}

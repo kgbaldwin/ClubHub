@@ -70,7 +70,7 @@ def searchform():
     response = flask.make_response(html_code)
     return response
 
-
+'''
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
 
@@ -101,7 +101,7 @@ def searchresults():
                                         username=username)
     response = flask.make_response(html_code)
     return response
-
+'''
 
 @app.route('/searchresults2', methods=['GET'])
 def searchresults2():
@@ -121,7 +121,8 @@ def searchresults2():
         return response
 
     html_code = flask.render_template('searchresults2.html', results=clubs,
-                                        username=username,tags=tags_dropdown)
+                                        username=username,tags=tags_dropdown,
+                                        checked=tags)
     response = flask.make_response(html_code)
     return response
 
