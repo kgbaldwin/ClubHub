@@ -169,6 +169,7 @@ def is_subbed(netid, clubid):
         print(ex)
         return "server, is_subbed"
 
+# return clubids and clubnames for clubs where netid is an officer
 def get_officerships(netid):
     try:
         with psycopg2.connect(database_url) as conn:
@@ -182,7 +183,6 @@ def get_officerships(netid):
                 row = cur.fetchone()
                 clubids = {}
                 while row is not None:
-                    print(row)
                     clubids[row[0]] = row[1]
                     row = cur.fetchone()
 
@@ -191,3 +191,20 @@ def get_officerships(netid):
     except Exception as ex:
         print(ex)
         return "server, get_officerships"
+
+# send an announcement
+def send_announcement(clubid, announcement):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "insert into announcements VALUES (%s, %s, CURRENT_TIMESTAMP)"
+
+                cur.execute(script, [clubid, announcement])
+
+                return "success"
+
+    except Exception as ex:
+        print(ex)
+        return "server, send_announcements"

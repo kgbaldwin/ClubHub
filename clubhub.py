@@ -128,9 +128,12 @@ def announce():
     username = auth.authenticate()
     # Returns list of clubids for which this user in an officer
     officer_clubids = database.get_officerships(username)
-    print(officer_clubids)
+    clubnames, clubids = list(officer_clubids.keys()), list(officer_clubids.values())
+    num_officerships = len(clubnames)
+
     html_code = flask.render_template('announce.html', username=username,
-                                        officer_clubids = officer_clubids)
+                                    officerships= zip(clubnames, clubids),
+                                    num_officerships=num_officerships)
     response = flask.make_response(html_code)
     return response
 
@@ -225,6 +228,16 @@ def register_club():
 
     return reqBasic
 
+@app.route('/send_announce')
+def send_announce():
+    clubid = flask.request.args.get('clubid')
+    announcement = flask.request.args.get('announcement')
+    announce_result = database.send_announcement(clubid, announcement)
+
+    if announce_result == "success":
+        return "success"
+
+    return "error"
 
 
 

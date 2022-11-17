@@ -1,36 +1,56 @@
 <!DOCTYPE html>
 <html>
+
   <head>
      <title>ClubHub.com</title>
   </head>
 
+
   <body>
-     <style>
-        td {
-           border-collapse: collapse;
-           padding: 2rem;
-        }
-     </style>
+
      {% include 'header.html' %} <br>
 
-     <table>
-        <td>
-        {% if officer_clubids|length == 0 %}
-            You aren't an officer of any club :(
+    <div class="w-50" style="padding-left: 1.5rem;">
+
+        {% if num_officerships == 0 %}
+            <h5>
+                You aren't an officer of any club, so you can't send announcements.
+            </h5>
+            <a href="/index"> Go back home </a>
 
         {% else %}
-            Clubs you're an officer of:
-            {% for each in officer_clubids: %}
-            <ul> <a> {{each[0]}}, {{each[1]}} </a> </ul>
-            {% endfor %}
-        {% endif %}
-        <td>
+           <h2> Send an announcement </h2>
+           <br>
 
-     </table>
+           <h5>Which club do you want to send an announcement to?</h5>
+            <select class="form-select" id="announceclub">
+            <option value="none">Choose a club</option>
+                {% for clubid, clubname in officerships %}
+                    <option value="{{clubname}}">{{clubid}}</option>
+                {% endfor %}
+            </select>
+
+            <br>
+
+            <div class="form-group">
+                <label><h5>Your announcement</h5></label>
+                <textarea class="form-control" id="announcetext" rows="3"></textarea>
+            </div>
+
+            <br>
+
+            <input type="submit" value="Send my announcement" onclick="return sendAnnouncement();">
+
+        {% endif %}
+
+    </div>
+
+
 
      {% include 'footer.html' %}
 
      <!---Keep the JS below at the bottom of body. For loading bootstrap-->
+     <script type="text/javascript" src="{{ url_for('static', filename='JS/announce.js') }}"></script>
      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
      <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
