@@ -117,6 +117,8 @@ def get_info():
         return ["invalid clubid"]
 
     info = database.database_get_info(clubid)
+    print(info)
+
     if info == "server":
         html_code = flask.render_template('error.html', error="server",
                                             username=username)
@@ -124,9 +126,9 @@ def get_info():
         return response
 
     string = ""
-    print(info[0])
+    #print(info[0])
     for item in info[0]:
-        print(item)
+        #print(item)
         string += str(item) + "\n"
 
     subbed = database.is_subbed(username, clubid)
@@ -136,7 +138,8 @@ def get_info():
         string += "not subscribed"
 
     #print("about to return info: ")
-    #print(string)
+    print()
+    print(string)
     return string
 
 
