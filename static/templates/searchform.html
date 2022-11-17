@@ -34,9 +34,9 @@
                                  <label for={{tag[0]}} onClick="toggle('{{tag[0]}}')">{{tag[0]}}</label>
 
                                  {% if tag[0] in checked: %}
-                                 <input type="checkbox" checked name="tags" id={{tag[0]}} value={{tag[0]}} onClick="toggle('{{tag[0]}}')">
+                                 <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle('{{tag[0]}}')">
                                  {% else: %}
-                                 <input type="checkbox" name="tags" id={{tag[0]}} value={{tag[0]}} onClick="toggle('{{tag[0]}}')">
+                                 <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle('{{tag[0]}}')">
                                  {% endif %}
                               </a>
                            </li>
