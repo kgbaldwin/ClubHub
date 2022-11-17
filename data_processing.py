@@ -7,7 +7,7 @@ try:
 
         with conn.cursor() as cur:
 
-            allTags = set()
+            '''allTags = set()
 
             script = "select distinct category from clubsall"
             cur.execute(script)
@@ -39,6 +39,21 @@ try:
                     cur.execute(script, [tag, row[0]])
 
                 #print("_____________")
+                '''
+
+
+            script = "select distinct groupname from clubs"
+            cur.execute(script)
+            rows = cur.fetchall()
+            for row in rows:
+                script = "insert into officers (netid, clubid) "
+                script += "select netid, id from clubs, bigdataok "
+                script += "where bigdataok.groupname=clubs.groupname "
+                script += "and clubs.groupname=%s"
+
+                cur.execute(script, [row])
+
+
 
 except:
     print("failed :(")

@@ -183,7 +183,7 @@ def get_officerships(netid):
 
             with conn.cursor() as cur:
 
-                script = "select groupname, clubs.id from officers, clubs WHERE netid=%s AND clubs.id=officers.id"
+                script = "select groupname, clubs.id from officers, clubs WHERE netid=%s AND clubs.id=officers.clubid"
 
                 cur.execute(script, [netid])
 
