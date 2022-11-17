@@ -49,10 +49,12 @@ def profile():
     year = info["dn"].split(" ")[3][:4]
 
     subs=database.get_subs(username)
-    print(subs)
+
+    officerships = database.get_officerships(username)
 
     html_code = flask.render_template('profile.html', username=username,
-            name=info["displayname"], year=year, subs=subs)
+            name=info["displayname"], year=year, subs=subs,
+            officerships=officerships)
     response = flask.make_response(html_code)
     return response
 

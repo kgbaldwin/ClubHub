@@ -15,15 +15,22 @@
 
      <table>
            <td>
-              <h1>Your Profile</h1>
-              Netid: {{username}} <br>
-              Name: {{name}}<br>
-              Class Year: {{year}}<br>
-              Subscribed Clubs:<br>
+               <h1>Your Profile</h1>
+               Netid: {{username}} <br>
+               Name: {{name}}<br>
+               Class Year: {{year}}<br>
+               Subscribed Clubs:<br>
 
-              <ul>
-              {% for each in subs: %}
+               <ul>
+               {% for each in subs: %}
                   <li><label>{{each[0]}}</label></li>
+               {% endfor %}
+               </ul>
+
+               Officer of Clubs:
+               <ul>
+               {% for each in officerships: %}
+                  <li><label>{{each}}</label></li>
                {% endfor %}
                </ul>
 
