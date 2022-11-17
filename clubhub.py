@@ -14,7 +14,6 @@ from req_lib import ReqLib
 # -------------------------------------------------------------------
 
 app = flask.Flask(__name__, template_folder='static/templates')
-os.environ['APP_SECRET_KEY'] = "hello" # not very secret???
 app.secret_key = os.environ['APP_SECRET_KEY']
 
 # -------------------------------------------------------------------
@@ -70,38 +69,6 @@ def searchform():
     response = flask.make_response(html_code)
     return response
 
-'''
-@app.route('/searchresults', methods=['GET'])
-def searchresults():
-
-    username = auth.authenticate()
-
-    # if tried to navigate to /searchresults without giving a query
-    if flask.request.args.get('clubquery') == None:
-        html_code = flask.render_template('error.html', error="query",
-                                            username=username)
-        response = flask.make_response(html_code)
-        return response
-
-    clubquery = '%' + flask.request.args.get('clubquery') + '%'
-    tags = flask.request.args.getlist('tags')
-    print("cq: ", clubquery)
-    print("tags: ", tags)
-
-    clubs = database.get_clubs(clubquery, tags)
-
-    if clubs == "server":
-        print("hello there")
-        html_code = flask.render_template('error.html', error="server",
-                                            username=username)
-        response = flask.make_response(html_code)
-        return response
-
-    html_code = flask.render_template('searchresults.html', results=clubs,
-                                        username=username)
-    response = flask.make_response(html_code)
-    return response
-'''
 
 @app.route('/searchresults2', methods=['GET'])
 def searchresults2():
@@ -125,6 +92,7 @@ def searchresults2():
                                         checked=tags)
     response = flask.make_response(html_code)
     return response
+
 
 @app.route('/announce', methods=['GET'])
 def announce():
@@ -158,7 +126,7 @@ def get_info():
     string = ""
     print(info[0])
     for item in info[0]:
-        #print(item)
+        print(item)
         string += str(item) + "\n"
 
     subbed = database.is_subbed(username, clubid)
