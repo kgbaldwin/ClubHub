@@ -14,7 +14,6 @@ from req_lib import ReqLib
 # -------------------------------------------------------------------
 
 app = flask.Flask(__name__, template_folder='static/templates')
-os.environ['APP_SECRET_KEY'] = "hello" # not very secret???
 app.secret_key = os.environ['APP_SECRET_KEY']
 
 # -------------------------------------------------------------------
@@ -49,10 +48,12 @@ def profile():
     year = info["dn"].split(" ")[3][:4]
 
     subs=database.get_subs(username)
-    print(subs)
+
+    officerships = database.get_officerships(username)
 
     html_code = flask.render_template('profile.html', username=username,
-            name=info["displayname"], year=year, subs=subs)
+            name=info["displayname"], year=year, subs=subs,
+            officerships=officerships)
     response = flask.make_response(html_code)
     return response
 
@@ -65,38 +66,6 @@ def searchform():
     html_code = flask.render_template('searchform.html',
                                     username=username, tags=tags)
     print("tags: ", tags)
-    response = flask.make_response(html_code)
-    return response
-
-
-@app.route('/searchresults', methods=['GET'])
-def searchresults():
-
-    username = auth.authenticate()
-
-    # if tried to navigate to /searchresults without giving a query
-    if flask.request.args.get('clubquery') == None:
-        html_code = flask.render_template('error.html', error="query",
-                                            username=username)
-        response = flask.make_response(html_code)
-        return response
-
-    clubquery = '%' + flask.request.args.get('clubquery') + '%'
-    tags = flask.request.args.getlist('tags')
-    print("cq: ", clubquery)
-    print("tags: ", tags)
-
-    clubs = database.get_clubs(clubquery, tags)
-
-    if clubs == "server":
-        print("hello there")
-        html_code = flask.render_template('error.html', error="server",
-                                            username=username)
-        response = flask.make_response(html_code)
-        return response
-
-    html_code = flask.render_template('searchresults.html', results=clubs,
-                                        username=username)
     response = flask.make_response(html_code)
     return response
 
@@ -119,9 +88,11 @@ def searchresults2():
         return response
 
     html_code = flask.render_template('searchresults2.html', results=clubs,
-                                        username=username,tags=tags_dropdown)
+                                        username=username,tags=tags_dropdown,
+                                        checked=tags)
     response = flask.make_response(html_code)
     return response
+
 
 @app.route('/announce', methods=['GET'])
 def announce():
@@ -146,6 +117,8 @@ def get_info():
         return ["invalid clubid"]
 
     info = database.database_get_info(clubid)
+    print(info)
+
     if info == "server":
         html_code = flask.render_template('error.html', error="server",
                                             username=username)
@@ -153,7 +126,7 @@ def get_info():
         return response
 
     string = ""
-    print(info[0])
+    #print(info[0])
     for item in info[0]:
         #print(item)
         string += str(item) + "\n"
@@ -165,7 +138,8 @@ def get_info():
         string += "not subscribed"
 
     #print("about to return info: ")
-    #print(string)
+    print()
+    print(string)
     return string
 
 

@@ -15,27 +15,33 @@ def get_clubs(clubquery, tags):
     args = [clubquery] + tags
     print("args: ", args)
 
-
     try:
         with psycopg2.connect(database_url) as conn:
 
             with conn.cursor() as cur:
 
-                script = "select clubname, clubid from clubs WHERE clubname ILIKE %s "
+                script1 = "select groupname, id from clubs WHERE groupname ILIKE %s "
+                script2 = "select groupname, id from clubs WHERE groupname ILIKE %s "
                 if tags:
-                    script += "AND clubs.clubid=ANY(SELECT clubid from tags where tag=%s "
-                    for tag in tags[1:]:
-                        script += "or tag=%s "
-                    script +=")"
+                    script1 += "AND clubs.id=ANY(SELECT id from tags where tag=%s "
+                    script2 += "AND clubs.id=ANY(SELECT id from tags where tag=%s "
+                    for _ in tags[1:]:
+                        script1 += "and tag=%s "
+                        script2 += "or tag=%s "
+                    script1 +=")"
+                    script2 +=")"
 
+                script = script1 + " union " + script2
 
-                cur.execute(script, args)
+                cur.execute(script, args + args)
 
                 row = cur.fetchone()
+                print(row)
                 clubs = []
                 while row is not None:
                     clubs.append(row)
                     row = cur.fetchone()
+                    print(row)
 
                 return clubs
 
@@ -52,8 +58,7 @@ def database_get_info(clubid):
 
             with conn.cursor() as cur:
 
-                script = "select clubname, description, meets, commitment, website, verified, stamp, imlink from clubs WHERE clubid=%s"
-
+                script = "select groupname, mission, goals, groupemail, instagram, youtube from clubs WHERE id=%s"
                 cur.execute(script, [clubid])
 
                 row = cur.fetchone()
@@ -75,8 +80,7 @@ def get_subs(netid):
 
             with conn.cursor() as cur:
 
-                script = "select clubname from subscriptions, clubs WHERE netid=%s AND clubs.clubid=subscriptions.clubid"
-
+                script = "select groupname from subscriptions, clubs WHERE netid=%s AND clubs.id=subscriptions.id"
                 cur.execute(script, [netid])
 
                 row = cur.fetchone()
@@ -91,6 +95,7 @@ def get_subs(netid):
         print(ex)
         return "server, get_subs"
 
+
 def get_tags():
     try:
         with psycopg2.connect(database_url) as conn:
@@ -98,7 +103,6 @@ def get_tags():
             with conn.cursor() as cur:
 
                 script = "select DISTINCT tag from tags"
-
                 cur.execute(script)
 
                 row = cur.fetchone()
@@ -122,7 +126,7 @@ def add_sub(user, clubid):
             with conn.cursor() as cur:
 
                 # check for existence of row (may not be necessary)
-                script = "select * from subscriptions where netid=%s and clubid=%s"
+                script = "select * from subscriptions where netid=%s and id=%s"
                 cur.execute(script, [user, clubid])
 
                 if cur.rowcount == 0:
@@ -133,6 +137,7 @@ def add_sub(user, clubid):
         print(ex)
         return "server, add_sub"
 
+
 # unsubscribes user from club
 def remove_sub(user, clubid):
     try:
@@ -141,12 +146,13 @@ def remove_sub(user, clubid):
             with conn.cursor() as cur:
 
                 # check for existence of row (may not be necessary)
-                script = "delete from subscriptions where netid=%s and clubid=%s"
+                script = "delete from subscriptions where netid=%s and id=%s"
                 cur.execute(script, [user, clubid])
 
     except Exception as ex:
         print(ex)
         return "server, remove_sub"
+
 
 def is_subbed(netid, clubid):
     try:
@@ -154,7 +160,7 @@ def is_subbed(netid, clubid):
 
             with conn.cursor() as cur:
 
-                script = "select netid from subscriptions WHERE netid=%s AND clubid=%s"
+                script = "select netid from subscriptions WHERE netid=%s AND id=%s"
 
                 cur.execute(script, [netid, clubid])
 
@@ -169,6 +175,7 @@ def is_subbed(netid, clubid):
         print(ex)
         return "server, is_subbed"
 
+
 # return clubids and clubnames for clubs where netid is an officer
 def get_officerships(netid):
     try:
@@ -176,7 +183,7 @@ def get_officerships(netid):
 
             with conn.cursor() as cur:
 
-                script = "select clubname, clubs.clubid from officers, clubs WHERE netid=%s AND clubs.clubid=officers.clubid"
+                script = "select groupname, clubs.id from officers, clubs WHERE netid=%s AND clubs.id=officers.clubid"
 
                 cur.execute(script, [netid])
 
@@ -191,6 +198,7 @@ def get_officerships(netid):
     except Exception as ex:
         print(ex)
         return "server, get_officerships"
+
 
 # send an announcement
 def send_announcement(clubid, announcement):

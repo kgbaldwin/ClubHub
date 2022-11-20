@@ -15,17 +15,34 @@
 
      <table>
            <td>
-              <h1>Your Profile</h1>
-              Netid: {{username}} <br>
-              Name: {{name}}<br>
-              Class Year: {{year}}<br>
-              Subscribed Clubs:<br>
+               <h1>Your Profile</h1>
+               Netid: {{username}} <br>
+               Name: {{name}}<br>
+               Class Year: {{year}}<br>
+               Subscribed Clubs:<br>
 
-              <ul>
-              {% for each in subs: %}
+               {% if subs|length==0: %}
+               <em>&emsp;&emsp;Subscribe to clubs to see them listed here!</em><br>
+               {% else: %}
+               <ul>
+               {% for each in subs: %}
                   <li><label>{{each[0]}}</label></li>
                {% endfor %}
                </ul>
+               {% endif %}
+               <br>
+
+               Officer of Clubs:<br>
+
+               {% if officerships|length==0: %}
+               <em>&emsp;&emsp;You are not an officer of any clubs.</em>
+               {% else: %}
+               <ul>
+               {% for each in officerships: %}
+                  <li><label>{{each}}</label></li>
+               {% endfor %}
+               </ul>
+               {% endif %}
 
            </td>
   </table>
