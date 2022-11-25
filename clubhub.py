@@ -80,6 +80,7 @@ def searchresults2():
 
     clubs = database.get_clubs(clubquery, tags)
     tags_dropdown = database.get_tags()
+    subbed_clubs = database.get_subs(username)
 
     if clubs == "server":
         html_code = flask.render_template('error.html', error="server",
@@ -133,9 +134,9 @@ def get_info():
 
     subbed = database.is_subbed(username, clubid)
     if subbed:
-        string += "subscribed"
+        string += "subscribed\n"
     else:
-        string += "not subscribed"
+        string += "not subscribed\n"
 
     #print("about to return info: ")
     print()
