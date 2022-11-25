@@ -6,7 +6,6 @@
 function changeInfo() {
 
     clubid = document.querySelector('input[name="clubname"]:checked').value
-    alert("calling changeInfo")
 
     fetch("/get_info?clubid="+clubid)
     .then((response) => response.text())
