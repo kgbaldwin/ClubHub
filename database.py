@@ -80,7 +80,7 @@ def get_subs(netid):
 
             with conn.cursor() as cur:
 
-                script = "select groupname from subscriptions, clubs WHERE netid=%s AND clubs.id=subscriptions.id"
+                script = "select groupname, clubs.id from subscriptions, clubs WHERE netid=%s AND clubs.id=subscriptions.id"
                 cur.execute(script, [netid])
 
                 row = cur.fetchone()
@@ -174,6 +174,66 @@ def is_subbed(netid, clubid):
     except Exception as ex:
         print(ex)
         return "server, is_subbed"
+
+
+def verify_officer(netid, clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select * from officers where netid=%s and clubid=%s"
+
+                cur.execute(script, [netid, clubid])
+
+                if len(cur.fetchall()) > 0:
+                    return True
+                return False
+
+    except Exception as ex:
+        print(ex)
+        return "server, verify_officer"
+
+
+### not working ?? ###
+def add_officer(netid, clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "insert into officers values (%s, %s)"
+
+                cur.execute(script, [netid, clubid])
+
+                return "success"
+
+    except Exception as ex:
+        print(ex)
+        return "server, add_officer"
+
+
+def get_clubname(clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select MAX(id) from clubs"
+                cur.execute(script)
+                num = cur.fetchone()[0]
+
+                if int(clubid) > num or int(clubid) < 0:
+                    return ("Invalid Clubid",)
+
+                script = "select groupname from clubs where id=%s"
+                cur.execute(script, [clubid])
+
+                return cur.fetchone()
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_clubname"
 
 
 # return clubids and clubnames for clubs where netid is an officer

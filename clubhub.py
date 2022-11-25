@@ -47,8 +47,7 @@ def profile():
 
     year = info["dn"].split(" ")[3][:4]
 
-    subs=database.get_subs(username)
-
+    subs = database.get_subs(username)
     officerships = database.get_officerships(username)
 
     html_code = flask.render_template('profile.html', username=username,
@@ -98,16 +97,36 @@ def searchresults2():
 @app.route('/announce', methods=['GET'])
 def announce():
     username = auth.authenticate()
-    # Returns list of clubids for which this user in an officer
-    officer_clubids = database.get_officerships(username)
-    clubnames, clubids = list(officer_clubids.keys()), list(officer_clubids.values())
-    num_officerships = len(clubnames)
+    clubid = flask.request.args.get('clubid')
+    clubname = database.get_clubname(clubid)[0]
 
-    html_code = flask.render_template('announce.html', username=username,
-                                    officerships= zip(clubnames, clubids),
-                                    num_officerships=num_officerships)
+    if database.verify_officer(username, clubid):
+        html_code = flask.render_template('announce.html', username=username,
+                                clubname=clubname, verified=True, clubid=clubid)
+        # Returns list of clubids for which this user in an officer
+        '''officer_clubids = database.get_officerships(username)
+        clubnames, clubids = list(officer_clubids.keys()), list(officer_clubids.values())
+        num_officerships = len(clubnames)
+            # in html_code:
+        officerships= zip(clubnames, clubids), num_officerships=num_officerships,
+        '''
+    else:
+        html_code = flask.render_template('announce.html', username=username,
+                                clubname=clubname, verified=False)
     response = flask.make_response(html_code)
     return response
+
+
+@app.route("/add_officer", methods=['POST'])
+def add_officer():
+    auth.authenticate()
+    newofficer = flask.request.form.get('newofficer')
+    clubid = flask.request.form.get('clubid')
+
+    result = database.add_officer(newofficer, clubid)
+    print(result)    # success or failure
+    return ''
+
 
 @app.route('/get_info', methods=['GET'])
 def get_info():
@@ -145,7 +164,7 @@ def get_info():
 
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found():
     username = auth.authenticate()
     html_code = flask.render_template('error.html', error="404",
                                         username=username)
@@ -202,6 +221,7 @@ def register_club():
     print("req2: ", reqBasic)
 
     return reqBasic
+
 
 @app.route('/send_announce')
 def send_announce():

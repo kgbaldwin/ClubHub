@@ -26,11 +26,14 @@
                {% else: %}
                <ul>
                {% for each in subs: %}
-                  <li><label>{{each[0]}}</label></li>
+                  <li><label>{{each[0]}}</label>
+                     <small onclick="unsubscribe('{{each[1]}}')"><em>Unsubscribe</em></small></li>
                {% endfor %}
                </ul>
                {% endif %}
-               <br>
+
+               <!--small><em>&emsp;&emsp;You are automatically subscribed to any clubs for which you are an officer.</em></small>
+               <br--><br>
 
                Officer of Clubs:<br>
 
@@ -39,7 +42,7 @@
                {% else: %}
                <ul>
                {% for each in officerships: %}
-                  <li><label>{{each}}</label></li>
+                  <li><a href="/announce?clubid={{officerships[each]}}">{{each}}</a></li>
                {% endfor %}
                </ul>
                {% endif %}
@@ -48,6 +51,14 @@
   </table>
 
      {% include 'footer.html' %}
+
+     <script>
+         function unsubscribe(input) {
+
+            fetch("/subscribe?subscribe=0&clubid="+input)
+            .then(document.location.reload())
+         }
+     </script>
 
      <!---Keep the JS below at the bottom of body. For loading bootstrap-->
      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
