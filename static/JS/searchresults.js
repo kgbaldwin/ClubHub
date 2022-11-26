@@ -10,47 +10,59 @@ function changeInfo() {
     fetch("/get_info?clubid="+clubid)
     .then((response) => response.text())
     .then((text) => {
-    var info = text.split("\n");
+    var info = text.split("`");
 
+    // indices: name, mission, goals, mail, IG, YT, imlink, subbed
+
+    // CLUB NAME
     document.getElementById("clubname").innerHTML = info[0];
     if (info[0] != "none")
         document.getElementById("clubname").style.display = "inline";
-    document.getElementById("clubdesc").innerHTML = info[1];
 
+    // CLUB MISSION
+    document.getElementById("clubmission").innerHTML = info[1];
     if (info[1] != "none")
-        document.getElementById("clubdesc").style.display = "inline";
-    document.getElementById("clubmeets").innerHTML = info[2];
+        document.getElementById("clubmission").style.display = "inline";
 
-    if(info[0] != "none" || info[1] != "none"){
-        document.getElementById("namecard").style.backgroundColor = "gray";
+    // CLUB GOALS
+    document.getElementById("clubgoals").innerHTML = info[2];
+    if (info[2] != "") {
+        document.getElementById("clubgoals").style.display = "inline";
+        const goalstr = document.getElementsByClassName("goals")[0];
+        const goalstd = document.getElementsByClassName("goals")[1];
+        goalstr.style.display = ""; 
+        goalstd.style.display = ""; 
     }
-    if (info[2] != "none")
-        document.getElementById("clubmeets").style.display = "inline";
-    document.getElementById("clubcommit").innerHTML = info[3];
 
-    if (info[3] != "none")
-        document.getElementById("clubcommit").style.display = "inline";
-    document.getElementById("clubwebsite").innerHTML = info[4];
+    // CLUB EMAIL
+    document.getElementById("clubemail").setAttribute('href', info[3]);
+    if (info[3] != "")
+        document.getElementById("clubemail").style.display = "inline";
 
-    if (info[4] != "none")
-        document.getElementById("clubwebsite").style.display = "inline";
-    document.getElementById("clubverified").innerHTML = info[5];
+    // CLUB INSTAGRAM
+    document.getElementById("clubinstagram").setAttribute('href', info[4]);
+    if (info[4] != "")
+        document.getElementById("clubinstagram").style.display = "inline";
 
-    if (info[5] != "none")
-        document.getElementById("clubverified").style.display = "inline";
-    document.getElementById("clublastup").innerHTML = info[6];
+    // CLUB YOUTUBE
+    document.getElementById("clubyoutube").innerHTML = info[5];
+    if (info[5] != "")
+        document.getElementById("clubyoutube").style.display = "inline";
 
-    if (info[6] != "none")
-        document.getElementById("clublastup").style.display = "inline";
+    // CLUB IMLINK
+    if (info[6] == "None")
+        document.getElementById("clubimlink").src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png';
+    else 
+        document.getElementById("clubimlink").src = info[6];
 
-    if (info[7] != "none")
-        document.getElementById("clubimlink").src = info[7];
+    // GRAY BOX
+    const namecard = document.getElementById("graynamecard");
+    namecard.style.backgroundColor = "gray";
+    console.log("DIWQJDIOQW");
 
-    else
-        document.getElementById('clubimlink').src = "";
 
-
-    if (info[8] == "subscribed")
+    // CHECK SUBBED
+    if (info[6] == "subscribed")
         document.getElementById('check').checked = true;
     else document.getElementById('check').checked = false;
 

@@ -58,7 +58,7 @@ def database_get_info(clubid):
 
             with conn.cursor() as cur:
 
-                script = "select groupname, mission, goals, groupemail, instagram, youtube from clubs WHERE id=%s"
+                script = "select groupname, mission, goals, groupemail, instagram, youtube, imlink from clubs WHERE id=%s"
                 cur.execute(script, [clubid])
 
                 row = cur.fetchone()

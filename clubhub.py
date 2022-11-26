@@ -146,10 +146,8 @@ def get_info():
         return response
 
     string = ""
-    #print(info[0])
     for item in info[0]:
-        #print(item)
-        string += str(item) + "\n"
+        string += str(item) + "`"
 
     subbed = database.is_subbed(username, clubid)
     if subbed:
@@ -158,8 +156,7 @@ def get_info():
         string += "not subscribed\n"
 
     #print("about to return info: ")
-    print()
-    print(string)
+    #print(string)
     return string
 
 

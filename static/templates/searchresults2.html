@@ -60,7 +60,7 @@
          display:none;
       }
       div.namecard{
-         background-color:white;
+         background-color:rgb(255, 255, 255);
       }
       td {
             border-collapse: collapse;
@@ -99,31 +99,41 @@
             </td>
             </div>
             <!--Split Screen-->
-            <td max-width = "70%" width="70%" style="border-left: 5px solid black; vertical-align: top;padding:2rem;">
+            <td max-width = "70%" width="70%" style="border-left: 5px solid black; vertical-align: top;">
               <!-- <h1>Club Info</h1>-->
-               <div class="namecard" id = "namecard">
-                  <table class = "namecard">
+               <div class="namecard" id = "graynamecard">
+                  <table>
+                     <style>
+                        td{
+                           padding:10px;
+                        }
+                     </style>
                      <tr>
-                        <td class = "namecard" rowspan = "2">
-                           <img id = "clubimlink" style="max-width:200px;height:autdo;width:200px;max-height:200px;min-height:200px;border:0px;border-width:0px"></img>
+                        <td rowspan = "3">
+                           <img id = "clubimlink" style="max-width:200px;height:auto;width:200px;max-height:200px;border:0px;border-width:0rem;padding:1rem;"></img>
                         </td>
-                        <td class = "namecard"><div class="clubname" id = "clubname"></div><br></td>
+                        <td><div class="clubname" id = "clubname"></div><br></td>
+                        <td style="text-decoration-color:cadetblue;">
+                           <input type="checkbox" name="subscribed" id="check" onclick="subscribeUser()" >
+                           <label for="check">Subscribe</label>
+                        </td>
                      </tr>
                      <tr>
-                        <td class = "namecard" rowspan = "0.5">
-                        <div class="clubattribute" id = "clubdesc"></div><br></td>
-                        <td class = "namecard" rowspan = "0.5">
-                           <input type="checkbox" name="subscribed" id="check" onclick="subscribeUser()" style="">
-                           <label for="check">Subscribe</label>
+                        <td>
+                        <div class="clubattribute" id = "clubmission"></div><br></td>
+                     </tr>
+                     <tr class="goals" style="display:none;">
+                        <td class = "goals" style="display:none;">
+                        <b>Club Goals: </b><div class="clubattribute" id = "clubgoals"></div><br>
                         </td>
                      </tr>
                   </table>
                </div>
-               <div class="clubattribute" id = "clubmeets"></div><br>
-               <div class="clubattribute" id = "clubcommit"></div><br>
-               <div class="clubattribute" id = "clubwebsite"></div><br>
-               <div class="clubattribute" id = "clubverified"></div><br>
-               <div class="clubattribute" id = "clublastup"></div><br>
+               <div id = "socials">
+                  <a id = "clubemail" href=""style="display:none;">Email</a>
+                  <a id = "clubinstagram" href=""style="display:none;">Instagram</a>
+                  <a id = "clubyoutube"href=""style="display:none;">Youtube</a>
+               </div>
             </td>
          </tr>
    </table>
