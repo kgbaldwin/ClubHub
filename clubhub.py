@@ -164,7 +164,7 @@ def get_info():
 
 
 @app.errorhandler(404)
-def page_not_found():
+def page_not_found(e):
     username = auth.authenticate()
     html_code = flask.render_template('error.html', error="404",
                                         username=username)
