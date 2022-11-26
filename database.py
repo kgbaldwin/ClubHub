@@ -74,6 +74,7 @@ def database_get_info(clubid):
         return "server, get_info"
 
 
+# get all clubs that single user is subscribed to
 def get_subs(netid):
     try:
         with psycopg2.connect(database_url) as conn:
@@ -96,6 +97,7 @@ def get_subs(netid):
         return "server, get_subs"
 
 
+# get tags for displaying on search form
 def get_tags():
     try:
         with psycopg2.connect(database_url) as conn:
@@ -154,6 +156,7 @@ def remove_sub(user, clubid):
         return "server, remove_sub"
 
 
+# check if a user is subscribed to a club
 def is_subbed(netid, clubid):
     try:
         with psycopg2.connect(database_url) as conn:
@@ -213,6 +216,7 @@ def add_officer(netid, clubid):
         return "server, add_officer"
 
 
+# get clubname from clubid
 def get_clubname(clubid):
     try:
         with psycopg2.connect(database_url) as conn:
@@ -260,7 +264,7 @@ def get_officerships(netid):
         return "server, get_officerships"
 
 
-# send an announcement
+# send an announcement to a given club
 def send_announcement(clubid, announcement):
     try:
         with psycopg2.connect(database_url) as conn:
@@ -276,3 +280,8 @@ def send_announcement(clubid, announcement):
     except Exception as ex:
         print(ex)
         return "server, send_announcements"
+
+# get all subscribers for a club
+def get_club_subscribers(clubid):
+    subscribers = []
+    return subscribers
