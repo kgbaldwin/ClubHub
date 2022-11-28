@@ -16,14 +16,18 @@ function changeInfo() {
 
     // CLUB NAME
     document.getElementById("clubname").innerHTML = info[0];
-    if (info[0] != "none")
-        document.getElementById("clubname").style.display = "inline";
+    if (info[0] != "")
+        document.getElementById("clubname").style.display = "inline-block";
 
     // CLUB MISSION
     document.getElementById("clubmission").innerHTML = info[1];
-    if (info[1] != "none")
+    if (info[1] != ""){
         document.getElementById("clubmission").style.display = "inline";
-
+        document.getElementById("missiontd").style.display = "";
+    }
+    else{
+        document.getElementById("missiontd").style.display = "none";
+    }
     // CLUB GOALS
     document.getElementById("clubgoals").innerHTML = info[2];
     if (info[2] != "") {
@@ -35,19 +39,33 @@ function changeInfo() {
     }
 
     // CLUB EMAIL
-    document.getElementById("clubemail").setAttribute('href', info[3]);
+    document.getElementById("clubemail").setAttribute('href', 'mailto:'+info[3]);
     if (info[3] != "")
         document.getElementById("clubemail").style.display = "inline";
+    else
+        document.getElementById("clubemail").style.display = "none";
 
     // CLUB INSTAGRAM
     document.getElementById("clubinstagram").setAttribute('href', info[4]);
     if (info[4] != "")
         document.getElementById("clubinstagram").style.display = "inline";
+    else
+        document.getElementById("clubinstagram").style.display = "none";
 
     // CLUB YOUTUBE
-    document.getElementById("clubyoutube").innerHTML = info[5];
+    document.getElementById("clubyoutube").setAttribute('href', info[5]);
     if (info[5] != "")
         document.getElementById("clubyoutube").style.display = "inline";
+    else
+        document.getElementById("clubyoutube").style.display = "none";
+
+    // Socials TD
+    if (info[3] == "" && info[4] == "" && info[5] == ""){
+        document.getElementById("socialstd").style.display = "none";
+    }
+    else{
+        document.getElementById("socialstd").style.display = "inline-block";
+    }
 
     // CLUB IMLINK
     if (info[6] == "None")
@@ -57,8 +75,7 @@ function changeInfo() {
 
     // GRAY BOX
     const namecard = document.getElementById("graynamecard");
-    namecard.style.backgroundColor = "gray";
-    console.log("DIWQJDIOQW");
+    namecard.style.backgroundColor = "lightgrey";
 
 
     // CHECK SUBBED
@@ -71,6 +88,9 @@ function changeInfo() {
         previous[i].classList.remove('border', 'search-results-card-selected');
     }
     document.getElementById("card_"+clubid).classList.add('search-results-card-selected','border','border-warning','border-3');
+
+    // make sub button appear
+    document.getElementById("subbutton").style.display = "inline";
 });
 }
 

@@ -51,6 +51,20 @@
       div.card-body{
          padding: 1rem;
       }
+
+      /* Sub button */
+      div.sub-button{
+         padding:0.5rem;
+         background-color: darkcyan;
+         margin-top: 10px;
+         border-radius: 10px;
+      }
+      div.sub-button-text:hover{
+         color:white;
+      }
+
+
+
       /* for CLUB INFO section of searchresults. */
       div.clubname{
          font-size: 3rem;
@@ -109,17 +123,28 @@
                         }
                      </style>
                      <tr>
-                        <td rowspan = "3">
+                        <td rowspan = "4">
                            <img id = "clubimlink" style="max-width:200px;height:auto;width:200px;max-height:200px;border:0px;border-width:0rem;padding:1rem;"></img>
                         </td>
-                        <td><div class="clubname" id = "clubname"></div><br></td>
-                        <td style="text-decoration-color:cadetblue;">
-                           <input type="checkbox" name="subscribed" id="check" onclick="subscribeUser()" >
-                           <label for="check">Subscribe</label>
+                        <td style="display:inline-block; max-width:80%;"><div class="clubname" id = "clubname"></div></td>
+                        <td id="subbutton" style="display:none; width:20%;">
+                           <div class="sub-button" style="width:fit-content;display:inline-block;">
+                              <input type="checkbox" name="subscribed" id="check" onclick="subscribeUser()">
+                              <div class="sub-button-text" style="display:inline-block;"><label for="check">Subscribe</label></div>
+                           </div>
                         </td>
                      </tr>
                      <tr>
-                        <td>
+                        <td id = "socialstd">
+                        <div id = "socials">
+                           <a id = "clubemail" href="" target="_blank" style="display:none;"><img src="https://creativecommons.org/wp-content/uploads/2016/06/envelope.png" style="max-width:40px;"></img></a>
+                           <a id = "clubinstagram" href="" target="_blank" style="display:none;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" style="max-width:40px;"></img></a>
+                           <a id = "clubyoutube"href="" target="_blank" style="display:none;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/2560px-YouTube_full-color_icon_%282017%29.svg.png" style="max-width:40px;"></img></a>
+                        </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td id = "missiontd">
                         <div class="clubattribute" id = "clubmission"></div><br></td>
                      </tr>
                      <tr class="goals" style="display:none;">
@@ -128,11 +153,6 @@
                         </td>
                      </tr>
                   </table>
-               </div>
-               <div id = "socials">
-                  <a id = "clubemail" href=""style="display:none;">Email</a>
-                  <a id = "clubinstagram" href=""style="display:none;">Instagram</a>
-                  <a id = "clubyoutube"href=""style="display:none;">Youtube</a>
                </div>
             </td>
          </tr>
