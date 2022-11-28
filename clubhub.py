@@ -10,8 +10,7 @@ import flask
 import database
 import auth
 from req_lib import ReqLib
-from sendemail import send_email
-
+from sendemail import send_email, append_address
 # -------------------------------------------------------------------
 
 app = flask.Flask(__name__, template_folder='static/templates')
@@ -277,17 +276,21 @@ def register_club():
 
 @app.route('/send_announce', methods=['POST'])
 def send_announce():
+
     clubid = flask.request.args.get('clubid')
     announcement = flask.request.args.get('announcement')
+
+    # update database
     announce_result = database.send_announcement(clubid, announcement)
 
+    # send email to subscribers
     subscribers = database.get_subscribers(clubid)
-    clubname = database.get_clubname(clubid)
+    clubname = database.get_clubname(clubid)[0]
+    subscriber_emails = append_address(subscribers)
+    email_result = send_email(subscriber_emails, clubname, announcement)
 
-    send_email(to=subscribers, clubname=clubname, content=announcement)
-
-    if announce_result == "success":
-        return "success"
+    if announce_result == "success" and email_result == "success":
+       return "success"
 
     return "error"
 
