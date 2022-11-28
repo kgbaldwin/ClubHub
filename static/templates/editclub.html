@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>ClubHub.com</title>
+    </head>
+
+    <body>
+
+    {% include 'header.html' %} <br>
+
+    <div style="padding-left: 1.5rem; padding-right: 1.5rem">
+
+        {% if verified == false: %}
+            You are not an officer of <em>{{clubname}}</em>!
+
+        {% else: %}
+            <h2>Edit {{clubname}}</h2> <br>
+
+            <h3> Add an Officer </h3>
+
+                <br>
+                <form action="/add_officer" method="POST">
+                    <label for="newofficer">Enter the new officer's netid:</label>
+                    <input type="text" id="newofficer" name="newofficer">
+                    <input type="hidden" name="clubid" value="{{clubid}}">
+                    <input type="submit">
+                </form>
+
+            <br><hr>
+
+            <h3> Edit Club Details </h3>
+
+                <form action="/edit_club_field" id="editform" method="POST">
+                    <input type="hidden" name="clubid" value="{{clubid}}">
+
+                    <label for="clubemail">Club email: </label>
+                    <input type="text" id="clubemail" name="clubemail"><br>
+
+                    <label for="clubinstagram">Club instagram: </label>
+                    <input type="text" id="clubinstagram" name="clubinstagram"><br>
+
+                    <label for="clubyoutube">Club youtube: </label>
+                    <input type="text" id="clubyoutube" name="clubyoutube"><br>
+
+                    <label for="clubmission">Club mission: </label>
+                    <textarea id="clubmission" name="clubmission" form="editform" rows="4"></textarea><br>
+
+                    <label for="clubgoals">Club goals: </label>
+                    <textarea id="clubgoals" name="clubgoals" form="editform" rows="4"></textarea><br>
+
+                    <br>
+                    <input type="submit" value="Update info">
+
+                </form>
+
+
+
+        {% endif %}
+
+        </div>
+
+
+         {% include 'footer.html' %}
+
+         <!---Keep the JS below at the bottom of body. For loading bootstrap-->
+         <script type="text/javascript" src="{{ url_for('static', filename='JS/announce.js') }}"></script>
+         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+         <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
+      </body>
+    </html>

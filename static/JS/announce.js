@@ -2,17 +2,10 @@
 
 function sendAnnouncement() {
 
-    // Get club id, clubname and announcement text from user
-    announce_club = document.getElementById("announceclub");
+    // Get club id and announcement text from user
+    announce_club = document.getElementById("clubid");
     let clubid = announce_club.value;
-    let clubname = announce_club.options[announce_club.selectedIndex].text;
     let announcement = document.getElementById("announcetext").value
-
-    // User forgets to select a club
-    if (clubname == "Choose a club") {
-        alert("Please select a club")
-        return
-    }
 
     // User attempts to send empty announcement
     if (announcement == "") {
@@ -23,7 +16,7 @@ function sendAnnouncement() {
     // Handle announcement
     fetch_url = "/send_announce?clubid=" + encodeURIComponent(clubid)
     fetch_url += "&announcement=" + encodeURIComponent(announcement)
-    fetch(fetch_url)
+    fetch(fetch_url, {method: 'POST'})
     .then((response) => response.text())
     .then((text) => {
         if (text=="success")

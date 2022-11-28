@@ -32,8 +32,10 @@ def get_clubs(clubquery, tags):
                     script2 +=")"
 
                 script = script1 + " union " + script2
+                script += " union select groupname, id from clubs WHERE mission ILIKE %s"
+                script += " union select groupname, id from clubs WHERE goals ILIKE %s"
 
-                cur.execute(script, args + args)
+                cur.execute(script, args + args + [clubquery] + [clubquery])
 
                 row = cur.fetchone()
                 print(row)
@@ -108,12 +110,34 @@ def get_tags():
                 cur.execute(script)
 
                 row = cur.fetchone()
-                clubids = []
+                tags = []
                 while row is not None:
-                    clubids.append(row)
+                    tags.append(row)
                     row = cur.fetchone()
 
-                return clubids
+                return tags
+
+    except Exception as ex:
+        print(ex)
+        return "server get_tags"
+
+# get tags linked to a club
+def get_club_tags(clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select tag from tags WHERE id=%s"
+                cur.execute(script, [clubid])
+
+                row = cur.fetchone()
+                tags = []
+                while row is not None:
+                    tags.append(row)
+                    row = cur.fetchone()
+
+                return tags
 
     except Exception as ex:
         print(ex)
@@ -154,6 +178,49 @@ def remove_sub(user, clubid):
     except Exception as ex:
         print(ex)
         return "server, remove_sub"
+
+# subscribes user to tag
+def add_sub_tag(user, tag):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                # check for existence of row (may not be necessary)
+                script = "select clubid from tags where tag=%s"
+                cur.execute(script, [tag])
+
+                if cur.rowcount == 0:
+                    print("no such tag: in database.add_sub_tag")
+                    return "no such tag: in database.add_sub_tag"
+
+                clubid = cur.fetchone()
+                while clubid is not None:
+                    add_sub(user, clubid)
+                    clubid = cur.fetchone()
+
+    except Exception as ex:
+        print(ex)
+        return "server, add_sub_tag"
+
+# unsubscribes user from tag
+def remove_sub_tag(user, tag):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select clubid from tags where tag=%s"
+                cur.execute(script, [tag])
+
+                clubid = cur.fetchone()
+                while clubid is not None:
+                    remove_sub(user, clubid)
+                    clubid = cur.fetchone()
+
+    except Exception as ex:
+        print(ex)
+        return "server, remove_sub_tag"
 
 
 # check if a user is subscribed to a club
@@ -277,15 +344,6 @@ def send_announcement(clubid, announcement):
 
                 cur.execute(script, [clubid, announcement])
 
-
-        # send the announcement in an email
-
-        '''
-        call email function
-        '''
-
-
-
         return "success"
 
 
@@ -316,4 +374,40 @@ def get_subscribers(clubid):
         print(ex)
         return "server, get_subscribers"
 
-print(get_subscribers(339))
+
+def update_club_info(clubid, insta=None, youtube=None, email=None,
+            mission=None, goals=None):
+
+    script = "UPDATE clubs SET "
+    args = []
+    if insta is not None:
+        script += "instgram=%s "
+        args.append(insta)
+    if youtube is not None:
+        script += "youtube=%s "
+        args.append(youtube)
+    if email is not None:
+        script += "groupemail=%s "
+        args.append(email)
+    if mission is not None:
+        script += "mission=%s "
+        args.append(mission)
+    if goals is not None:
+        script += "goals=%s "
+        args.append(goals)
+
+    script += "WHERE clubid=%s"
+
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                cur.execute(script, args+clubid)
+
+
+    except Exception as ex:
+        print(ex)
+        return "server, update_club_info"
+
+

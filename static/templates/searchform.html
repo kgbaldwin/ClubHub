@@ -19,7 +19,7 @@
                <form action = "/searchresults2" method="get">
                      Search for clubs:<br>
                   <!---<button type="submit"><i class="fa fa-search"></i></button> --->
-                     <input type="text" placeholder="Search for clubs, keywords..." name="clubquery">
+                     <input type="text" placeholder="Search for clubs, keywords..." name="clubquery" value="{{clubquery}}">
                      <input type="submit" value="Go">
                      <div style="padding-top:8px;">
                         <button class="btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
@@ -53,6 +53,41 @@
                         </script>
                      </div>
                </form>
+
+
+               <div style="padding-top:8px;">
+                  <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
+                     Subscribe To Tags
+                  </button>
+
+                  <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+                     {% for tag in tags: %}
+                     <li onClick="toggle_tagsub('{{tag[0]}}')">
+                        <a class="dropdown-item">
+                           <label for={{tag[0]}} onClick="toggle_tagsub('{{tag[0]}}')">{{tag[0]}}</label>
+                           {% if tag[0] in checked: %}
+                           <input type="checkbox" checked name="tags" id='sub-{{tag[0]}}' value='{{tag[0]}}' onClick="toggle_tagsub('{{tag[0]}}')">
+                           {% else: %}
+                           <input type="checkbox" name="tags" id='sub-{{tag[0]}}' value='{{tag[0]}}' onClick="toggle_tagsub('{{tag[0]}}')">
+                           {% endif %}
+                        </a>
+                     </li>
+                     {% endfor %}
+                  </ul>
+                  <script>
+                     document.getElementById("tagdropdown").addEventListener("click", function(e) {
+                        e.stopPropagation();
+                     });
+                     function toggle(tag) {
+                        checkbox = document.getElementById(tag);
+                        checkbox.checked = !checkbox.checked;
+                     }
+                     function toggle_tagsub(tag) {
+                        checkbox = document.getElementById("sub-"+tag);
+                        checkbox.checked = !checkbox.checked;
+                     }
+                  </script>
+               </div>
             <!--Split Screen-->
 
       <!---Keep the JS below at the bottom of body. For loading bootstrap-->

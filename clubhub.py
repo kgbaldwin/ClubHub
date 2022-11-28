@@ -10,6 +10,7 @@ import flask
 import database
 import auth
 from req_lib import ReqLib
+from sendemail import send_email
 
 # -------------------------------------------------------------------
 
@@ -89,7 +90,7 @@ def searchresults2():
 
     html_code = flask.render_template('searchresults2.html', results=clubs,
                                         username=username,tags=tags_dropdown,
-                                        checked=tags)
+                                        checked=tags, clubquery=clubquery)
     response = flask.make_response(html_code)
     return response
 
@@ -149,11 +150,18 @@ def get_info():
     for item in info[0]:
         string += str(item) + "`"
 
+    tags = database.get_club_tags(clubid)
+    for tag in tags:
+        string += str(tag) + "#"
+    string += "`"
+
     subbed = database.is_subbed(username, clubid)
     if subbed:
-        string += "subscribed\n"
+        string += "subscribed`"
     else:
-        string += "not subscribed\n"
+        string += "not subscribed`"
+
+
 
     #print("about to return info: ")
     #print(string)
@@ -167,6 +175,35 @@ def page_not_found(e):
                                         username=username)
     response = flask.make_response(html_code)
     return response
+
+
+@app.route('/edit_club', methods=['GET'])
+def edit_club():
+    username = auth.authenticate()
+
+    clubid = flask.request.args.get("clubid")
+    clubname = database.get_clubname(clubid)[0]
+    print(clubid)
+
+    if database.verify_officer(username, clubid):
+        html_code = flask.render_template('editclub.html', username=username,
+                                clubname=clubname, verified=True, clubid=clubid)
+    else:
+        html_code = flask.render_template('editclub.html', username=username,
+                                clubname=clubname, verified=False)
+
+    response = flask.make_response(html_code)
+    return response
+
+
+@app.route("/edit_club_field")
+def edit_club_field():
+    # email instagram youtube mission goals
+    fieldname = flask.request.args.get("fieldname")
+    newvalue = flask.request.args.get("newvalue")
+    print("editing")
+
+
 
 
 ################
@@ -200,9 +237,27 @@ def subscribe():
         response = database.remove_sub(username, clubid)
 
     if response:  # errored
-        return "error"
+        return "error subscribe"
 
-    return "success"
+    return "success subscribe"
+
+
+# subscribes user to tag or unsubscribes from tag
+@app.route('/subscribe_tag', methods=['GET'])
+def subscribe_tag():
+    username = auth.authenticate()
+    tag = flask.request.args.get('tag')
+    subscribe_tag = flask.request.args.get('subscribe_tag')
+
+    if subscribe_tag=="1":
+        response = database.add_sub_tag(username, tag)
+    else:
+        response = database.remove_sub_tag(username, tag)
+
+    if response:  # errored
+        return "error subscribe tags"
+
+    return "success subscribe tags"
 
 
 @app.route('/register_club', methods=['GET'])
@@ -220,11 +275,16 @@ def register_club():
     return reqBasic
 
 
-@app.route('/send_announce')
+@app.route('/send_announce', methods=['POST'])
 def send_announce():
     clubid = flask.request.args.get('clubid')
     announcement = flask.request.args.get('announcement')
     announce_result = database.send_announcement(clubid, announcement)
+
+    subscribers = database.get_subscribers(clubid)
+    clubname = database.get_clubname(clubid)
+
+    send_email(to=subscribers, clubname=clubname, content=announcement)
 
     if announce_result == "success":
         return "success"

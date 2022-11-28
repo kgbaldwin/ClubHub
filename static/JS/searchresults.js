@@ -30,12 +30,16 @@ function changeInfo() {
     }
     // CLUB GOALS
     document.getElementById("clubgoals").innerHTML = info[2];
+    const goalstr = document.getElementsByClassName("goals")[0];
+    const goalstd = document.getElementsByClassName("goals")[1];
     if (info[2] != "") {
         document.getElementById("clubgoals").style.display = "inline";
-        const goalstr = document.getElementsByClassName("goals")[0];
-        const goalstd = document.getElementsByClassName("goals")[1];
-        goalstr.style.display = ""; 
-        goalstd.style.display = ""; 
+        goalstr.style.display = "";
+        goalstd.style.display = "";
+    }
+    else{
+        goalstr.style.display = "none";
+        goalstd.style.display = "none";
     }
 
     // CLUB EMAIL
@@ -70,16 +74,21 @@ function changeInfo() {
     // CLUB IMLINK
     if (info[6] == "None")
         document.getElementById("clubimlink").src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png';
-    else 
+    else
         document.getElementById("clubimlink").src = info[6];
 
     // GRAY BOX
     const namecard = document.getElementById("graynamecard");
     namecard.style.backgroundColor = "lightgrey";
 
+    // Get club tags
+    var tags = info[7].split("`");
+    document.getElementById("tagsdiv").innerHTML(tags);
+
+
 
     // CHECK SUBBED
-    if (info[6] == "subscribed")
+    if (info[8] == "subscribed")
         document.getElementById('check').checked = true;
     else document.getElementById('check').checked = false;
 

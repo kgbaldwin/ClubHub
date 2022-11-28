@@ -42,7 +42,14 @@
                {% else: %}
                <ul>
                {% for each in officerships: %}
-                  <li><a href="/announce?clubid={{officerships[each]}}">{{each}}</a></li>
+                  <li>{{each}}&nbsp;&nbsp;
+                     <small><em>
+                     <a href="/announce?clubid={{officerships[each]}}"> Send announcement </a>
+                     &nbsp;&nbsp;&nbsp;
+                     <a href="/edit_club?clubid={{officerships[each]}}"> Edit your club </a>
+                     </em></small>
+
+                  </li>
                {% endfor %}
                </ul>
                {% endif %}

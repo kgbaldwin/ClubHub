@@ -10,48 +10,16 @@
 
     {% include 'header.html' %} <br>
 
-    <div class="w-50" style="padding-left: 1.5rem;">
+    <div style="padding-left: 1.5rem; padding-right: 1.5rem">
 
         {% if verified == false: %}
             You are not an officer of <em>{{clubname}}</em>!
 
         {% else: %}
 
-            <h2>Edit {{clubname}}</h2>
+            <h2>Send an announcement to <em>{{clubname}}</em></h2>
 
-            {% if num_officerships == 0 %}
-                <!--h5>
-                    You aren't an officer of any club, so you can't send announcements.
-                </h5>
-                <a href="/index"> Go back home </a-->
-
-            {% else %}
-
-                <h3> Add an Officer </h3>
-
-                <br>
-                <form action="/add_officer" method="POST">
-                    <label for="newofficer">Enter the new officer's netid:</label>
-                    <input type="text" id="newofficer" name="newofficer">
-                    <input type="hidden" name="clubid" value="{{clubid}}">
-                    <input type="submit">
-                </form>
-
-                <!-------------------------------------------------->
-
-                <hr>
-                <h3> Send an announcement </h3>
-                <br>
-
-                <!--h5>Which club do you want to send an announcement to?</h5>
-                <select class="form-select" id="announceclub">
-                <option value="none">Choose a club</option>
-                    {% for clubid, clubname in officerships %}
-                        <option value="{{clubname}}">{{clubid}}</option>
-                    {% endfor %}
-                </select>
-
-                <br-->
+                <hr><br>
 
                 <div class="form-group">
                     <label><h5>Your announcement</h5></label>
@@ -59,15 +27,10 @@
                 </div>
 
                 <br>
-
+                <input type="hidden" id="clubid" value="{{clubid}}">
                 <input type="submit" value="Send my announcement" onclick="return sendAnnouncement()">
-                <hr>
-                <!-------------------------------------------------->
 
-                <h3> Edit Club Details </h3>
-
-
-            {% endif %}
+                <br>
 
         {% endif %}
 
