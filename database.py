@@ -267,6 +267,8 @@ def get_officerships(netid):
 # send an announcement to a given club
 def send_announcement(clubid, announcement):
     try:
+
+        # update the database of announcements
         with psycopg2.connect(database_url) as conn:
 
             with conn.cursor() as cur:
@@ -275,13 +277,43 @@ def send_announcement(clubid, announcement):
 
                 cur.execute(script, [clubid, announcement])
 
-                return "success"
+
+        # send the announcement in an email
+
+        '''
+        call email function
+        '''
+
+
+
+        return "success"
+
 
     except Exception as ex:
         print(ex)
         return "server, send_announcements"
 
 # get all subscribers for a club
-def get_club_subscribers(clubid):
-    subscribers = []
-    return subscribers
+def get_subscribers(clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select netid from subscriptions where id=%s"
+                cur.execute(script, [clubid])
+
+                row = cur.fetchone()
+                subscribers = []
+                while row is not None:
+                    subscribers.append(row[0])
+                    row = cur.fetchone()
+
+                return subscribers
+
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_subscribers"
+
+print(get_subscribers(339))
