@@ -63,7 +63,8 @@
          function unsubscribe(input) {
 
             fetch("/subscribe?subscribe=0&clubid="+input)
-            .then(document.location.reload())
+            .then(() => {location.reload();})
+
          }
      </script>
 

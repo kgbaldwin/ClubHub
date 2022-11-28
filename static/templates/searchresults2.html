@@ -59,10 +59,11 @@
          margin-top: 10px;
          border-radius: 10px;
       }
-      div.sub-button-text:hover{
-         color:white;
-      }
 
+      /* Tags card */
+      div.tagscard{
+         background-color:white;  
+      }
 
 
       /* for CLUB INFO section of searchresults. */
@@ -129,8 +130,9 @@
                         <td style="display:inline-block; max-width:80%;"><div class="clubname" id = "clubname"></div></td>
                         <td id="subbutton" style="display:none; width:20%;">
                            <div class="sub-button" style="width:fit-content;display:inline-block;">
-                              <input type="checkbox" name="subscribed" id="check" onclick="subscribeUser()">
-                              <div class="sub-button-text" style="display:inline-block;"><label for="check">Subscribe</label></div>
+                              <input class = "checkSub" id = "check" type="checkbox" name="subscribed" onclick="subscribeUser()" style="display:none;">
+                              <div class="sub-button-text checkSub" style="display:inline-block;"><label for="check">Subscribe</label></div>
+                              <div class="unsub-button-text checkUnSub" style="display:inline-block;"><label for="check">Unsubscribe</label></div>
                            </div>
                         </td>
                      </tr>
@@ -155,9 +157,10 @@
                   </table>
                </div>
                <!-- Tags output -->
-               <div class="tagscard" style="padding-top:1rem;">
-                  Club tags:
-                  <div id = tagsdiv></div>
+               <br>
+               <div class="tagscard" style="padding:1rem;display:none;width:100%;">
+                  <b>🏷 Tags:</b>
+                  <div id = tagsdiv style="display:none;"></div>
                </div>
             </td>
          </tr>

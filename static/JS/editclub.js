@@ -1,6 +1,42 @@
 
 window.onload = fillfields;
 
+function new_officer() {
+    let clubid = document.getElementById("clubid").value;
+    let newofficer = document.getElementById("newofficer").value;
+
+    fetch("/add_officer?newofficer="+newofficer+"&clubid="+clubid)
+    .then(() => {location.reload();})
+}
+
+function update_data() {
+    alert("update data")
+    let mission = document.getElementById("clubmission");
+    let goals = document.getElementById("clubgoals");
+    let email = document.getElementById("clubemail");
+    let insta = document.getElementById("clubinstagram");
+    let youtube = document.getElementById("clubyoutube");
+    let imlink = document.getElementById("clubimlink");
+    alert("bouta POST up")
+    $.ajax({
+        url: '/edit_club_info',
+        type: 'POST',
+        data: {
+            mission: mission,
+            goals: goals,
+            email: email,
+            instagram: insta,
+            clubyoutube: youtube,
+            imlink: imlink
+        },
+        success: function(msg) {
+            alert('Info updated!');
+        }               
+    });
+
+}
+
+
 function fillfields() {
 
     let clubid = document.getElementById("clubid").value;
@@ -20,16 +56,16 @@ function fillfields() {
     if (mission != "None") {
         document.getElementById("clubmission").value = mission;
     }
-    if (mission != "None") {
+    if (goals != "None") {
         document.getElementById("clubgoals").value = goals;
     }
-    if (mission != "None") {
+    if (email != "None") {
         document.getElementById("clubemail").value = email;
     }
-    if (mission != "None") {
+    if (instagram != "None") {
         document.getElementById("clubinstagram").value = instagram;
     }
-    if (mission != "None") {
+    if (youtube != "None") {
         document.getElementById("clubyoutube").value = youtube;
     }
     if (imlink != "None") {

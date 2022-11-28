@@ -375,14 +375,14 @@ def get_subscribers(clubid):
         return "server, get_subscribers"
 
 
-def update_club_info(clubid, insta=None, youtube=None, email=None,
-            mission=None, goals=None):
+def update_club_info(clubid, instagram=None, youtube=None, email=None,
+            mission=None, goals=None, imlink=None):
 
     script = "UPDATE clubs SET "
     args = []
-    if insta is not None:
-        script += "instgram=%s "
-        args.append(insta)
+    if instagram is not None:
+        script += "instagram=%s "
+        args.append(instagram)
     if youtube is not None:
         script += "youtube=%s "
         args.append(youtube)
@@ -395,6 +395,9 @@ def update_club_info(clubid, insta=None, youtube=None, email=None,
     if goals is not None:
         script += "goals=%s "
         args.append(goals)
+    if imlink is not None:
+        script += "imlink=%s "
+        args.append(imlink)
 
     script += "WHERE clubid=%s"
 
@@ -402,7 +405,8 @@ def update_club_info(clubid, insta=None, youtube=None, email=None,
         with psycopg2.connect(database_url) as conn:
 
             with conn.cursor() as cur:
-
+                print("script: ", script)
+                print("args: ", args)
                 cur.execute(script, args+clubid)
 
 

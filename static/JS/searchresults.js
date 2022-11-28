@@ -81,25 +81,53 @@ function changeInfo() {
     const namecard = document.getElementById("graynamecard");
     namecard.style.backgroundColor = "lightgrey";
 
-    // Get club tags
-    var tags = info[7].split("`");
-    document.getElementById("tagsdiv").innerHTML(tags);
+    // Get club tags 
+    if (info[7] == "")
+    ;
+    else {
+        document.getElementById("tagsdiv").style.display="inline-block";
+        const tagscard = document.getElementsByClassName("tagscard")[0];
+        tagscard.style.backgroundColor = 'lightgrey';
+        tagscard.style.display="inline-block";
+        const tags = info[7].split('#');
+        var stringBuilder = "";
+        for (let i = 0; i < tags.length - 1; i++){
+            stringBuilder += tags[i];
+            if (tags.length - i > 2) {
+                stringBuilder += ", ";
+            }
+        }
+        document.getElementById("tagsdiv").innerHTML = stringBuilder;
+    }
 
 
-
+    console.log("INFO 8:");
+    console.log(info[8]);
     // CHECK SUBBED
-    if (info[8] == "subscribed")
-        document.getElementById('check').checked = true;
-    else document.getElementById('check').checked = false;
+
+    // make sub button appear
+    document.getElementById("subbutton").style.display = "inline";
+    if (info[8] == "subscribed"){
+        const checkSub = document.getElementsByClassName('checkSub');
+        checkSub[1].style.display = "none";
+        const checkUnSub = document.getElementsByClassName('checkUnSub');
+        checkUnSub[0].style.display = "inline-block";
+        document.getElementById('checkSub').checked = true;
+    }
+    else {
+        const checkSub = document.getElementsByClassName('checkSub');
+        checkSub[1].style.display = "inline-block";
+        const checkUnSub = document.getElementsByClassName('checkUnSub');
+        checkUnSub[0].style.display = "none";
+        document.getElementById('checkSub').checked = false;
+    }
 
     const previous = document.getElementsByClassName("search-results-card-selected");
     for (let i = 0; i < previous.length; i++) {
         previous[i].classList.remove('border', 'search-results-card-selected');
     }
     document.getElementById("card_"+clubid).classList.add('search-results-card-selected','border','border-warning','border-3');
-
-    // make sub button appear
-    document.getElementById("subbutton").style.display = "inline";
+   
 });
 }
 
@@ -126,9 +154,15 @@ function subscribeUser() {
         fetch("/subscribe?clubid="+clubid+"&subscribe=1")
         .then((response) => response.text())
         .then((text) => {
-            if (text=="success")
+            if (text=="success"){
                 alert("Successfully subscribed!")
-            else alert("Error - unable to subscribe")
+                const checkSub = document.getElementsByClassName('checkSub');
+                checkSub[1].style.display = "none";
+                const checkUnSub = document.getElementsByClassName('checkUnSub');
+                checkUnSub[0].style.display = "inline-block";
+            }
+            else alert(text)
+            //else alert("Error - unable to subscribe")
         });
 
         // add part with message about success
@@ -139,8 +173,13 @@ function subscribeUser() {
         fetch("/subscribe?clubid="+clubid+"&subscribe=0")
         .then((response) => response.text())
         .then((text) => {
-            if (text=="success")
+            if (text=="success"){
                 alert("Successfully unsubscribed!")
+                const checkSub = document.getElementsByClassName('checkSub');
+                checkSub[1].style.display = "inline-block";
+                const checkUnSub = document.getElementsByClassName('checkUnSub');
+                checkUnSub[0].style.display = "none";
+            }
             else alert("Error - unable to unsubscribe")
         });
 

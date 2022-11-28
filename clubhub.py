@@ -43,7 +43,6 @@ def profile():
     username = auth.authenticate()
 
     info = get_user()[0]
-    print(info["uid"])
 
     year = info["dn"].split(" ")[3][:4]
 
@@ -64,7 +63,7 @@ def searchform():
 
     html_code = flask.render_template('searchform.html',
                                     username=username, tags=tags)
-    print("tags: ", tags)
+    #print("tags: ", tags)
     response = flask.make_response(html_code)
     return response
 
@@ -74,8 +73,9 @@ def searchresults2():
     username = auth.authenticate()
     clubquery = '%' + flask.request.args.get('clubquery') + '%'
     tags = flask.request.args.getlist('tags')
-    print("cq: ", clubquery)
-    print("tags: ", tags)
+    searchpersist = clubquery.lstrip('%').rstrip('%')
+    #print("cq: ", clubquery)
+    #print("tags: ", tags)
 
     clubs = database.get_clubs(clubquery, tags)
     tags_dropdown = database.get_tags()
@@ -89,7 +89,7 @@ def searchresults2():
 
     html_code = flask.render_template('searchresults2.html', results=clubs,
                                         username=username,tags=tags_dropdown,
-                                        checked=tags, clubquery=clubquery)
+                                        checked=tags, clubquery=searchpersist)
     response = flask.make_response(html_code)
     return response
 
@@ -103,13 +103,7 @@ def announce():
     if database.verify_officer(username, clubid):
         html_code = flask.render_template('announce.html', username=username,
                                 clubname=clubname, verified=True, clubid=clubid)
-        # Returns list of clubids for which this user in an officer
-        '''officer_clubids = database.get_officerships(username)
-        clubnames, clubids = list(officer_clubids.keys()), list(officer_clubids.values())
-        num_officerships = len(clubnames)
-            # in html_code:
-        officerships= zip(clubnames, clubids), num_officerships=num_officerships,
-        '''
+
     else:
         html_code = flask.render_template('announce.html', username=username,
                                 clubname=clubname, verified=False)
@@ -117,27 +111,15 @@ def announce():
     return response
 
 
-@app.route("/add_officer", methods=['POST'])
-def add_officer():
-    auth.authenticate()
-    newofficer = flask.request.form.get('newofficer')
-    clubid = flask.request.form.get('clubid')
-
-    result = database.add_officer(newofficer, clubid)
-    print(result)    # success or failure
-    return ''
-
-
 @app.route('/get_info', methods=['GET'])
 def get_info():
     username = auth.authenticate()
     clubid = flask.request.args.get('clubid')
     if clubid == "":
-        print("AAAAAHHHHHHH NO CLUBID")
+        print("no clubid")
         return ["invalid clubid"]
 
     info = database.database_get_info(clubid)
-    print(info)
 
     if info == "server":
         html_code = flask.render_template('error.html', error="server",
@@ -151,7 +133,7 @@ def get_info():
 
     tags = database.get_club_tags(clubid)
     for tag in tags:
-        string += str(tag) + "#"
+        string += str(tag[0]) + "#"
     string += "`"
 
     subbed = database.is_subbed(username, clubid)
@@ -160,10 +142,6 @@ def get_info():
     else:
         string += "not subscribed`"
 
-
-
-    #print("about to return info: ")
-    #print(string)
     return string
 
 
@@ -193,18 +171,35 @@ def edit_club():
     response = flask.make_response(html_code)
     return response
 
+@app.route("/add_officer", methods=['GET'])
+def add_officer():
+    auth.authenticate()
+
+    newofficer = flask.request.args.get('newofficer')
+    clubid = flask.request.args.get('clubid')
+
+    database.add_officer(newofficer, clubid)
+    return ''
+
 
 @app.route("/edit_club_info", methods=['POST'])
 def edit_club_info():
-    # email instagram youtube mission goals
-    #fieldname = flask.request.args.get("fieldname")
-    #newvalue = flask.request.args.get("newvalue")
-    print(flask.request.args)
+    print("edit club info")
+    auth.authenticate()
+    clubid = flask.request.form.get("clubid")
+    print("clubid///: ", clubid)
+    mission = flask.request.form.get('mission')
+    goals = flask.request.form.get('goals')
+    imlink = flask.request.form.get('imlink')
+    email = flask.request.form.get('email')
+    instagram = flask.request.form.get('instagram')
+    youtube = flask.request.form.get('youtube')
+    
+    database.update_club_info(clubid=clubid, mission=mission, goals=goals, 
+        imlink=imlink, email=email, instagram=instagram, 
+        youtube=youtube)
 
-    #if flask.request.args.get("")
-
-
-
+    return ''
 
 
 
@@ -223,7 +218,7 @@ def get_user():
         req_lib.configs.USERS_BASIC,
         uid=username,
     )
-    print("req2: ", reqBasic)
+    #print("req2: ", reqBasic)
 
     return reqBasic
 
@@ -241,9 +236,9 @@ def subscribe():
         response = database.remove_sub(username, clubid)
 
     if response:  # errored
-        return "error subscribe"
+        return "error"
 
-    return "success subscribe"
+    return "success"
 
 
 # subscribes user to tag or unsubscribes from tag
@@ -259,9 +254,9 @@ def subscribe_tag():
         response = database.remove_sub_tag(username, tag)
 
     if response:  # errored
-        return "error subscribe tags"
+        return "error"
 
-    return "success subscribe tags"
+    return "success"
 
 
 @app.route('/register_club', methods=['GET'])
@@ -274,7 +269,7 @@ def register_club():
         req_lib.configs.USERS_BASIC,
         uid=username,
     )
-    print("req2: ", reqBasic)
+    #print("req2: ", reqBasic)
 
     return reqBasic
 
