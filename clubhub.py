@@ -182,7 +182,6 @@ def edit_club():
 
     clubid = flask.request.args.get("clubid")
     clubname = database.get_clubname(clubid)[0]
-    print(clubid)
 
     if database.verify_officer(username, clubid):
         html_code = flask.render_template('editclub.html', username=username,
@@ -195,12 +194,18 @@ def edit_club():
     return response
 
 
-@app.route("/edit_club_field")
-def edit_club_field():
+@app.route("/edit_club_info", methods=['POST'])
+def edit_club_info():
     # email instagram youtube mission goals
-    fieldname = flask.request.args.get("fieldname")
-    newvalue = flask.request.args.get("newvalue")
-    print("editing")
+    #fieldname = flask.request.args.get("fieldname")
+    #newvalue = flask.request.args.get("newvalue")
+    print(flask.request.args)
+
+    #if flask.request.args.get("")
+
+
+
+
 
 
 
