@@ -148,7 +148,25 @@ function loadAnnouncements() {
     fetch("/get_club_announcements?clubid="+clubid)
         .then((response) => response.text())
         .then((text) => {
-            var ann_array = text.split();
+            console.log(text);
+            console.log("IODJWQIOJDOIWQJDJWIOQ")
+            var ann_array = text.split("`");
+            const ann_div = document.getElementById("club-announcements");
+            var htmlBuilder = "";
+            for (let i = 0; i < ann_array.length; i++){
+                htmlBuilder += ann_array[i]
+                if (ann_array.length - i > 1)
+                    htmlBuilder += '<br>'
+            }
+            ann_div.innerHTML = htmlBuilder;
+            const ann_body = document.getElementsByClassName("announcements-body");
+            if (ann_array.length > 1){
+                ann_body[0].style.display = "inline-block";
+                ann_body[0].style.backgroundColor = "lightgrey";
+            }
+            else {
+                ann_body[0].style.display = "none";
+            }
         });
 }
 

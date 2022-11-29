@@ -308,7 +308,13 @@ def send_announce():
 def get_club_announcements():
     clubid = flask.request.args.get('clubid')
     announcements = database.get_club_announcements(clubid)
-    print(announcements)
+    response = ""
+    
+    for announcement in announcements:
+        response += announcement
+        response += '`'
+
+    return response
 
 
 @app.errorhandler(404)

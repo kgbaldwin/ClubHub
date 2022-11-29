@@ -108,7 +108,7 @@
                         <div class="card-body">
                            <li><strong><label for={{each[1]}}>{{each[0]}}</label></strong></li>
                            <input type="radio" id={{each[1]}} name="clubname"
-                           value="{{each[1]}}" onclick="changeInfo()" style="display: none">
+                           value="{{each[1]}}" onclick="changeInfo(); loadAnnouncements()" style="display: none">
                         </div>
                      </a>
                   </div>
@@ -170,8 +170,10 @@
                </div>
                <!-- announcements feed for club -->
                <br>
-               <div class="announcements-body scrollable-menu-results" style="padding:1rem;width:100%;">
-                  ASDHJI
+               <br>
+               <div class="announcements-body scrollable-menu-results" style="width:100%;padding:1rem;display:none;">
+                  <h2><b>Announcements:</b></h2>
+                  <div id="club-announcements" style="width:100%;"></div>
                </div>
             </td>
          </tr>
