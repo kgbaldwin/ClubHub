@@ -4,9 +4,22 @@ window.onload = fillfields;
 function new_officer() {
     let clubid = document.getElementById("clubid").value;
     let newofficer = document.getElementById("newofficer").value;
+    alert('a')
+    add_officer = fetch("/add_officer?newofficer="+newofficer+"&clubid="+clubid)
+    alert('b')
+    add_officer.then((response) => response.text())
+    alert('c')
+    add_officer.then((text) => {
+    var out = text;
+    alert(out)
+    if (out == "invalid netid") {
+        alert("invalid netid")
+    }
+    alert('d')
+});
 
-    fetch("/add_officer?newofficer="+newofficer+"&clubid="+clubid)
-    .then(() => {location.reload();})
+add_officer.then(() => {location.reload();})
+alert('e')
 }
 
 function update_data() {

@@ -42,16 +42,35 @@ def index():
 def profile():
     username = auth.authenticate()
 
-    info = get_user()[0]
+    info = get_user(username)[0]
 
     year = info["dn"].split(" ")[3][:4]
 
     subs = database.get_subs(username)
     officerships = database.get_officerships(username)
+    tags = database.get_tags()
 
     html_code = flask.render_template('profile.html', username=username,
             name=info["displayname"], year=year, subs=subs,
-            officerships=officerships)
+            officerships=officerships, tags = tags)
+    response = flask.make_response(html_code)
+    return response
+
+@app.route('/profile_edit', methods=['GET'])
+def profile_edit():
+    username = auth.authenticate()
+
+    info = get_user(username)[0]
+
+    year = info["dn"].split(" ")[3][:4]
+
+    subs = database.get_subs(username)
+    officerships = database.get_officerships(username)
+    tags = database.get_tags()
+
+    html_code = flask.render_template('profile-edit.html', username=username,
+            name=info["displayname"], year=year, subs=subs,
+            officerships=officerships, tags = tags)
     response = flask.make_response(html_code)
     return response
 
@@ -178,6 +197,10 @@ def add_officer():
     newofficer = flask.request.args.get('newofficer')
     clubid = flask.request.args.get('clubid')
 
+    if not get_user(newofficer):
+        print("invalid netid")
+        return "invalid netid"
+
     database.add_officer(newofficer, clubid)
     return ''
 
@@ -209,10 +232,8 @@ def edit_club_info():
 # getting user infos from netid
 #######################
 @app.route('/get_user', methods=['GET'])
-def get_user():
+def get_user(username):
     req_lib = ReqLib()
-
-    username = auth.authenticate()
 
     reqBasic = req_lib.getJSON(
         req_lib.configs.USERS_BASIC,
@@ -247,7 +268,8 @@ def subscribe_tag():
     username = auth.authenticate()
     tag = flask.request.args.get('tag')
     subscribe_tag = flask.request.args.get('subscribe_tag')
-
+    print("subscribe_tag = ",subscribe_tag)
+    print("tag: ", tag)
     if subscribe_tag=="1":
         response = database.add_sub_tag(username, tag)
     else:
@@ -293,9 +315,6 @@ def send_announce():
        return "success"
 
     return "error"
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)

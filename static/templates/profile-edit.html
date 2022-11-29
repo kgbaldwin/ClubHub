@@ -39,10 +39,11 @@
                {% if subs|length==0: %}
                <br><em>&emsp;&emsp;Subscribe to clubs to see them listed here!</em><br>
                {% else: %}
-               <a class="edit" href="profile_edit">Click here to edit</a><br>
+               <a class="edit"href="profile">Stop editing</a><br>
+               <div style="color:red;size:small;">*Click on each club to unsubscribe</div>
                <ul style="margin-bottom:0;">
                {% for each in subs: %}
-                  <li><label>{{each[0]}}</label>
+                  <li><label class="strikethrough" onclick="unsubscribe('{{each[1]}}')">{{each[0]}}</label>
                      <!--
                      <small class="strikethrough" onclick="unsubscribe('{{each[1]}}')"><em>Unsubscribe</em></small></li>-->
                {% endfor %}

@@ -82,9 +82,6 @@ function changeInfo() {
     namecard.style.backgroundColor = "lightgrey";
 
     // Get club tags 
-    if (info[7] == "")
-    ;
-    else {
         document.getElementById("tagsdiv").style.display="inline-block";
         const tagscard = document.getElementsByClassName("tagscard")[0];
         tagscard.style.backgroundColor = 'lightgrey';
@@ -98,7 +95,7 @@ function changeInfo() {
             }
         }
         document.getElementById("tagsdiv").innerHTML = stringBuilder;
-    }
+    
 
 
     console.log("INFO 8:");
@@ -112,16 +109,15 @@ function changeInfo() {
         checkSub[1].style.display = "none";
         const checkUnSub = document.getElementsByClassName('checkUnSub');
         checkUnSub[0].style.display = "inline-block";
-        document.getElementById('checkSub').checked = true;
+        document.getElementById('check').checked = true;
     }
     else {
         const checkSub = document.getElementsByClassName('checkSub');
         checkSub[1].style.display = "inline-block";
         const checkUnSub = document.getElementsByClassName('checkUnSub');
         checkUnSub[0].style.display = "none";
-        document.getElementById('checkSub').checked = false;
+        document.getElementById('check').checked = false;
     }
-
     const previous = document.getElementsByClassName("search-results-card-selected");
     for (let i = 0; i < previous.length; i++) {
         previous[i].classList.remove('border', 'search-results-card-selected');

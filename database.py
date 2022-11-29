@@ -187,7 +187,7 @@ def add_sub_tag(user, tag):
             with conn.cursor() as cur:
 
                 # check for existence of row (may not be necessary)
-                script = "select clubid from tags where tag=%s"
+                script = "select id from tags where tag=%s"
                 cur.execute(script, [tag])
 
                 if cur.rowcount == 0:
@@ -210,7 +210,7 @@ def remove_sub_tag(user, tag):
 
             with conn.cursor() as cur:
 
-                script = "select clubid from tags where tag=%s"
+                script = "select id from tags where tag=%s"
                 cur.execute(script, [tag])
 
                 clubid = cur.fetchone()

@@ -46,7 +46,6 @@
                               e.stopPropagation();
                            });
                            function toggle(tag) {
-
                               checkbox = document.getElementById(tag);
                               checkbox.checked = !checkbox.checked;
                            }
@@ -56,20 +55,14 @@
 
                <!--SUBSCRIBE TO TAGS DROPDOWN-->
                <div style="padding-top:8px;">
-                  <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
-                     Subscribe To Tags
-                  </button>
+                  <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Subscribe To Tags</button>
 
                   <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+                     <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Subscribing to a tag will subscribe you to all clubs containing the specified tag.</a></li>
                      {% for tag in tags: %}
-                     <li onClick="toggle_tagsub('{{tag[0]}}')">
-                        <a class="dropdown-item">
-                           <label for={{tag[0]}} onClick="toggle_tagsub('{{tag[0]}}')">{{tag[0]}}</label>
-                           {% if tag[0] in checked: %}
-                           <input type="checkbox" checked name="subtags" id='sub-{{tag[0]}}' value='{{tag[0]}}' onClick="toggle_tagsub('{{tag[0]}}')">
-                           {% else: %}
-                           <input type="checkbox" name="subtags" id='sub-{{tag[0]}}' value='{{tag[0]}}' onClick="toggle_tagsub('{{tag[0]}}')">
-                           {% endif %}
+                     <li onClick="sub_tag('{{tag[0]}}')">
+                        <a class="dropdown-item" style="white-space:normal;">
+                           <label for={{tag[0]}} onClick="sub_tag('{{tag[0]}}')">{{tag[0]}}</label>
                         </a>
                      </li>
                      {% endfor %}
@@ -82,9 +75,15 @@
                         checkbox = document.getElementById(tag);
                         checkbox.checked = !checkbox.checked;
                      }
-                     function toggle_tagsub(tag) {
-                        checkbox = document.getElementById("sub-"+tag);
-                        checkbox.checked = !checkbox.checked;
+                     function sub_tag(tag){
+                        fetch("/subscribe_tag?tag="+tag+"&subscribe_tag=1")
+                           .then((response) => response.text())
+                           .then((text) => {
+                                 if (text=="success"){
+                                    alert("Successfully subscribed to tag " + tag + "!")
+                                 }
+                                 else alert("Error - unable to subscribe to tag " + tag)
+                           });
                      }
                   </script>
                </div>
