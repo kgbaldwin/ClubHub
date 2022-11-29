@@ -50,7 +50,8 @@
                </ul>
                {% endif %}
                         <div class="btn-group dropright" style="padding-top:10px;">
-                        <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Unsubscribe From Tags</button>
+                        <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
+                                    data-toggle="dropdown"aria-expanded="false">Unsubscribe From Tags</button>
                         <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
                            <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Unsubscribing to a tag will unsubscribe you to all clubs containing the specified tag.</a></li>
                            {% for tag in tags: %}
@@ -62,19 +63,6 @@
                            {% endfor %}
                         </ul>
                         </div> <br>
-                  <script>
-                     function unsub_tag(tag){
-                        fetch("/subscribe_tag?tag="+tag+"&subscribe_tag=0")
-                           .then((response) => response.text())
-                           .then((text) => {
-                                 if (text=="success"){
-                                    alert("Successfully unsubscribed from tag " + tag + "!")
-                                 }
-                                 else alert("Error - unable to unsubscribe from tag " + tag)
-                           })
-                           .then(() => {location.reload()});
-                     }
-                  </script>
                </div>
 
 
@@ -94,7 +82,6 @@
                      &nbsp;&nbsp;&nbsp;
                      <a href="/edit_club?clubid={{officerships[each]}}"> Edit your club </a>
                      </em></small>
-
                   </li>
                {% endfor %}
                </ul>
@@ -111,6 +98,18 @@
             fetch("/subscribe?subscribe=0&clubid="+input)
             .then(() => {location.reload();})
 
+         }
+
+         function unsub_tag(tag) {
+            fetch("/subscribe_tag?tag="+tag+"&subscribe_tag=0")
+            .then((response) => response.text())
+            .then((text) => {
+               if (text=="success") {
+                  alert("Successfully unsubscribed from tag " + tag + "!")
+               }
+               else alert("Error - unable to unsubscribe from tag " + tag)
+            })
+            .then(() => {location.reload()});
          }
      </script>
 

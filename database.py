@@ -246,6 +246,7 @@ def is_subbed(netid, clubid):
         return "server, is_subbed"
 
 
+# verifies that given netid is an officer of given clubid
 def verify_officer(netid, clubid):
     try:
         with psycopg2.connect(database_url) as conn:
@@ -351,6 +352,7 @@ def send_announcement(clubid, announcement):
         print(ex)
         return "server, send_announcements"
 
+
 # get all subscribers for a club
 def get_subscribers(clubid):
     try:
@@ -375,6 +377,32 @@ def get_subscribers(clubid):
         return "server, get_subscribers"
 
 
+# gets all announcements from club with given clubid and returns
+# them in sorted time order
+def get_club_announcements(clubid):
+    script = "SELECT announcement, stamp FROM announcements "
+    script += "WHERE clubid=%s ORDER BY stamp DESC"
+
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                cur.execute(script, [clubid])
+                rows = cur.fetchall()
+
+                announcements = []
+                for element in rows:
+                    announcements.append(element[0])
+
+                return announcements
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_club_announcements"
+
+
+# updates club info in database
 def update_club_info(clubid, instagram=None, youtube=None, email=None,
             mission=None, goals=None, imlink=None):
 
@@ -403,10 +431,8 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
 
     try:
         with psycopg2.connect(database_url) as conn:
-
             with conn.cursor() as cur:
-                print("script: ", script)
-                print("args: ", args)
+
                 cur.execute(script, args+clubid)
 
 

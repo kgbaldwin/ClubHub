@@ -164,15 +164,6 @@ def get_info():
     return string
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    username = auth.authenticate()
-    html_code = flask.render_template('error.html', error="404",
-                                        username=username)
-    response = flask.make_response(html_code)
-    return response
-
-
 @app.route('/edit_club', methods=['GET'])
 def edit_club():
     username = auth.authenticate()
@@ -223,10 +214,6 @@ def edit_club_info():
         youtube=youtube)
 
     return ''
-
-
-
-
 
 ################
 # getting user infos from netid
@@ -315,6 +302,23 @@ def send_announce():
        return "success"
 
     return "error"
+
+
+@app.route("/get_club_announcements", methods=['GET'])
+def get_club_announcements():
+    clubid = flask.request.args.get('clubid')
+    announcements = database.get_club_announcements(clubid)
+    print(announcements)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    username = auth.authenticate()
+    html_code = flask.render_template('error.html', error="404",
+                                        username=username)
+    response = flask.make_response(html_code)
+    return response
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)

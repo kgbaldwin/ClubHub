@@ -144,6 +144,14 @@ function getTitle(id) {
 }
 */
 
+function loadAnnouncements() {
+    fetch("/get_club_announcements?clubid="+clubid)
+        .then((response) => response.text())
+        .then((text) => {
+            var ann_array = text.split();
+        });
+}
+
 
 function subscribeUser() {
     if (document.getElementById("check").checked) {
