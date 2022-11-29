@@ -181,6 +181,7 @@ def edit_club():
     response = flask.make_response(html_code)
     return response
 
+
 @app.route("/add_officer", methods=['GET'])
 def add_officer():
     auth.authenticate()
@@ -202,15 +203,15 @@ def edit_club_info():
     auth.authenticate()
     clubid = flask.request.form.get("clubid")
     print("clubid///: ", clubid)
-    mission = flask.request.form.get('mission')
-    goals = flask.request.form.get('goals')
-    imlink = flask.request.form.get('imlink')
-    email = flask.request.form.get('email')
-    instagram = flask.request.form.get('instagram')
-    youtube = flask.request.form.get('youtube')
-    
-    database.update_club_info(clubid=clubid, mission=mission, goals=goals, 
-        imlink=imlink, email=email, instagram=instagram, 
+    mission = flask.request.form.get('clubmission')
+    goals = flask.request.form.get('clubgoals')
+    imlink = flask.request.form.get('clubimlink')
+    email = flask.request.form.get('clubemail')
+    instagram = flask.request.form.get('clubinstagram')
+    youtube = flask.request.form.get('clubyoutube')
+
+    database.update_club_info(clubid=clubid, mission=mission, goals=goals,
+        imlink=imlink, email=email, instagram=instagram,
         youtube=youtube)
 
     return ''
@@ -309,7 +310,7 @@ def get_club_announcements():
     clubid = flask.request.args.get('clubid')
     announcements = database.get_club_announcements(clubid)
     response = ""
-    
+
     for announcement in announcements:
         response += announcement
         response += '`'

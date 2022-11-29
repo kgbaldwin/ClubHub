@@ -406,35 +406,39 @@ def get_club_announcements(clubid):
 def update_club_info(clubid, instagram=None, youtube=None, email=None,
             mission=None, goals=None, imlink=None):
 
+    print("entering update_club_info in database")
+
     script = "UPDATE clubs SET "
     args = []
-    if instagram is not None:
-        script += "instagram=%s "
+    if instagram != '':
+        script += "instagram=%s, "
         args.append(instagram)
-    if youtube is not None:
-        script += "youtube=%s "
+    if youtube != '':
+        script += "youtube=%s, "
         args.append(youtube)
-    if email is not None:
-        script += "groupemail=%s "
+    if email != '':
+        script += "groupemail=%s, "
         args.append(email)
-    if mission is not None:
-        script += "mission=%s "
+    if mission != '':
+        script += "mission=%s, "
         args.append(mission)
-    if goals is not None:
-        script += "goals=%s "
+    if goals != '':
+        script += "goals=%s, "
         args.append(goals)
-    if imlink is not None:
-        script += "imlink=%s "
+    if imlink != '':
+        script += "imlink=%s, "
         args.append(imlink)
 
-    script += "WHERE clubid=%s"
+    # get rid of trailing comma
+    if len(args) > 0:
+        script = script[:-2] + " "
+
+    script += "WHERE id=%s"
 
     try:
         with psycopg2.connect(database_url) as conn:
             with conn.cursor() as cur:
-
-                cur.execute(script, args+clubid)
-
+                cur.execute(script, args+[clubid])
 
     except Exception as ex:
         print(ex)

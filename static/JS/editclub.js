@@ -4,47 +4,32 @@ window.onload = fillfields;
 function new_officer() {
     let clubid = document.getElementById("clubid").value;
     let newofficer = document.getElementById("newofficer").value;
-    alert('a')
-    add_officer = fetch("/add_officer?newofficer="+newofficer+"&clubid="+clubid)
-    alert('b')
-    add_officer.then((response) => response.text())
-    alert('c')
-    add_officer.then((text) => {
-    var out = text;
-    alert(out)
-    if (out == "invalid netid") {
-        alert("invalid netid")
-    }
-    alert('d')
-});
 
-add_officer.then(() => {location.reload();})
-alert('e')
+    fetch("/add_officer?newofficer="+newofficer+"&clubid="+clubid)
+    .then((response) => response.text())
+    .then((text) => {
+        var out = text;
+        alert(out)
+        if (out == "invalid netid") {
+            alert("invalid netid")
+        }
+
+    });
 }
 
 function update_data() {
     alert("update data")
-    let mission = document.getElementById("clubmission");
-    let goals = document.getElementById("clubgoals");
-    let email = document.getElementById("clubemail");
-    let insta = document.getElementById("clubinstagram");
-    let youtube = document.getElementById("clubyoutube");
-    let imlink = document.getElementById("clubimlink");
-    alert("bouta POST up")
-    $.ajax({
-        url: '/edit_club_info',
-        type: 'POST',
-        data: {
-            mission: mission,
-            goals: goals,
-            email: email,
-            instagram: insta,
-            clubyoutube: youtube,
-            imlink: imlink
-        },
-        success: function(msg) {
-            alert('Info updated!');
-        }               
+    let mission = document.getElementById("clubmission").value;
+    let goals = document.getElementById("clubgoals").value;
+    let email = document.getElementById("clubemail").value;
+    let insta = document.getElementById("clubinstagram").value;
+    let youtube = document.getElementById("clubyoutube").value;
+    let imlink = document.getElementById("clubimlink").value;
+
+    const form = new FormData(document.getElementById('editform'));
+    fetch('/edit_club_info', {
+        method: 'POST',
+        body: form
     });
 
 }
