@@ -32,10 +32,10 @@ def get_clubs(clubquery, tags):
                     script2 +=")"
 
                 script = script1 + " union " + script2
-                script += " union select groupname, id from clubs WHERE mission ILIKE %s"
-                script += " union select groupname, id from clubs WHERE goals ILIKE %s"
+                #script += " union select groupname, id from clubs WHERE mission ILIKE %s"
+                #script += " union select groupname, id from clubs WHERE goals ILIKE %s"
 
-                cur.execute(script, args + args + [clubquery] + [clubquery])
+                cur.execute(script, args + args)# + [clubquery] + [clubquery])
 
                 row = cur.fetchone()
                 print(row)
