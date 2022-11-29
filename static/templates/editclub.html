@@ -19,8 +19,6 @@
 
             <h3> Add an Officer </h3>
 
-                <br>
-                
                 <label for="newofficer">Enter the new officer's netid:</label>
                 <input type="text" id="newofficer">
                 <input type="hidden" id="clubid"value="{{clubid}}">
@@ -34,23 +32,23 @@
                     <input type="hidden" name="clubid" value="{{clubid}}">
                     <input type="hidden" name="clubname" value="{{clubname}}">
 
-                    <label for="clubmission">Club mission: </label>
-                    <textarea id="clubmission" form="editform" rows="4"></textarea><br>
+                    <label for="clubmission">Mission: </label><br>
+                    <textarea id="clubmission" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
 
-                    <label for="clubgoals">Club goals: </label>
-                    <textarea id="clubgoals" form="editform" rows="4"></textarea><br>
+                    <label for="clubgoals">Goals: </label><br>
+                    <textarea id="clubgoals" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
 
-                    <label for="clubimlink">Club image link: </label>
-                    <input type="text" id="clubimlink"><br>
+                    <label for="clubimlink">Image link: </label><br>
+                    <input type="text" id="clubimlink" style="width: 15rem"><br><br>
 
-                    <label for="clubemail">Club email: </label>
-                    <input type="text" id="clubemail" ><br>
+                    <label for="clubemail">Email: </label><br>
+                    <input type="text" id="clubemail" style="width: 15rem"><br><br>
 
-                    <label for="clubinstagram">Club instagram: </label>
-                    <input type="text" id="clubinstagram" ><br>
+                    <label for="clubinstagram">Instagram: </label><br>
+                    <input type="text" id="clubinstagram" style="width: 15rem"><br><br>
 
-                    <label for="clubyoutube">Club youtube: </label>
-                    <input type="text" id="clubyoutube" ><br>
+                    <label for="clubyoutube">YouTube: </label><br>
+                    <input type="text" id="clubyoutube" style="width: 15rem"><br>
 
                     <br>
                     <input onclick="update_data()" type="submit" value="Update info">
@@ -63,7 +61,7 @@
 
 
          {% include 'footer.html' %}
-   
+
 
          <!---Keep the JS below at the bottom of body. For loading bootstrap-->
          <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
