@@ -20,30 +20,62 @@ def get_clubs(clubquery, tags):
 
             with conn.cursor() as cur:
 
-                script1 = "select groupname, id from clubs WHERE groupname ILIKE %s "
-                script2 = "select groupname, id from clubs WHERE groupname ILIKE %s "
                 if tags:
-                    script1 += "AND clubs.id=ANY(SELECT id from tags where tag=%s "
-                    script2 += "AND clubs.id=ANY(SELECT id from tags where tag=%s "
+                    script_tags = "select id from tags WHERE (tag=%s "
+                    script_mission_goals = "select groupname, id from clubs where (mission ilike %s or goals ilike %s) and id not in (select id from tags where tag = %s "
                     for _ in tags[1:]:
-                        script1 += "and tag=%s "
-                        script2 += "or tag=%s "
-                    script1 +=")"
-                    script2 +=")"
+                        script_tags += "or tag=%s "
+                        script_mission_goals += "or tag=%s "
+                    script_tags +=")"
+                    script_mission_goals += ") order by groupname"
 
-                script = script1 + " union " + script2
-                #script += " union select groupname, id from clubs WHERE mission ILIKE %s"
-                #script += " union select groupname, id from clubs WHERE goals ILIKE %s"
-
-                cur.execute(script, args + args)# + [clubquery] + [clubquery])
-
-                row = cur.fetchone()
-                print(row)
-                clubs = []
-                while row is not None:
-                    clubs.append(row)
+                    
+                    cur.execute(script_tags, tags)
+                    tag_ids = []
                     row = cur.fetchone()
-                    print(row)
+                    while row is not None:
+                        tag_ids.append(row)
+                        row = cur.fetchone()
+
+                    script_namelike = "select groupname, id from clubs where groupname ilike %s "
+                    script_namelike += "and id=%s"
+                    clubs = []
+                    for id in tag_ids:
+                        cur.execute(script_namelike, [clubquery] + [id])
+                        row = cur.fetchone()
+                        while row is not None:
+                            clubs.append(row)
+                            row = cur.fetchone()
+
+                    script_mission_goals_tag = "select groupname, id from clubs where (mission ilike %s or goals ilike %s) and (groupname not ilike %s) and id=%s"
+                    for id in tag_ids:
+                        cur.execute(script_mission_goals_tag, [clubquery] + [clubquery] + [clubquery] + [id])
+                        row = cur.fetchone()
+                        while row is not None:
+                            clubs.append(row)
+                            row = cur.fetchone()
+
+                    cur.execute(script_mission_goals, [clubquery] + [clubquery] + tags)
+                    row = cur.fetchone()
+                    while row is not None:
+                        clubs.append(row)
+                        row = cur.fetchone()
+                else:
+                    script_namelike = "select groupname, id from clubs where groupname ilike %s"
+                    
+                    cur.execute(script_namelike, [clubquery])
+                    clubs = []
+                    row = cur.fetchone()
+                    while row is not None:
+                        clubs.append(row)
+                        row = cur.fetchone()
+
+                    script_mission_goals = "select groupname, id from clubs where (mission ilike %s or goals ilike %s) and groupname not ilike %s"
+                    cur.execute(script_mission_goals, [clubquery] + [clubquery] + [clubquery])
+                    row = cur.fetchone()
+                    while row is not None:
+                        clubs.append(row)
+                        row = cur.fetchone()
 
                 return clubs
 
@@ -52,7 +84,7 @@ def get_clubs(clubquery, tags):
         return "server get_clubs"
 
 
-# gets club details of a selected club
+# get club details of a selected club
 def database_get_info(clubid):
     print("clubid:", clubid)
     try:
@@ -409,31 +441,10 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
     print("entering update_club_info in database")
 
     script = "UPDATE clubs SET "
-    args = []
-    if instagram != '':
-        script += "instagram=%s, "
-        args.append(instagram)
-    if youtube != '':
-        script += "youtube=%s, "
-        args.append(youtube)
-    if email != '':
-        script += "groupemail=%s, "
-        args.append(email)
-    if mission != '':
-        script += "mission=%s, "
-        args.append(mission)
-    if goals != '':
-        script += "goals=%s, "
-        args.append(goals)
-    if imlink != '':
-        script += "imlink=%s, "
-        args.append(imlink)
-
-    # get rid of trailing comma
-    if len(args) > 0:
-        script = script[:-2] + " "
-
+    script += "instagram=%s, youtube=%s, groupemail=%s, "
+    script += "mission=%s, goals=%s, imlink=%s "
     script += "WHERE id=%s"
+    args = [instagram, youtube, email, mission, goals, imlink]
 
     try:
         with psycopg2.connect(database_url) as conn:
