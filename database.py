@@ -138,7 +138,7 @@ def get_tags():
 
             with conn.cursor() as cur:
 
-                script = "select DISTINCT tag from tags"
+                script = "select DISTINCT tag from tags order by tag asc"
                 cur.execute(script)
 
                 row = cur.fetchone()
@@ -160,7 +160,7 @@ def get_club_tags(clubid):
 
             with conn.cursor() as cur:
 
-                script = "select tag from tags WHERE id=%s"
+                script = "select tag from tags WHERE id=%s order by tag asc"
                 cur.execute(script, [clubid])
 
                 row = cur.fetchone()
@@ -242,13 +242,15 @@ def remove_sub_tag(user, tag):
 
             with conn.cursor() as cur:
 
-                script = "select id from tags where tag=%s"
-                cur.execute(script, [tag])
+                script = "select distinct tags.id from tags, subscriptions where tag=%s and netid=%s and tags.id=subscriptions.id"
+                cur.execute(script, [tag] + [user])
 
                 clubid = cur.fetchone()
                 while clubid is not None:
-                    remove_sub(user, clubid)
-                    clubid = cur.fetchone()
+                    if not verify_officer(user, clubid):
+                        print("removing sub: ", user, clubid[0])
+                        remove_sub(user, clubid)
+                        clubid = cur.fetchone()
 
     except Exception as ex:
         print(ex)
@@ -276,6 +278,29 @@ def is_subbed(netid, clubid):
     except Exception as ex:
         print(ex)
         return "server, is_subbed"
+
+def get_user_sub_tags(netid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select distinct tag from tags WHERE id in (select id from subscriptions where netid=%s) order by tag asc"
+
+                cur.execute(script, [netid])
+
+                row = cur.fetchone()
+                tags = []
+                while row is not None:
+                    tags.append(row)
+                    row = cur.fetchone()
+                print("TAGS IN GET: ", tags)
+
+                return tags
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_user_sub_tags"
 
 
 # verifies that given netid is an officer of given clubid

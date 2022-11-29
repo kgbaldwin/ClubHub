@@ -195,7 +195,11 @@ function subscribeUser() {
         fetch("/subscribe?clubid="+clubid+"&subscribe=0")
         .then((response) => response.text())
         .then((text) => {
-            if (text=="success"){
+            if (text=="cannot unsubscribe officer"){
+                document.getElementById("check").checked = true
+                alert("Cannot unsubscribe officer from club")
+            }
+            else if (text=="success"){
                 alert("Successfully unsubscribed!")
                 const checkSub = document.getElementsByClassName('checkSub');
                 checkSub[1].style.display = "inline-block";

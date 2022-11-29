@@ -9,22 +9,14 @@ function new_officer() {
     .then((response) => response.text())
     .then((text) => {
         var out = text;
-        alert(out)
         if (out == "invalid netid") {
             alert("invalid netid")
         }
-
     });
 }
 
 function update_data() {
     alert("update data")
-    let mission = document.getElementById("clubmission").value;
-    let goals = document.getElementById("clubgoals").value;
-    let email = document.getElementById("clubemail").value;
-    let insta = document.getElementById("clubinstagram").value;
-    let youtube = document.getElementById("clubyoutube").value;
-    let imlink = document.getElementById("clubimlink").value;
 
     const form = new FormData(document.getElementById('editform'));
     fetch('/edit_club_info', {

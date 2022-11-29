@@ -48,32 +48,19 @@
                {% endfor %}
                </ul>
                {% endif %}
-                        <div class="btn-group dropright" style="padding-top:10px;">
-                        <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Unsubscribe From Tags</button>
-                        <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
-                           <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Unsubscribing to a tag will unsubscribe you to all clubs containing the specified tag.</a></li>
-                           {% for tag in tags: %}
-                           <li onClick="unsub_tag('{{tag[0]}}')">
-                              <a class="dropdown-item" style="white-space:normal;">
-                                 <label for={{tag[0]}} onClick="unsub_tag('{{tag[0]}}')">{{tag[0]}}</label>
-                              </a>
-                           </li>
-                           {% endfor %}
-                        </ul>
-                        </div> <br>
-                  <script>
-                     function unsub_tag(tag){
-                        fetch("/subscribe_tag?tag="+tag+"&subscribe_tag=0")
-                           .then((response) => response.text())
-                           .then((text) => {
-                                 if (text=="success"){
-                                    alert("Successfully unsubscribed from tag " + tag + "!")
-                                 }
-                                 else alert("Error - unable to unsubscribe from tag " + tag)
-                           })
-                           .then(() => {location.reload()});
-                     }
-                  </script>
+               <div class="btn-group dropright" style="padding-top:10px;">
+                  <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Unsubscribe From Tags</button>
+                  <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+                     <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Unsubscribing to a tag will unsubscribe you to all clubs containing the specified tag.</a></li>
+                     {% for tag in tags: %}
+                     <li onClick="unsub_tag('{{tag[0]}}')">
+                        <a class="dropdown-item" style="white-space:normal;">
+                           <label for={{tag[0]}} onClick="unsub_tag('{{tag[0]}}')">{{tag[0]}}</label>
+                        </a>
+                     </li>
+                     {% endfor %}
+                  </ul>
+                  </div> <br>
                </div>
 
 
@@ -104,14 +91,7 @@
 
      {% include 'footer.html' %}
 
-     <script>
-         function unsubscribe(input) {
-
-            fetch("/subscribe?subscribe=0&clubid="+input)
-            .then(() => {location.reload();})
-
-         }
-     </script>
+     <script type="text/javascript" src="{{ url_for('static', filename='JS/profile.js') }}"></script>
 
      <!---Keep the JS below at the bottom of body. For loading bootstrap-->
      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

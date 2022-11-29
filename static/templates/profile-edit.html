@@ -92,27 +92,8 @@
 
      {% include 'footer.html' %}
 
-     <script>
-         function unsubscribe(input) {
-
-            fetch("/subscribe?subscribe=0&clubid="+input)
-            .then(() => {location.reload();})
-
-         }
-
-         function unsub_tag(tag) {
-            fetch("/subscribe_tag?tag="+tag+"&subscribe_tag=0")
-            .then((response) => response.text())
-            .then((text) => {
-               if (text=="success") {
-                  alert("Successfully unsubscribed from tag " + tag + "!")
-               }
-               else alert("Error - unable to unsubscribe from tag " + tag)
-            })
-            .then(() => {location.reload()});
-         }
-     </script>
-
+     <script type="text/javascript" src="{{ url_for('static', filename='JS/profile.js') }}"></script>
+     
      <!---Keep the JS below at the bottom of body. For loading bootstrap-->
      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>

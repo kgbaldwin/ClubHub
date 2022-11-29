@@ -7,6 +7,7 @@
 
 import os
 import flask
+import urllib
 import database
 import auth
 from req_lib import ReqLib
@@ -41,6 +42,7 @@ def index():
 @app.route('/profile', methods=['GET'])
 def profile():
     username = auth.authenticate()
+    print("username: ", username)
 
     info = get_user(username)[0]
 
@@ -48,7 +50,8 @@ def profile():
 
     subs = database.get_subs(username)
     officerships = database.get_officerships(username)
-    tags = database.get_tags()
+    tags = database.get_user_sub_tags(username)
+    print("TAGGGSS: ", tags)
 
     html_code = flask.render_template('profile.html', username=username,
             name=info["displayname"], year=year, subs=subs,
@@ -95,6 +98,10 @@ def searchresults2():
     searchpersist = clubquery.lstrip('%').rstrip('%')
     #print("cq: ", clubquery)
     #print("tags: ", tags)
+
+    ########### make sure this works ##############
+    for index in range(len(tags)):
+        tags[index] = urllib.parse.unquote_plus(tags[index])
 
     clubs = database.get_clubs(clubquery, tags)
     tags_dropdown = database.get_tags()
@@ -242,7 +249,12 @@ def subscribe():
     if subscribe=="1":
         response = database.add_sub(username, clubid)
     else:
-        response = database.remove_sub(username, clubid)
+        if not database.verify_officer(username, clubid):
+            print("NOT OFFICER")
+            response = database.remove_sub(username, clubid)
+        else:
+            print("IS OFFICER")
+            return "cannot unsubscribe officer"
 
     if response:  # errored
         return "error"
