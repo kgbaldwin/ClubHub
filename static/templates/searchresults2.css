@@ -1,61 +1,73 @@
-.scrollable-menu {
-    height: auto;
-    max-height: 200px;
-    overflow-x: hidden;
- }
- div.search-results-card{
-    background-color: rgb(212, 212, 212);
-    margin-top: 10px;
-    border-radius: 10px;
- }
- div.search-results-card-selected{
-    background-color:rgba(208, 249, 255, 0.356);
-    margin-top: 10px;
-    border-radius: 10px;
- }
- .border {
-    border: 1px solid #dee2e6 !important;
-    border-top-color: rgb(222, 226, 230);
-    border-top-width: 1px;
-    border-right-color: rgb(222, 226, 230);
-    border-right-width: 1px;
-    border-bottom-color: rgb(222, 226, 230);
-    border-bottom-width: 1px;
-    border-left-color: rgb(222, 226, 230);
-    border-left-width: 1px;
- }
- .border-warning {
-    border-color: #ffc107 !important;
- }
- .border-3 {
-     border-width: 3px !important;
- }
- a.search-results-link {
-    border-radius: 10px
- }
- div.search_column{
-    background-color: white;;
- }
- div.search_results{
-    font-family:Arial, Helvetica, sans-serif;
- }
- div.card-body{
-    padding: 1rem;
- }
- div#search-results{
-    overflow: scroll;
- }
- /* for CLUB INFO section of searchresults. */
- div.clubname{
-    font-size: 3rem;
-    font-weight:bold;
- }
- div.clubattribute{
-    display:none;
- }
- div.namecard{
-    background-color:white;
- }
- td {
-       border-collapse: collapse;
+.scrollable-menu-results {
+   height: auto;
+   max-height: 350px;
+   overflow-x: hidden;
+}
+div.search-results-card{
+   background-color: rgb(212, 212, 212);
+   margin-top: 10px;
+   border-radius: 10px;
+}
+div.search-results-card-selected{
+   background-color:rgba(208, 249, 255, 0.356);
+   margin-top: 10px;
+   border-radius: 10px;
+}
+.border {
+   border: 1px solid #dee2e6 !important;
+   border-color: rgb(222, 226, 230);
+   border-width: 1px;
+}
+.border-warning {
+   border-color: #ffc107 !important;
+}
+.border-3 {
+    border-width: 3px !important;
+}
+a.search-results-link {
+   border-radius: 10px
+}
+div.search_column{
+   background-color: white;;
+}
+div.search_results{
+   font-family: Arial, Helvetica, sans-serif;
+}
+div.card-body{
+   padding: 1rem;
+}
+
+/* Sub button */
+div.sub-button{
+   padding:0.5rem;
+   background-color: darkcyan;
+   margin-top: 10px;
+   border-radius: 10px;
+}
+div.sub-button-text:hover{
+   color:white;
+}
+div.unsub-button-text:hover{
+   color:white;
+}
+
+/* Tags card */
+div.tagscard{
+   background-color:white;  
+}
+
+
+/* for CLUB INFO section of searchresults. */
+div.clubname{
+   font-size: 3rem;
+   font-weight:bold;
+}
+div.clubattribute{
+   display:none;
+}
+div.namecard{
+   background-color:rgb(255, 255, 255);
+}
+td {
+   border-collapse: collapse;
 }

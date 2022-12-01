@@ -15,81 +15,75 @@
             padding: 2rem;
          }
       </style>
-               <h1>Club Search</h1>
-               <form action = "/searchresults2" method="get">
-                     Search for clubs:<br>
-                  <!---<button type="submit"><i class="fa fa-search"></i></button> --->
-                     <input type="text" placeholder="Search for clubs, keywords..." name="clubquery" value="{{clubquery}}">
-                     <input type="submit" value="Go">
-                     <div style="padding-top:8px;">
-                        <button class="btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
-                           Search With Tags
-                        </button>
-                        <!--SEARCH WITH TAGS-->
-                        <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
-                           {% for tag in tags: %}
+         <h1>Club Search</h1>
+         <form action = "/searchresults2" method="get">
+               Search for clubs:<br>
+            <!---<button type="submit"><i class="fa fa-search"></i></button> --->
+            <input type="text" placeholder="Search for clubs, keywords..." name="clubquery" value="{{clubquery}}">
+            <input type="submit" value="Go">
+            <div style="padding-top:8px;">
+               <button class="btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
+                  Search With Tags
+               </button>
+               <!--SEARCH WITH TAGS-->
+               <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+                  {% for tag in tags: %}
 
-                           <li onClick="toggle(encodeURIComponent('{{tag[0]}}'))">
-                              <a class="dropdown-item">
-                                 <label for={{tag[0]}} onClick="toggle('{{tag[0]}}')">{{tag[0]}}</label>
-                                 {% if tag[0] in checked: %}
-                                 <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle(encodeURIComponent('{{tag[0]}}'))">
-                                 {% else: %}
-                                 <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle(encodeURIComponent('{{tag[0]}}'))">
-                                 {% endif %}
-                              </a>
-                           </li>
-                           {% endfor %}
-                        </ul>
-                     </div>
-               </form>
+                  <li onClick="toggle(encodeURIComponent('{{tag[0]}}'))">
+                     <a class="dropdown-item">
+                        <label for={{tag[0]}} onClick="toggle('{{tag[0]}}')">{{tag[0]}}</label>
+                        {% if tag[0] in checked: %}
+                        <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle(encodeURIComponent('{{tag[0]}}'))">
+                        {% else: %}
+                        <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle(encodeURIComponent('{{tag[0]}}'))">
+                        {% endif %}
+                     </a>
+                  </li>
+                  {% endfor %}
+               </ul>
+            </div>
+         </form>
 
-               <!--SUBSCRIBE TO TAGS DROPDOWN-->
-               <div style="padding-top:8px;">
-                  <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Subscribe To Tags</button>
+         <!--SUBSCRIBE TO TAGS DROPDOWN-->
+         <div style="padding-top:8px;">
+            <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Subscribe To Tags</button>
 
-                  <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
-                     <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Subscribing to a tag will subscribe you to all clubs containing the specified tag.</a></li>
-                     {% for tag in tags: %}
-                     <li onClick="sub_tag('{{tag[0]}}')">
-                        <a class="dropdown-item" style="white-space:normal;">
-                           <label for={{tag[0]}} onClick="sub_tag('{{tag[0]}}')">{{tag[0]}}</label>
-                        </a>
-                     </li>
-                     {% endfor %}
-                  </ul>
-                  <script>
+            <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+               <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Subscribing to a tag will subscribe you to all clubs containing the specified tag.</a></li>
+               {% for tag in tags: %}
+               <li onClick="sub_tag('{{tag[0]}}')">
+                  <a class="dropdown-item" style="white-space:normal;">
+                     <label for={{tag[0]}}>{{tag[0]}}</label>
+                  </a>
+               </li>
+               {% endfor %}
+            </ul>
 
-                     /*document.getElementById("tagdropdown").addEventListener("click", function(e) {
-                              e.stopPropagation();
-                           });
-                           function toggle(tag) {
-                              checkbox = document.getElementById(tag);
-                              checkbox.checked = !checkbox.checked;
-                           }*/
 
-                     document.getElementById("tagdropdown").addEventListener("click", function(e) {
-                        e.stopPropagation();
-                     });
+            <script>
+               document.getElementById("tagdropdown").addEventListener("click", function(e) {
+                  e.stopPropagation();
+               });
 
-                     function toggle(tag) {
-                        checkbox = document.getElementById(tag);
-                        checkbox.checked = !checkbox.checked;
+               function toggle(tag) {
+                  checkbox = document.getElementById(tag);
+                  checkbox.checked = !checkbox.checked;
+               }
+
+               function sub_tag(tag){
+                  tag = tag.replaceAll('&', '`')
+                  fetch("/subscribe_tag?tag="+tag+"&subscribe_tag=1")
+                  .then((response) => response.text())
+                  .then((text) => {
+                     if (text=="success"){
+                        alert("Successfully subscribed to tag " + tag + "!")
                      }
-
-                     function sub_tag(tag){
-                        fetch("/subscribe_tag?tag="+tag+"&subscribe_tag=1")
-                        .then((response) => response.text())
-                        .then((text) => {
-                           if (text=="success"){
-                              alert("Successfully subscribed to tag " + tag + "!")
-                           }
-                           else alert("Error - unable to subscribe to tag " + tag)
-                        });
-                     }
-                  </script>
-               </div>
-            <!--Split Screen-->
+                     else alert("Error - unable to subscribe to tag " + tag)
+                  });
+               }
+            </script>
+         </div>
+         <!--Split Screen-->
 
       <!---Keep the JS below at the bottom of body. For loading bootstrap-->
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

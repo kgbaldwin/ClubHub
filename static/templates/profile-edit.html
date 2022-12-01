@@ -30,62 +30,62 @@
      {% include 'header.html' %} <br>
 
      <table>
-           <td class="main">
-               <h1>Your Profile</h1>
-               Netid: {{username}} <br>
-               Name: {{name}}<br>
-               Class Year: {{year}}<br>
-               Subscribed Clubs:
-               {% if subs|length==0: %}
-               <br><em>&emsp;&emsp;Subscribe to clubs to see them listed here!</em><br>
-               {% else: %}
-               <a class="edit"href="profile">Stop editing</a><br>
-               <div style="color:red;size:small;">*Click on each club to unsubscribe</div>
-               <ul style="margin-bottom:0;">
-               {% for each in subs: %}
-                  <li><label class="strikethrough" onclick="unsubscribe('{{each[1]}}')">{{each[0]}}</label>
-                     <!--
-                     <small class="strikethrough" onclick="unsubscribe('{{each[1]}}')"><em>Unsubscribe</em></small></li>-->
-               {% endfor %}
-               </ul>
-               {% endif %}
-                        <div class="btn-group dropright" style="padding-top:10px;">
-                        <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
-                                    data-toggle="dropdown"aria-expanded="false">Unsubscribe From Tags</button>
-                        <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
-                           <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Unsubscribing to a tag will unsubscribe you to all clubs containing the specified tag.</a></li>
-                           {% for tag in tags: %}
-                           <li onClick="unsub_tag('{{tag[0]}}')">
-                              <a class="dropdown-item" style="white-space:normal;">
-                                 <label for={{tag[0]}} onClick="unsub_tag('{{tag[0]}}')">{{tag[0]}}</label>
-                              </a>
-                           </li>
-                           {% endfor %}
-                        </ul>
-                        </div> <br>
-               </div>
-
-
-               <!--small><em>&emsp;&emsp;You are automatically subscribed to any clubs for which you are an officer.</em></small>
-               <br--><br>
-
-               Officer of Clubs:<br>
-
-               {% if officerships|length==0: %}
-               <em>&emsp;&emsp;You are not an officer of any clubs.</em>
-               {% else: %}
-               <ul>
-               {% for each in officerships: %}
-                  <li>{{each}}&nbsp;&nbsp;
-                     <small><em>
-                     <a href="/announce?clubid={{officerships[each]}}"> Send announcement </a>
-                     &nbsp;&nbsp;&nbsp;
-                     <a href="/edit_club?clubid={{officerships[each]}}"> Edit your club </a>
-                     </em></small>
+         <td class="main">
+            <h1>Your Profile</h1>
+            Netid: {{username}} <br>
+            Name: {{name}}<br>
+            Class Year: {{year}}<br>
+            Subscribed Clubs:
+            {% if subs|length==0: %}
+            <br><em>&emsp;&emsp;Subscribe to clubs to see them listed here!</em><br>
+            {% else: %}
+            <a class="edit"href="profile">Stop editing</a><br>
+            <div style="color:red;size:small;">*Click on each club to unsubscribe</div>
+            <ul style="margin-bottom:0;">
+            {% for each in subs: %}
+               <li><label class="strikethrough" onclick="unsubscribe('{{each[1]}}')">{{each[0]}}</label>
+                  <!--
+                  <small class="strikethrough" onclick="unsubscribe('{{each[1]}}')"><em>Unsubscribe</em></small></li>-->
+            {% endfor %}
+            </ul>
+            {% endif %}
+               <div class="btn-group dropright" style="padding-top:10px;">
+               <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
+                           data-toggle="dropdown"aria-expanded="false">Unsubscribe From Tags</button>
+               <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+                  <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Unsubscribing to a tag will unsubscribe you to all clubs containing the specified tag.</a></li>
+                  {% for tag in tags: %}
+                  <li onClick="unsub_tag('{{tag[0]}}')">
+                     <a class="dropdown-item" style="white-space:normal;">
+                        <label for={{tag[0]}} onClick="unsub_tag('{{tag[0]}}')">{{tag[0]}}</label>
+                     </a>
                   </li>
-               {% endfor %}
+                  {% endfor %}
                </ul>
-               {% endif %}
+               </div> <br>
+            </div>
+
+
+            <!--small><em>&emsp;&emsp;You are automatically subscribed to any clubs for which you are an officer.</em></small>
+            <br--><br>
+
+            Officer of Clubs:<br>
+
+            {% if officerships|length==0: %}
+            <em>&emsp;&emsp;You are not an officer of any clubs.</em>
+            {% else: %}
+            <ul>
+            {% for each in officerships: %}
+               <li>{{each}}&nbsp;&nbsp;
+                  <small><em>
+                  <a href="/announce?clubid={{officerships[each]}}"> Send announcement </a>
+                  &nbsp;&nbsp;&nbsp;
+                  <a href="/edit_club?clubid={{officerships[each]}}"> Edit your club </a>
+                  </em></small>
+               </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
 
            </td>
   </table>

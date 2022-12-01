@@ -26,7 +26,7 @@ def get_clubs(clubquery, tags):
                     for _ in tags[1:]:
                         script_tags += "or tag=%s "
                         script_mission_goals += "or tag=%s "
-                    script_tags +=")"
+                    script_tags +=") group by id order by count(id) desc"
                     script_mission_goals += ") order by groupname"
 
                     
@@ -108,29 +108,6 @@ def database_get_info(clubid):
         return "server, get_info"
 
 
-# get all clubs that single user is subscribed to
-def get_subs(netid):
-    try:
-        with psycopg2.connect(database_url) as conn:
-
-            with conn.cursor() as cur:
-
-                script = "select groupname, clubs.id from subscriptions, clubs WHERE netid=%s AND clubs.id=subscriptions.id"
-                cur.execute(script, [netid])
-
-                row = cur.fetchone()
-                clubids = []
-                while row is not None:
-                    clubids.append(row)
-                    row = cur.fetchone()
-
-                return clubids
-
-    except Exception as ex:
-        print(ex)
-        return "server, get_subs"
-
-
 # get tags for displaying on search form
 def get_tags():
     try:
@@ -152,6 +129,7 @@ def get_tags():
     except Exception as ex:
         print(ex)
         return "server get_tags"
+
 
 # get tags linked to a club
 def get_club_tags(clubid):
@@ -203,13 +181,20 @@ def remove_sub(user, clubid):
 
             with conn.cursor() as cur:
 
+                script = "select * from subscriptions where netid=%s and id=%s"
+                cur.execute(script, [user, clubid])
+                row = cur.fetchone()
+                if row is None:
+                    print("NOT SUBBED!!!!")
+
                 # check for existence of row (may not be necessary)
                 script = "delete from subscriptions where netid=%s and id=%s"
                 cur.execute(script, [user, clubid])
-
+                print("remove_sub clubid: ", clubid)
     except Exception as ex:
         print(ex)
         return "server, remove_sub"
+
 
 # subscribes user to tag
 def add_sub_tag(user, tag):
@@ -235,8 +220,10 @@ def add_sub_tag(user, tag):
         print(ex)
         return "server, add_sub_tag"
 
+
 # unsubscribes user from tag
 def remove_sub_tag(user, tag):
+    retval = None
     try:
         with psycopg2.connect(database_url) as conn:
 
@@ -247,14 +234,18 @@ def remove_sub_tag(user, tag):
 
                 clubid = cur.fetchone()
                 while clubid is not None:
-                    if not verify_officer(user, clubid):
+                    if verify_officer(user, clubid):
+                        retval = "isofficer"
+                    else:
                         print("removing sub: ", user, clubid[0])
                         remove_sub(user, clubid)
-                        clubid = cur.fetchone()
+                    clubid = cur.fetchone()
 
     except Exception as ex:
         print(ex)
         return "server, remove_sub_tag"
+
+    return retval
 
 
 # check if a user is subscribed to a club
@@ -279,6 +270,7 @@ def is_subbed(netid, clubid):
         print(ex)
         return "server, is_subbed"
 
+
 def get_user_sub_tags(netid):
     try:
         with psycopg2.connect(database_url) as conn:
@@ -302,6 +294,84 @@ def get_user_sub_tags(netid):
         print(ex)
         return "server, get_user_sub_tags"
 
+
+# gets all announcements from club with given clubid and returns
+# them in sorted time order
+def get_club_announcements(clubid):
+    script = "SELECT announcement, stamp, officer FROM announcements "
+    script += "WHERE clubid=%s ORDER BY stamp DESC"
+
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                cur.execute(script, [clubid])
+                rows = cur.fetchall()
+
+                '''announcements = []
+                for element in rows:
+                    announcements.append(element[0])
+                '''
+                return rows
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_club_announcements"
+
+
+###### -------------- Profile Information -------------------- ######
+
+# get all clubs that single user is subscribed to
+def get_subs(netid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select groupname, clubs.id from subscriptions, clubs WHERE netid=%s AND clubs.id=subscriptions.id"
+                cur.execute(script, [netid])
+
+                row = cur.fetchone()
+                clubids = []
+                while row is not None:
+                    clubids.append(row)
+                    row = cur.fetchone()
+
+                return clubids
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_subs"
+
+
+# return clubids and clubnames for clubs where netid is an officer
+def get_officerships(netid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select groupname, clubs.id from officers, clubs"
+                script += " WHERE netid=%s AND clubs.id=officers.clubid"
+
+                cur.execute(script, [netid])
+
+                row = cur.fetchone()
+                clubids = {}
+                while row is not None:
+                    clubids[row[0]] = row[1]
+                    row = cur.fetchone()
+
+                return clubids
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_officerships"
+
+
+
+###### ---------------- Club Edit information ------------------ #####
 
 # verifies that given netid is an officer of given clubid
 def verify_officer(netid, clubid):
@@ -341,56 +411,8 @@ def add_officer(netid, clubid):
         return "server, add_officer"
 
 
-# get clubname from clubid
-def get_clubname(clubid):
-    try:
-        with psycopg2.connect(database_url) as conn:
-
-            with conn.cursor() as cur:
-
-                script = "select MAX(id) from clubs"
-                cur.execute(script)
-                num = cur.fetchone()[0]
-
-                if int(clubid) > num or int(clubid) < 0:
-                    return ("Invalid Clubid",)
-
-                script = "select groupname from clubs where id=%s"
-                cur.execute(script, [clubid])
-
-                return cur.fetchone()
-
-    except Exception as ex:
-        print(ex)
-        return "server, get_clubname"
-
-
-# return clubids and clubnames for clubs where netid is an officer
-def get_officerships(netid):
-    try:
-        with psycopg2.connect(database_url) as conn:
-
-            with conn.cursor() as cur:
-
-                script = "select groupname, clubs.id from officers, clubs WHERE netid=%s AND clubs.id=officers.clubid"
-
-                cur.execute(script, [netid])
-
-                row = cur.fetchone()
-                clubids = {}
-                while row is not None:
-                    clubids[row[0]] = row[1]
-                    row = cur.fetchone()
-
-                return clubids
-
-    except Exception as ex:
-        print(ex)
-        return "server, get_officerships"
-
-
 # send an announcement to a given club
-def send_announcement(clubid, announcement):
+def send_announcement(clubid, announcement, officer):
     try:
 
         # update the database of announcements
@@ -398,9 +420,9 @@ def send_announcement(clubid, announcement):
 
             with conn.cursor() as cur:
 
-                script = "insert into announcements VALUES (%s, %s, CURRENT_TIMESTAMP)"
+                script = "insert into announcements VALUES (%s, %s, CURRENT_TIMESTAMP, %s)"
 
-                cur.execute(script, [clubid, announcement])
+                cur.execute(script, [clubid, announcement, officer])
 
         return "success"
 
@@ -434,31 +456,6 @@ def get_subscribers(clubid):
         return "server, get_subscribers"
 
 
-# gets all announcements from club with given clubid and returns
-# them in sorted time order
-def get_club_announcements(clubid):
-    script = "SELECT announcement, stamp FROM announcements "
-    script += "WHERE clubid=%s ORDER BY stamp DESC"
-
-    try:
-        with psycopg2.connect(database_url) as conn:
-
-            with conn.cursor() as cur:
-
-                cur.execute(script, [clubid])
-                rows = cur.fetchall()
-
-                announcements = []
-                for element in rows:
-                    announcements.append(element[0])
-
-                return announcements
-
-    except Exception as ex:
-        print(ex)
-        return "server, get_club_announcements"
-
-
 # updates club info in database
 def update_club_info(clubid, instagram=None, youtube=None, email=None,
             mission=None, goals=None, imlink=None):
@@ -481,3 +478,25 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
         return "server, update_club_info"
 
 
+# get clubname from clubid
+def get_clubname(clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select MAX(id) from clubs"
+                cur.execute(script)
+                num = cur.fetchone()[0]
+
+                if int(clubid) > num or int(clubid) < 0:
+                    return ("Invalid Clubid",)
+
+                script = "select groupname from clubs where id=%s"
+                cur.execute(script, [clubid])
+
+                return cur.fetchone()
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_clubname"

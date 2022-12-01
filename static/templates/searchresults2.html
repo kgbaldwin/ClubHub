@@ -5,88 +5,8 @@
       <title>ClubHub.com</title>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+      <link rel="stylesheet" href="searchresults2.css">
    </head>
-   <style>
-      .scrollable-menu-results {
-         height: auto;
-         max-height: 350px;
-         overflow-x: hidden;
-      }
-      div.search-results-card{
-         background-color: rgb(212, 212, 212);
-         margin-top: 10px;
-         border-radius: 10px;
-      }
-      div.search-results-card-selected{
-         background-color:rgba(208, 249, 255, 0.356);
-         margin-top: 10px;
-         border-radius: 10px;
-      }
-      .border {
-         border: 1px solid #dee2e6 !important;
-         border-top-color: rgb(222, 226, 230);
-         border-top-width: 1px;
-         border-right-color: rgb(222, 226, 230);
-         border-right-width: 1px;
-         border-bottom-color: rgb(222, 226, 230);
-         border-bottom-width: 1px;
-         border-left-color: rgb(222, 226, 230);
-         border-left-width: 1px;
-      }
-      .border-warning {
-         border-color: #ffc107 !important;
-      }
-      .border-3 {
-          border-width: 3px !important;
-      }
-      a.search-results-link {
-         border-radius: 10px
-      }
-      div.search_column{
-         background-color: white;;
-      }
-      div.search_results{
-         font-family:Arial, Helvetica, sans-serif;
-      }
-      div.card-body{
-         padding: 1rem;
-      }
-
-      /* Sub button */
-      div.sub-button{
-         padding:0.5rem;
-         background-color: darkcyan;
-         margin-top: 10px;
-         border-radius: 10px;
-      }
-      div.sub-button-text:hover{
-         color:white;
-      }
-      div.unsub-button-text:hover{
-         color:white;
-      }
-
-      /* Tags card */
-      div.tagscard{
-         background-color:white;  
-      }
-
-
-      /* for CLUB INFO section of searchresults. */
-      div.clubname{
-         font-size: 3rem;
-         font-weight:bold;
-      }
-      div.clubattribute{
-         display:none;
-      }
-      div.namecard{
-         background-color:rgb(255, 255, 255);
-      }
-      td {
-            border-collapse: collapse;
-         }
-   </style>
 
    <body>
       {% include 'header.html' %}
@@ -97,25 +17,25 @@
                <br>
                <h1>Club Search Results</h1>
                <div id="search-results" class="scrollable-menu-results">
-               <div class="search_results_background">
-               {% if results|length == 0: %}
-                  <strong>None Found</strong>
-               {% else %}
-                  <ul>
-                  {% for each in results: %}
-                  <div class="search-results-card" id = "card_{{each[1]}}" >
-                     <a class="search-results-link">
-                        <div class="card-body">
-                           <li><strong><label for={{each[1]}}>{{each[0]}}</label></strong></li>
-                           <input type="radio" id={{each[1]}} name="clubname"
-                           value="{{each[1]}}" onclick="changeInfo(); loadAnnouncements()" style="display: none">
-                        </div>
-                     </a>
+                  <div class="search_results_background">
+                  {% if results|length == 0: %}
+                     <strong>None Found</strong>
+                  {% else %}
+                     <ul>
+                     {% for each in results: %}
+                     <div class="search-results-card" id = "card_{{each[1]}}" >
+                        <a class="search-results-link">
+                           <div class="card-body">
+                              <li><strong><label for={{each[1]}}>{{each[0]}}</label></strong></li>
+                              <input type="radio" id={{each[1]}} name="clubname"
+                              value="{{each[1]}}" onclick="changeInfo(); loadAnnouncements()" style="display: none">
+                           </div>
+                        </a>
+                     </div>
+                     {% endfor %}
+                     </ul>
+                  {% endif %}<br>
                   </div>
-                  {% endfor %}
-                  </ul>
-               {% endif %}<br>
-               </div>
                </div>
             </td>
             </div>
@@ -124,11 +44,7 @@
               <!-- <h1>Club Info</h1>-->
                <div class="namecard" id = "graynamecard">
                   <table>
-                     <style>
-                        td{
-                           padding:10px;
-                        }
-                     </style>
+                     <style> td{padding:10px;} </style>
                      <tr>
                         <td rowspan = "4">
                            <img id = "clubimlink" style="max-width:200px;height:auto;width:200px;max-height:200px;border:0px;border-width:0rem;padding:1rem;"></img>
@@ -169,8 +85,7 @@
                   <div id = tagsdiv style="display:none;"></div>
                </div>
                <!-- announcements feed for club -->
-               <br>
-               <br>
+               <br><br>
                <div class="announcements-body scrollable-menu-results" style="width:100%;padding:1rem;display:none;">
                   <h2><b>Announcements:</b></h2>
                   <div id="club-announcements" style="width:100%;"></div>

@@ -53,12 +53,15 @@ def profile():
     tags = database.get_user_sub_tags(username)
     print("TAGGGSS: ", tags)
 
+    edit = int(flask.request.args.get("edit"))
+
     html_code = flask.render_template('profile.html', username=username,
             name=info["displayname"], year=year, subs=subs,
-            officerships=officerships, tags = tags)
+            officerships=officerships, tags=tags, edit=edit)
     response = flask.make_response(html_code)
     return response
 
+'''
 @app.route('/profile_edit', methods=['GET'])
 def profile_edit():
     username = auth.authenticate()
@@ -76,8 +79,9 @@ def profile_edit():
             officerships=officerships, tags = tags)
     response = flask.make_response(html_code)
     return response
+'''
 
-
+'''
 @app.route('/searchform', methods=['GET'])
 def searchform():
     username = auth.authenticate()
@@ -88,7 +92,7 @@ def searchform():
     #print("tags: ", tags)
     response = flask.make_response(html_code)
     return response
-
+'''
 
 @app.route('/searchresults2', methods=['GET'])
 def searchresults2():
@@ -137,6 +141,27 @@ def announce():
     return response
 
 
+@app.route('/edit_club', methods=['GET'])
+def edit_club():
+    username = auth.authenticate()
+
+    clubid = flask.request.args.get("clubid")
+    clubname = database.get_clubname(clubid)[0]
+
+    if database.verify_officer(username, clubid):
+        html_code = flask.render_template('editclub.html', username=username,
+                                clubname=clubname, verified=True, clubid=clubid)
+    else:
+        html_code = flask.render_template('editclub.html', username=username,
+                                clubname=clubname, verified=False)
+
+    response = flask.make_response(html_code)
+    return response
+
+
+#### ------------- Back-end Information Delivery ----------------- ####
+
+
 @app.route('/get_info', methods=['GET'])
 def get_info():
     username = auth.authenticate()
@@ -171,72 +196,18 @@ def get_info():
     return string
 
 
-@app.route('/edit_club', methods=['GET'])
-def edit_club():
-    username = auth.authenticate()
-
-    clubid = flask.request.args.get("clubid")
-    clubname = database.get_clubname(clubid)[0]
-
-    if database.verify_officer(username, clubid):
-        html_code = flask.render_template('editclub.html', username=username,
-                                clubname=clubname, verified=True, clubid=clubid)
-    else:
-        html_code = flask.render_template('editclub.html', username=username,
-                                clubname=clubname, verified=False)
-
-    response = flask.make_response(html_code)
-    return response
-
-
-@app.route("/add_officer", methods=['GET'])
-def add_officer():
-    auth.authenticate()
-
-    newofficer = flask.request.args.get('newofficer')
+@app.route("/get_club_announcements", methods=['GET'])
+def get_club_announcements():
     clubid = flask.request.args.get('clubid')
+    # announcements is now a list of tuples [(announcement, stamp, officer,), (ann2, stamp2, officer2,), etc]
+    announcements = database.get_club_announcements(clubid)
+    response = ""
 
-    if not get_user(newofficer):
-        print("invalid netid")
-        return "invalid netid"
+    for announcement in announcements:
+        response += announcement
+        response += '`'
 
-    database.add_officer(newofficer, clubid)
-    return ''
-
-
-@app.route("/edit_club_info", methods=['POST'])
-def edit_club_info():
-    print("edit club info")
-    auth.authenticate()
-    clubid = flask.request.form.get("clubid")
-    print("clubid///: ", clubid)
-    mission = flask.request.form.get('clubmission')
-    goals = flask.request.form.get('clubgoals')
-    imlink = flask.request.form.get('clubimlink')
-    email = flask.request.form.get('clubemail')
-    instagram = flask.request.form.get('clubinstagram')
-    youtube = flask.request.form.get('clubyoutube')
-
-    database.update_club_info(clubid=clubid, mission=mission, goals=goals,
-        imlink=imlink, email=email, instagram=instagram,
-        youtube=youtube)
-
-    return ''
-
-################
-# getting user infos from netid
-#######################
-@app.route('/get_user', methods=['GET'])
-def get_user(username):
-    req_lib = ReqLib()
-
-    reqBasic = req_lib.getJSON(
-        req_lib.configs.USERS_BASIC,
-        uid=username,
-    )
-    #print("req2: ", reqBasic)
-
-    return reqBasic
+    return response
 
 
 # subscribes user to club or unsubscribes from
@@ -276,11 +247,87 @@ def subscribe_tag():
         response = database.remove_sub_tag(username, tag)
 
     if response:  # errored
+        if response=="isofficer":
+            return "success_isofficer"
         return "error"
 
     return "success"
 
 
+
+@app.route("/add_officer", methods=['GET'])
+def add_officer():
+    auth.authenticate()
+
+    newofficer = flask.request.args.get('newofficer')
+    clubid = flask.request.args.get('clubid')
+
+    if not get_user(newofficer):
+        print("invalid netid")
+        return "invalid netid"
+
+    database.add_officer(newofficer, clubid)
+    return ''
+
+
+@app.route("/edit_club_info", methods=['POST'])
+def edit_club_info():
+    print("edit club info")
+    auth.authenticate()
+    clubid = flask.request.form.get("clubid")
+    print("clubid///: ", clubid)
+    mission = flask.request.form.get('clubmission')
+    goals = flask.request.form.get('clubgoals')
+    imlink = flask.request.form.get('clubimlink')
+    email = flask.request.form.get('clubemail')
+    instagram = flask.request.form.get('clubinstagram')
+    youtube = flask.request.form.get('clubyoutube')
+
+    database.update_club_info(clubid=clubid, mission=mission, goals=goals,
+        imlink=imlink, email=email, instagram=instagram,
+        youtube=youtube)
+
+    return ''
+
+
+@app.route('/send_announce', methods=['POST'])
+def send_announce():
+    username = auth.authenticate()
+
+    clubid = flask.request.args.get('clubid')
+    announcement = flask.request.args.get('announcement')
+
+    # update database
+    announce_result = database.send_announcement(clubid, announcement, username)
+
+    # send email to subscribers
+    subscribers = database.get_subscribers(clubid)
+    clubname = database.get_clubname(clubid)[0]
+    subscriber_emails = append_address(subscribers)
+    email_result = send_email(subscriber_emails, clubname, announcement)
+
+    if announce_result == "success" and email_result == "success":
+       return "success"
+
+    return "error"
+
+################
+# getting user infos from netid
+#######################
+@app.route('/get_user', methods=['GET'])
+def get_user(username):
+    req_lib = ReqLib()
+
+    reqBasic = req_lib.getJSON(
+        req_lib.configs.USERS_BASIC,
+        uid=username,
+    )
+
+    return reqBasic
+
+
+
+##########################################################
 @app.route('/register_club', methods=['GET'])
 def register_club():
     req_lib = ReqLib()
@@ -294,40 +341,6 @@ def register_club():
     #print("req2: ", reqBasic)
 
     return reqBasic
-
-
-@app.route('/send_announce', methods=['POST'])
-def send_announce():
-
-    clubid = flask.request.args.get('clubid')
-    announcement = flask.request.args.get('announcement')
-
-    # update database
-    announce_result = database.send_announcement(clubid, announcement)
-
-    # send email to subscribers
-    subscribers = database.get_subscribers(clubid)
-    clubname = database.get_clubname(clubid)[0]
-    subscriber_emails = append_address(subscribers)
-    email_result = send_email(subscriber_emails, clubname, announcement)
-
-    if announce_result == "success" and email_result == "success":
-       return "success"
-
-    return "error"
-
-
-@app.route("/get_club_announcements", methods=['GET'])
-def get_club_announcements():
-    clubid = flask.request.args.get('clubid')
-    announcements = database.get_club_announcements(clubid)
-    response = ""
-
-    for announcement in announcements:
-        response += announcement
-        response += '`'
-
-    return response
 
 
 @app.errorhandler(404)
