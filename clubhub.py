@@ -94,8 +94,8 @@ def searchform():
     return response
 '''
 
-@app.route('/searchresults2', methods=['GET'])
-def searchresults2():
+@app.route('/searchresults', methods=['GET'])
+def searchresults():
     username = auth.authenticate()
     clubquery = '%' + flask.request.args.get('clubquery') + '%'
     tags = flask.request.args.getlist('tags')
@@ -117,7 +117,7 @@ def searchresults2():
         response = flask.make_response(html_code)
         return response
 
-    html_code = flask.render_template('searchresults2.html', results=clubs,
+    html_code = flask.render_template('searchresults.html', results=clubs,
                                         username=username,tags=tags_dropdown,
                                         checked=tags, clubquery=searchpersist)
     response = flask.make_response(html_code)
@@ -204,9 +204,14 @@ def get_club_announcements():
     response = ""
 
     for announcement in announcements:
-        response += announcement
+        response += announcement[0]
+        response += '`'
+        response += announcement[1].strftime("%m/%d/%Y, %H:%M")
+        response += '`'
+        response += announcement[2]
         response += '`'
 
+    print(response)
     return response
 
 
