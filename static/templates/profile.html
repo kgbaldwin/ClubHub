@@ -68,7 +68,7 @@
                <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
                   <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Unsubscribing to a tag will unsubscribe you to all clubs containing the specified tag.</a></li>
                   {% for tag in tags: %}
-                  <li onClick="unsub_tag('{{tag[0]}}')">
+                  <li onclick="unsub_tag('{{tag[0]}}')">
                      <a class="dropdown-item" style="white-space:normal;">
                         <label for={{tag[0]}}>{{tag[0]}}</label>
                      </a>

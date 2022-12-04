@@ -109,7 +109,7 @@ def searchresults():
 
     clubs = database.get_clubs(clubquery, tags)
     tags_dropdown = database.get_tags()
-    subbed_clubs = database.get_subs(username)
+    #subbed_clubs = database.get_subs(username)
 
     if clubs == "server":
         html_code = flask.render_template('error.html', error="server",
@@ -298,19 +298,21 @@ def edit_club_info():
 @app.route('/send_announce', methods=['POST'])
 def send_announce():
     username = auth.authenticate()
+    print("entering")
 
-    clubid = flask.request.args.get('clubid')
-    announcement = flask.request.args.get('announcement')
+    clubid = flask.request.form.get('clubid')
+    announcement = flask.request.form.get('announcement')
+    
+    print(clubid)
+    print(announcement)
 
     # update database
     announce_result = database.send_announcement(clubid, announcement, username)
-
     # send email to subscribers
     subscribers = database.get_subscribers(clubid)
     clubname = database.get_clubname(clubid)[0]
     subscriber_emails = append_address(subscribers)
     email_result = send_email(subscriber_emails, clubname, announcement)
-
     if announce_result == "success" and email_result == "success":
        return "success"
 

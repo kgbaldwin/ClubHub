@@ -404,6 +404,8 @@ def add_officer(netid, clubid):
 
                 cur.execute(script, [netid, clubid])
 
+                add_sub(netid, clubid)
+
                 return "success"
 
     except Exception as ex:

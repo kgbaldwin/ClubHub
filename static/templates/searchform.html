@@ -70,9 +70,8 @@
                   checkbox.checked = !checkbox.checked;
                }
 
-               function sub_tag(tag){
-                  tag = tag.replaceAll('&', '`')
-                  fetch("/subscribe_tag?tag="+tag+"&subscribe_tag=1")
+               function sub_tag(tag) {
+                  fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=1")
                   .then((response) => response.text())
                   .then((text) => {
                      if (text=="success"){

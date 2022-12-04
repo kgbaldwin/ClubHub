@@ -4,10 +4,10 @@ function unsubscribe(input) {
     .then((response) => response.text())
     .then((text) => {
        if (text=="cannot unsubscribe officer"){
-          alert("Cannot unsubscribe officer from club")
+         alert("Cannot unsubscribe officer from club")
        }
        else if (text=="error"){
-        alert(text)
+         alert(text)
        }
     })
     .then(() => {location.reload();})
@@ -16,7 +16,7 @@ function unsubscribe(input) {
 
 
  function unsub_tag(tag) {
-    fetch("/subscribe_tag?tag="+tag+"&subscribe_tag=0")
+    fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=0")
     .then((response) => response.text())
     .then((text) => {
        if (text=="success") {
