@@ -120,7 +120,7 @@ def searchresults():
 
     html_code = flask.render_template('searchresults.html', results=clubs,
                                         username=username,tags=tags_dropdown,
-                                        checked=tags, clubquery=searchpersist, 
+                                        checked=tags, clubquery=searchpersist,
                                         selected_tags = selected_tags)
     response = flask.make_response(html_code)
     return response
@@ -305,13 +305,11 @@ def edit_club_info():
 @app.route('/send_announce', methods=['POST'])
 def send_announce():
     username = auth.authenticate()
-    print("entering")
 
-    clubid = flask.request.form.get('clubid')
-    announcement = flask.request.form.get('announcement')
-    
-    print(clubid)
-    print(announcement)
+    # Get data embedded in the post request body
+    data = flask.request.json
+    clubid = data['clubid']
+    announcement = data['announcement']
 
     # update database
     announce_result = database.send_announcement(clubid, announcement, username)
