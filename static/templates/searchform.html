@@ -23,19 +23,90 @@
             <input type="submit" value="Go">
             <div style="padding-top:8px;">
                <button class="btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
-                  Search With Tags
-               </button>
+                  Search With Tags 
+               </button> 
+
+               <script>
+                  let tags_selection = ['Academic','A Cappella','Advocacy & Activism', 'Arts','Career Opportunity','Chaplaincies',
+                  'Cultural/Identity','Dance','Dialogues & Partnerships','Educational','Entrepreneurship/Innovation','Environmental',
+                  'Finance','Financial Literacy','Food','Games','Health','Media','Music','Performing Arts','Political','Professional',
+                  'Publication','Racial Justice','Religious','Service','Social','Social Justice','Special Interest','Sports/Recreation',
+                  'Student Government','Sustained Volunteering'];
+                  let tags_tf = [];
+                  for (let i = 0; i < tags_selection.length; i++){
+                     tags_tf[i] = false;
+                  }
+               </script>
+
+               Finder:<div id = 'finder'></div>
+
+               <div id = "selected_tags" name ="selected_tags" value = {{selected_tags}}>
+                  {%for tag in tags:%}
+                     {% if tag[0] in checked: %}
+                     <div id = 'comma'></div>
+                        <script>
+                           const findInd = (element) => element == '{{tag[0]}}';
+                           tags_tf[tags_selection.findIndex(findInd)] = true;
+                           document.getElementById('finder').innerHTML = tags_tf[0];
+                           
+                           toggle('');
+
+
+
+
+                           
+                           function toggle(tag) {
+                              checkbox = document.getElementById(tag);
+                              checkbox.checked = !checkbox.checked;
+                              const findInd = (element) => element == tag;
+                              if (checkbox.checked){
+                                 tags_tf[tags_selection.findIndex(findInd)] = true;
+                              }
+                              else{
+                                 tags_tf[tags_selection.findIndex(findInd)] = false;
+                              }
+                              let htmlBuilder = "";
+                              selected_tags = get_selected_tags();
+                              for (let i = 0; i < selected_tags.length; i++){
+                                 htmlBuilder += selected_tags[i];
+                                 if (selected_tags.length - i > 1)
+                                    htmlBuilder += ', ';
+                              }
+                              document.getElementById('selected_tags').innerHTML = htmlBuilder;
+                           }
+
+                           function get_selected_tags(){
+                              let selected_tags = [];
+                              // append all selected tags
+                              for (let i = 0; i < tags_selection.length; i++){
+                                 if (tags_tf[i]) {
+                                    selected_tags.push(tags_selection[i]);
+                                 }
+                              }
+                              return selected_tags
+                           }
+
+
+
+
+
+
+                        </script>
+                     {% endif%}
+                  {%endfor%}
+               </div>
+              
+
                <!--SEARCH WITH TAGS-->
                <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
                   {% for tag in tags: %}
-
-                  <li onClick="toggle(encodeURIComponent('{{tag[0]}}'))">
+                  <li onClick="toggle('{{tag[0]}}')">
                      <a class="dropdown-item">
-                        <label for={{tag[0]}} onClick="toggle('{{tag[0]}}')">{{tag[0]}}</label>
+                        <label>{{tag[0]}}</label>
                         {% if tag[0] in checked: %}
-                        <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle(encodeURIComponent('{{tag[0]}}'))">
+                        <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle('{{tag[0]}}')">
                         {% else: %}
-                        <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle(encodeURIComponent('{{tag[0]}}'))">
+                        <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle('{{tag[0]}}')">
                         {% endif %}
                      </a>
                   </li>
@@ -59,7 +130,6 @@
                {% endfor %}
             </ul>
 
-
             <script>
                document.getElementById("tagdropdown").addEventListener("click", function(e) {
                   e.stopPropagation();
@@ -68,6 +138,32 @@
                function toggle(tag) {
                   checkbox = document.getElementById(tag);
                   checkbox.checked = !checkbox.checked;
+                  const findInd = (element) => element == tag;
+                  if (checkbox.checked){
+                     tags_tf[tags_selection.findIndex(findInd)] = true;
+                  }
+                  else{
+                     tags_tf[tags_selection.findIndex(findInd)] = false;
+                  }
+                  let htmlBuilder = "";
+                  selected_tags = get_selected_tags();
+                  for (let i = 0; i < selected_tags.length; i++){
+                     htmlBuilder += selected_tags[i];
+                     if (selected_tags.length - i > 1)
+                        htmlBuilder += ', ';
+                  }
+                  document.getElementById('selected_tags').innerHTML = htmlBuilder;
+               }
+
+               function get_selected_tags(){
+                  let selected_tags = [];
+                  // append all selected tags
+                  for (let i = 0; i < tags_selection.length; i++){
+                     if (tags_tf[i]) {
+                        selected_tags.push(tags_selection[i]);
+                     }
+                  }
+                  return selected_tags
                }
 
                function sub_tag(tag) {
@@ -80,6 +176,7 @@
                      else alert("Error - unable to subscribe to tag " + tag)
                   });
                }
+               
             </script>
          </div>
          <!--Split Screen-->

@@ -6,12 +6,12 @@
 div.search-results-card{
    background-color: rgb(212, 212, 212);
    margin-top: 10px;
-   border-radius: 10px;
+   border-radius: 7px;
 }
 div.search-results-card-selected{
    background-color:rgba(208, 249, 255, 0.356);
    margin-top: 10px;
-   border-radius: 10px;
+   border-radius: 7px;
 }
 .border {
    border: 1px solid #dee2e6 !important;
@@ -22,10 +22,10 @@ div.search-results-card-selected{
    border-color: #ffc107 !important;
 }
 .border-3 {
-    border-width: 3px !important;
+   border-width: 3px !important;
 }
 a.search-results-link {
-   border-radius: 10px
+   border-radius: 7px;
 }
 div.search_column{
    background-color: white;;
@@ -42,7 +42,7 @@ div.sub-button{
    padding:0.5rem;
    background-color: darkcyan;
    margin-top: 10px;
-   border-radius: 10px;
+   border-radius: 7px;
 }
 div.sub-button-text:hover{
    color:white;
@@ -54,6 +54,9 @@ div.unsub-button-text:hover{
 /* Tags card */
 div.tagscard{
    background-color:white;  
+   padding:1rem;
+   width:100%;
+   border-radius:8px;
 }
 
 
@@ -67,7 +70,15 @@ div.clubattribute{
 }
 div.namecard{
    background-color:rgb(255, 255, 255);
+   border-radius:7px;
 }
 td {
    border-collapse: collapse;
+}
+
+/* Announcements cards */
+div.ann-card{
+   padding:0.5rem;
+   background-color:rgb(162, 162, 162);
+   border-radius:7px;
 }

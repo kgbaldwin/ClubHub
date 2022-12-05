@@ -34,7 +34,8 @@ def logoutcas():
 def index():
     username = auth.authenticate()
     tags = database.get_tags()
-    html_code = flask.render_template('index.html', username=username,tags=tags)
+    selected_tags = ''
+    html_code = flask.render_template('index.html', username=username,tags=tags, selected_tags=selected_tags)
     response = flask.make_response(html_code)
     return response
 
@@ -100,9 +101,9 @@ def searchresults():
     clubquery = '%' + flask.request.args.get('clubquery') + '%'
     tags = flask.request.args.getlist('tags')
     searchpersist = clubquery.lstrip('%').rstrip('%')
+    selected_tags = flask.request.args.get('selected_tags')
     #print("cq: ", clubquery)
     #print("tags: ", tags)
-
     ########### make sure this works ##############
     for index in range(len(tags)):
         tags[index] = urllib.parse.unquote_plus(tags[index])
@@ -119,7 +120,8 @@ def searchresults():
 
     html_code = flask.render_template('searchresults.html', results=clubs,
                                         username=username,tags=tags_dropdown,
-                                        checked=tags, clubquery=searchpersist)
+                                        checked=tags, clubquery=searchpersist, 
+                                        selected_tags = selected_tags)
     response = flask.make_response(html_code)
     return response
 
@@ -157,6 +159,11 @@ def edit_club():
 
     response = flask.make_response(html_code)
     return response
+
+#selected_tags = []
+#@app.route('/get_selected_tags', methods=['GET'])
+#def get_selected_tags():
+
 
 
 #### ------------- Back-end Information Delivery ----------------- ####

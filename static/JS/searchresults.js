@@ -148,17 +148,47 @@ function loadAnnouncements() {
     fetch("/get_club_announcements?clubid="+clubid)
         .then((response) => response.text())
         .then((text) => {
-            console.log(text);
-            console.log("IODJWQIOJDOIWQJDJWIOQ")
             var ann_array = text.split("`");
             const ann_div = document.getElementById("club-announcements");
             var htmlBuilder = "";
-            for (let i = 0; i < ann_array.length; i++){
+
+            let announcements = [];
+            let timestamps = [];
+            let dates = [];
+            let netids = [];
+            let j = 0;
+            for (let i = 0; i < ann_array.length-1;i++){ //last index is bloat
+                if(i % 3 == 0){
+                    announcements[j] = ann_array[i];
+                }
+                else if ((i - 1) % 3 == 0){
+                    timestamps[j] = ann_array[i];
+                    dateandtime = ann_array[i].split(",");
+                    dates[j] = dateandtime[0];
+                }
+                else{
+                    netids[j] = ann_array[i];
+                    j++;
+                }
+            }
+
+            for (let i = 0; i < announcements.length; i++){
+                htmlBuilder += `<div class="ann-card">`
+                htmlBuilder += `<div style="color:white;">${netids[i]}`
+                htmlBuilder += `<small style="color:#ececec;"> ${dates[i]}</small>:</div>`
+                htmlBuilder += `<div style="font-size:1.4rem;">${announcements[i]}</div></div><br>`
+                //if (announcements.length - i > 1)
+                  //  htmlBuilder += '<br>';
+            }
+
+            ann_div.innerHTML = htmlBuilder;
+
+            /*for (let i = 0; i < ann_array.length; i++){
                 htmlBuilder += ann_array[i]
                 if (ann_array.length - i > 1)
                     htmlBuilder += '<br>'
             }
-            ann_div.innerHTML = htmlBuilder;
+            ann_div.innerHTML = htmlBuilder;*/
             const ann_body = document.getElementsByClassName("announcements-body");
             if (ann_array.length > 1){
                 ann_body[0].style.display = "inline-block";
