@@ -6,9 +6,29 @@
 </head>
 
 <body>
-    {% include 'header.html' %} <br>
+    <style>
 
-    <div style="padding: 2rem">
+        td.main{
+           border-collapse: collapse;
+           padding-top: 1rem;
+        }
+
+         div.clubhub-button{
+            padding:0.5rem;
+            background-color: darkcyan;
+            margin-top: 10px;
+            border-radius: 7px;
+        }
+
+        a.clubhub-buttonlink{
+            color: white;
+        }
+
+     </style>
+
+    {% include 'header.html' %}
+
+    <div style="padding-top: 2rem; padding-left: 2rem;">
 
     {% if error == "server" %}
         A server error ocurred. Please contact the system administrator.
@@ -16,10 +36,6 @@
 
     {% elif error == "404" %}
         Ruh-roh! It seems like the page you were looking for doesn't exist.
-        <br><br>
-        <img src="{{ url_for('static', filename='images/404img.jpg') }}"
-                width="400rem" height="250rem">
-        <br><br>
 
     {% elif error == "query" %}
         Please enter a club query.
@@ -27,7 +43,15 @@
 
     {%endif%}
 
-   <a href="/index" > Click here to go home! </a>
+   <table>
+    <td class="main">
+        <div class="clubhub-button" style="width:fit-content;display:inline-block;">
+            <a class="clubhub-buttonlink" href = "/index">
+                <div style="display:inline-block;"> Back to club search</div>
+            </a>
+        </div>
+    </td>
+    </table>
     </div>
 
    {% include 'footer.html' %}
