@@ -6,11 +6,41 @@
    <title>ClubHub.com</title>
 </head>
 <body>
+    <style>
 
-    <div style="padding:2rem;">
-        You have been logged out of ClubHub. <br>
-        <a href="/index">Log back in</a>
+        td.main{
+           border-collapse: collapse;
+           padding-left: 2rem;
+        }
+
+         div.clubhub-button{
+            padding:0.5rem;
+            background-color: darkcyan;
+            margin-top: 10px;
+            border-radius: 7px;
+        }
+
+        a.clubhub-buttonlink{
+            color: white;
+        }
+
+     </style>
+
+    <div style="padding-left:2rem; padding-top:2rem">
+        <h4> You have successfully logged out of ClubHub. </h4>
     </div>
+
+    <table>
+        <td class="main">
+            <div class="clubhub-button" style="width:fit-content;display:inline-block;">
+                <a class="clubhub-buttonlink" href = "/index">
+                    <div style="display:inline-block;">
+                    Log back in</div>
+                </a>
+            </div>
+        </td>
+    </table>
+
 
    <!---Keep the JS below at the bottom of body. For loading bootstrap-->
    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
