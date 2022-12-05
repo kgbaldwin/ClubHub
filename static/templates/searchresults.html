@@ -21,7 +21,7 @@
                   {% if results|length == 0: %}
                      <strong>None Found</strong>
                   {% else %}
-                     
+
                      {% for each in results: %}
                      <div class="search-results-card" id = "card_{{each[1]}}" >
                         <a class="search-results-link">
@@ -33,7 +33,7 @@
                         </a>
                      </div>
                      {% endfor %}
-                     
+
                   {% endif %}<br>
                   </div>
                </div>
@@ -42,6 +42,10 @@
             <!--Split Screen-->
             <td max-width = "70%" width="70%" style="border-left: 5px solid black; vertical-align: top;">
               <!-- <h1>Club Info</h1>-->
+               <div id="none-selected" style="padding:2rem;">
+                  Select a club, and its info will appear here...
+               </div>
+
                <div class="namecard" id = "graynamecard">
                   <table>
                      <style> td{padding:10px;} </style>

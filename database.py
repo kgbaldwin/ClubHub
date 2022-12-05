@@ -12,15 +12,15 @@ database_url = "postgres://avgqxjcj:lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1@peanut.db.e
 # gets clubs corresponding matching the given phrase and/or tags
 def get_clubs(clubquery, tags):
 
-    args = [clubquery] + tags
-    print("args: ", args)
-
     try:
         with psycopg2.connect(database_url) as conn:
 
             with conn.cursor() as cur:
 
                 if tags:
+                    args = [clubquery] + tags
+                    print("args: ", args)
+
                     script_tags = "select id from tags WHERE (tag=%s "
                     script_mission_goals = "select groupname, id from clubs where (mission ilike %s or goals ilike %s) and id not in (select id from tags where tag = %s "
                     for _ in tags[1:]:
@@ -29,7 +29,7 @@ def get_clubs(clubquery, tags):
                     script_tags +=") group by id order by count(id) desc"
                     script_mission_goals += ") order by groupname"
 
-                    
+
                     cur.execute(script_tags, tags)
                     tag_ids = []
                     row = cur.fetchone()
@@ -62,7 +62,7 @@ def get_clubs(clubquery, tags):
                         row = cur.fetchone()
                 else:
                     script_namelike = "select groupname, id from clubs where groupname ilike %s"
-                    
+
                     cur.execute(script_namelike, [clubquery])
                     clubs = []
                     row = cur.fetchone()

@@ -12,6 +12,9 @@ function changeInfo() {
     .then((text) => {
     var info = text.split("`");
 
+    // make initial message disappear
+    document.getElementById('none-selected').innerHTML.style.display='none';
+
     // indices: name, mission, goals, mail, IG, YT, imlink, subbed
 
     // CLUB NAME
@@ -81,7 +84,7 @@ function changeInfo() {
     const namecard = document.getElementById("graynamecard");
     namecard.style.backgroundColor = "lightgrey";
 
-    // Get club tags 
+    // Get club tags
         document.getElementById("tagsdiv").style.display="inline-block";
         const tagscard = document.getElementsByClassName("tagscard")[0];
         tagscard.style.backgroundColor = 'lightgrey';
@@ -95,7 +98,7 @@ function changeInfo() {
             }
         }
         document.getElementById("tagsdiv").innerHTML = stringBuilder;
-    
+
 
 
     console.log("INFO 8:");
@@ -123,26 +126,9 @@ function changeInfo() {
         previous[i].classList.remove('border', 'search-results-card-selected');
     }
     document.getElementById("card_"+clubid).classList.add('search-results-card-selected','border','border-warning','border-3');
-   
+
 });
 }
-
-/*
-function getTitle(id) {
-    alert("TITLE")
-    //document.getElementById("clubinfo").innerHTML = getInfo(selected_id)
-
-    clubid = document.querySelector('input[name="clubname"]:checked').value
-    // alert("selected element " + clubid)
-
-    fetch("/get_info?clubid="+clubid)
-    .then((response) => response.text())
-    .then((text) => {
-    var info = text.split("\n");
-    });
-    return info[1];
-}
-*/
 
 function loadAnnouncements() {
     fetch("/get_club_announcements?clubid="+clubid)
@@ -214,11 +200,7 @@ function subscribeUser() {
                 checkUnSub[0].style.display = "inline-block";
             }
             else alert(text)
-            //else alert("Error - unable to subscribe")
         });
-
-        // add part with message about success
-
     }
 
     else {

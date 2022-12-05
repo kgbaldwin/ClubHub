@@ -10,13 +10,12 @@ function new_officer() {
     .then((text) => {
         var out = text;
         if (out == "invalid netid") {
-            alert("invalid netid")
+            alert("Invalid netid")
         }
     });
 }
 
 function update_data() {
-    alert("update data")
 
     const form = new FormData(document.getElementById('editform'));
     fetch('/edit_club_info', {

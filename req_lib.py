@@ -10,17 +10,17 @@ class ReqLib:
         self.configs = Configs()
 
     '''
-    This function allows a user to make a request to 
-    a certain endpoint, with the BASE_URL of 
+    This function allows a user to make a request to
+    a certain endpoint, with the BASE_URL of
     https://api.princeton.edu:443/active-directory/1.0.2
 
     The parameters kwargs are keyword arguments. It
-    symbolizes a variable number of arguments 
+    symbolizes a variable number of arguments
     '''
     def getJSON(self, endpoint, **kwargs):
         req = requests.get(
-            self.configs.BASE_URL + endpoint, 
-            params=kwargs if "kwargs" not in kwargs else kwargs["kwargs"], 
+            self.configs.BASE_URL + endpoint,
+            params=kwargs if "kwargs" not in kwargs else kwargs["kwargs"],
             headers={
                 "Authorization": "Bearer " + self.configs.ACCESS_TOKEN
             },
@@ -39,8 +39,8 @@ class ReqLib:
 
             # Redo the request with the new access token
             req = requests.get(
-                self.configs.BASE_URL + endpoint, 
-                params=kwargs if "kwargs" not in kwargs else kwargs["kwargs"], 
+                self.configs.BASE_URL + endpoint,
+                params=kwargs if "kwargs" not in kwargs else kwargs["kwargs"],
                 headers={
                     "Authorization": "Bearer " + self.configs.ACCESS_TOKEN
                 },
@@ -51,8 +51,8 @@ class ReqLib:
 
     def getXMLorTXT(self, endpoint, **kwargs):
         req = requests.get(
-                self.configs.BASE_URL + endpoint, 
-                params=kwargs if "kwargs" not in kwargs else kwargs["kwargs"], 
+                self.configs.BASE_URL + endpoint,
+                params=kwargs if "kwargs" not in kwargs else kwargs["kwargs"],
                 headers={
                     "Authorization": "Bearer " + self.configs.ACCESS_TOKEN
                 },
