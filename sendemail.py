@@ -7,7 +7,7 @@ def send_email(to, clubname, content):
     message = Mail(
 
         # display sender as the club name instead of "Katie Baldwin"
-        from_email=('kgb2@princeton.edu', clubname),
+        from_email=('clubhub-admin@princeton.edu', clubname),
 
         # to is a list of emails (represented as strings)
         to_emails=to,
