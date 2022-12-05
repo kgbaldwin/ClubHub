@@ -26,11 +26,34 @@
             padding-top:0.1rem;
             padding-bottom:0.1rem;
          }
+
+         div.clubhub-button{
+            padding:0.5rem;
+            background-color: darkcyan;
+            margin-top: 10px;
+            border-radius: 7px;
+        }
+
+        a.clubhub-buttonlink{
+            color: white;
+        }
+
      </style>
-     {% include 'header.html' %} <br>
+     {% include 'header.html' %}
 
      <table>
          <td class="main">
+
+            <div class="clubhub-button" style="width:fit-content;display:inline-block;">
+                <a class="clubhub-buttonlink" href = "/index">
+                    <div class="sub-button-text checkSub" style="display:inline-block;">
+                     Back to club search</div>
+                </a>
+             </div>
+
+            <br>
+            <br>
+
             <h1>Your Profile</h1>
             Netid: {{username}} <br>
             Name: {{name}}<br>
@@ -54,7 +77,7 @@
                   <div style="color:red;size:small;">*Click on each club to unsubscribe</div>
                   <ul style="margin-bottom:0;">
                   {% for each in subs: %}
-                     <li><label class="strikethrough" 
+                     <li><label class="strikethrough"
                         onclick="unsubscribe('{{each[1]}}')">{{each[0]}}</label>
                   {% endfor %}
 

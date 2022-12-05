@@ -7,9 +7,39 @@
 
     <body>
 
-    {% include 'header.html' %} <br>
+    <style>
+        td.main{
+            border-collapse: collapse;
+            padding: 2rem;
+        }
 
-    <div style="padding-left: 1.5rem; padding-right: 1.5rem">
+            div.clubhub-button{
+            padding:0.5rem;
+            background-color: darkcyan;
+            margin-top: 10px;
+            border-radius: 7px;
+        }
+
+        a.clubhub-buttonlink{
+            color: white;
+        }
+        </style>
+
+    {% include 'header.html' %}
+
+
+    <table>
+        <td class="main">
+            <div class="clubhub-button" style="width:fit-content;display:inline-block;">
+                <a class="clubhub-buttonlink" href = "/profile?edit=0">
+                    <div class="sub-button-text checkSub" style="display:inline-block;">
+                    Back to profile</div>
+                </a>
+            </div>
+        </td>
+    </table>
+
+    <div style="padding-left: 2rem; padding-right: 1.5rem">
 
         {% if verified == false: %}
             You are not an officer of <em>{{clubname}}</em>!
