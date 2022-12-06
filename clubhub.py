@@ -54,7 +54,11 @@ def profile():
     tags = database.get_user_sub_tags(username)
     print("TAGGGSS: ", tags)
 
-    edit = int(flask.request.args.get("edit"))
+    edit = flask.request.args.get("edit")
+    if not edit:
+        edit = 0
+    else:
+        edit = int(edit)
 
     html_code = flask.render_template('profile.html', username=username,
             name=info["displayname"], year=year, subs=subs,
@@ -98,7 +102,10 @@ def searchform():
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
     username = auth.authenticate()
-    clubquery = '%' + flask.request.args.get('clubquery') + '%'
+    clubquery = flask.request.args.get('clubquery')
+    if not clubquery:
+        clubquery = ''
+    clubquery = '%' + str(clubquery) + '%'
     if len(clubquery) == 2:
         clubquery = ""  # strip percent signs off empty queries
     tags = flask.request.args.getlist('tags')
@@ -175,9 +182,8 @@ def edit_club():
 def get_info():
     username = auth.authenticate()
     clubid = flask.request.args.get('clubid')
-    if clubid == "":
-        print("no clubid")
-        return ["invalid clubid"]
+    if not clubid:
+        return page_not_found('lacking_info')
 
     info = database.database_get_info(clubid)
 
@@ -208,6 +214,8 @@ def get_info():
 @app.route("/get_club_announcements", methods=['GET'])
 def get_club_announcements():
     clubid = flask.request.args.get('clubid')
+    if not clubid:
+        return page_not_found('_')
     # announcements is now a list of tuples [(announcement, stamp, officer,), (ann2, stamp2, officer2,), etc]
     announcements = database.get_club_announcements(clubid)
     response = ""
@@ -230,6 +238,8 @@ def subscribe():
     username = auth.authenticate()
     clubid = flask.request.args.get('clubid')
     subscribe = flask.request.args.get('subscribe')
+    if not clubid or not subscribe:
+        return page_not_found('lacking_info')
 
     if subscribe=="1":
         response = database.add_sub(username, clubid)
@@ -253,8 +263,9 @@ def subscribe_tag():
     username = auth.authenticate()
     tag = flask.request.args.get('tag')
     subscribe_tag = flask.request.args.get('subscribe_tag')
-    print("subscribe_tag = ",subscribe_tag)
-    print("tag: ", tag)
+    if not tag or not subscribe_tag:
+        return page_not_found('lacking_info')
+
     if subscribe_tag=="1":
         response = database.add_sub_tag(username, tag)
     else:
@@ -275,6 +286,8 @@ def add_officer():
 
     newofficer = flask.request.args.get('newofficer')
     clubid = flask.request.args.get('clubid')
+    if not clubid or not newofficer:
+        return page_not_found('lacking_info')
 
     if not get_user(newofficer):
         print("invalid netid")
@@ -286,10 +299,10 @@ def add_officer():
 
 @app.route("/edit_club_info", methods=['POST'])
 def edit_club_info():
-    print("edit club info")
     auth.authenticate()
     clubid = flask.request.form.get("clubid")
-    print("clubid///: ", clubid)
+    if not clubid:
+            return page_not_found('lacking_info')
     mission = flask.request.form.get('clubmission')
     goals = flask.request.form.get('clubgoals')
     imlink = flask.request.form.get('clubimlink')
@@ -328,8 +341,8 @@ def send_announce():
 ################
 # getting user infos from netid
 #######################
-@app.route('/get_user', methods=['GET'])
 def get_user(username):
+    
     req_lib = ReqLib()
 
     reqBasic = req_lib.getJSON(
@@ -342,8 +355,10 @@ def get_user(username):
 
 
 ##########################################################
+'''
 @app.route('/register_club', methods=['GET'])
 def register_club():
+    return page_not_found('_')
     req_lib = ReqLib()
 
     username = auth.authenticate()
@@ -355,12 +370,15 @@ def register_club():
     #print("req2: ", reqBasic)
 
     return reqBasic
-
+'''
 
 @app.errorhandler(404)
 def page_not_found(e):
     username = auth.authenticate()
-    html_code = flask.render_template('error.html', error="404",
+    if e == "lacking_info":
+        error = "lacking_info"
+    else: error = "404"
+    html_code = flask.render_template('error.html', error=error,
                                         username=username)
     response = flask.make_response(html_code)
     return response
