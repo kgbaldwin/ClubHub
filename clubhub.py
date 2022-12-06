@@ -99,6 +99,8 @@ def searchform():
 def searchresults():
     username = auth.authenticate()
     clubquery = '%' + flask.request.args.get('clubquery') + '%'
+    if len(clubquery) == 2:
+        clubquery = ""  # strip percent signs off empty queries
     tags = flask.request.args.getlist('tags')
     searchpersist = clubquery.lstrip('%').rstrip('%')
     selected_tags = flask.request.args.get('selected_tags')

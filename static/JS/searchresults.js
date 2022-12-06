@@ -131,6 +131,7 @@ function changeInfo() {
 }
 
 function loadAnnouncements() {
+    
     fetch("/get_club_announcements?clubid="+clubid)
         .then((response) => response.text())
         .then((text) => {
