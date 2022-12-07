@@ -66,38 +66,6 @@ def profile():
     response = flask.make_response(html_code)
     return response
 
-'''
-@app.route('/profile_edit', methods=['GET'])
-def profile_edit():
-    username = auth.authenticate()
-
-    info = get_user(username)[0]
-
-    year = info["dn"].split(" ")[3][:4]
-
-    subs = database.get_subs(username)
-    officerships = database.get_officerships(username)
-    tags = database.get_tags()
-
-    html_code = flask.render_template('profile-edit.html', username=username,
-            name=info["displayname"], year=year, subs=subs,
-            officerships=officerships, tags = tags)
-    response = flask.make_response(html_code)
-    return response
-'''
-
-'''
-@app.route('/searchform', methods=['GET'])
-def searchform():
-    username = auth.authenticate()
-    tags = database.get_tags()
-
-    html_code = flask.render_template('searchform.html',
-                                    username=username, tags=tags)
-    #print("tags: ", tags)
-    response = flask.make_response(html_code)
-    return response
-'''
 
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
@@ -111,9 +79,8 @@ def searchresults():
     tags = flask.request.args.getlist('tags')
     searchpersist = clubquery.lstrip('%').rstrip('%')
     selected_tags = flask.request.args.get('selected_tags')
-    #print("cq: ", clubquery)
-    #print("tags: ", tags)
-    ########### make sure this works ##############
+    print(selected_tags)
+
     for index in range(len(tags)):
         tags[index] = urllib.parse.unquote_plus(tags[index])
 
@@ -129,8 +96,7 @@ def searchresults():
 
     html_code = flask.render_template('searchresults.html', results=clubs,
                                         username=username,tags=tags_dropdown,
-                                        checked=tags, clubquery=searchpersist,
-                                        selected_tags = selected_tags)
+                                        checked=tags, clubquery=searchpersist)
     response = flask.make_response(html_code)
     return response
 
@@ -168,10 +134,6 @@ def edit_club():
 
     response = flask.make_response(html_code)
     return response
-
-#selected_tags = []
-#@app.route('/get_selected_tags', methods=['GET'])
-#def get_selected_tags():
 
 
 
@@ -216,7 +178,7 @@ def get_club_announcements():
     clubid = flask.request.args.get('clubid')
     if not clubid:
         return page_not_found('_')
-    # announcements is now a list of tuples [(announcement, stamp, officer,), (ann2, stamp2, officer2,), etc]
+    # announcements is a list of tuples [(announcement, stamp, officer,), (ann2, stamp2, officer2,), etc]
     announcements = database.get_club_announcements(clubid)
     response = ""
 
@@ -342,7 +304,7 @@ def send_announce():
 # getting user infos from netid
 #######################
 def get_user(username):
-    
+
     req_lib = ReqLib()
 
     reqBasic = req_lib.getJSON(
