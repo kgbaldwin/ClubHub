@@ -13,7 +13,7 @@ function changeInfo() {
     var info = text.split("`");
 
     // make initial message disappear
-    document.getElementById('none-selected').innerHTML.style.display='none';
+    document.getElementById('none-selected').style.display='none';
 
     // indices: name, mission, goals, mail, IG, YT, imlink, subbed
 

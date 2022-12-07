@@ -51,8 +51,8 @@ def profile():
 
     subs = database.get_subs(username)
     officerships = database.get_officerships(username)
-    tags = database.get_user_sub_tags(username)
-    print("TAGGGSS: ", tags)
+    sub_tags = database.get_tags()
+    unsub_tags = database.get_user_sub_tags(username)
 
     edit = flask.request.args.get("edit")
     if not edit:
@@ -62,7 +62,7 @@ def profile():
 
     html_code = flask.render_template('profile.html', username=username,
             name=info["displayname"], year=year, subs=subs,
-            officerships=officerships, tags=tags, edit=edit)
+            officerships=officerships, sub_tags=sub_tags, unsub_tags=unsub_tags, edit=edit)
     response = flask.make_response(html_code)
     return response
 

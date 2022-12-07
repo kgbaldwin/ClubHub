@@ -19,11 +19,11 @@
                <div id="search-results" class="scrollable-menu-results">
                   <div class="search_results_background">
                   {% if results|length == 0: %}
-                     <strong>None Found</strong>
+                     <strong>No Clubs Found</strong>
                   {% else %}
 
                      {% for each in results: %}
-                     <div class="search-results-card" id = "card_{{each[1]}}" >
+                     <div class="search-results-card" id = "card_{{each[1]}}" style="list-style-type: none;" >
                         <a class="search-results-link">
                            <!--<div class="card-body">-->
                               <li><strong><label style="padding:1rem; width:100%;"for={{each[1]}}>{{each[0]}}</label></strong></li>
@@ -40,7 +40,7 @@
             </td>
             </div>
             <!--Split Screen-->
-            <td max-width = "70%" width="70%" style="border-left: 5px solid black; vertical-align: top;">
+            <td max-width = "70%" width="70%" style="vertical-align: top;">
               <!-- <h1>Club Info</h1>-->
                <div id="none-selected" style="padding:2rem;">
                   Select a club, and its info will appear here...
@@ -53,12 +53,12 @@
                         <td rowspan = "4">
                            <img id = "clubimlink" style="max-width:200px;height:auto;width:200px;max-height:200px;border:0px;border-width:0rem;padding:1rem;"></img>
                         </td>
-                        <td style="display:inline-block; max-width:80%;"><div class="clubname" id = "clubname"></div></td>
-                        <td id="subbutton" style="display:none; width:20%;">
-                           <div class="sub-button" style="width:fit-content;display:inline-block;">
+                        <td style="display:inline-block;"><div class="clubname" id = "clubname"></div></td>
+                        <td id="subbutton" style="display:none;">
+                           <div class="sub-button" style="width:fit-content;">
                               <input class = "checkSub" id = "check" type="checkbox" name="subscribed" onclick="subscribeUser()" style="display:none;">
-                              <div class="sub-button-text checkSub" style="display:inline-block;"><label for="check">Subscribe</label></div>
-                              <div class="unsub-button-text checkUnSub" style="display:inline-block;"><label for="check">Unsubscribe</label></div>
+                              <div class="sub-button-text checkSub"><label for="check">Subscribe</label></div>
+                              <div class="unsub-button-text checkUnSub"><label for="check">Unsubscribe</label></div>
                            </div>
                         </td>
                      </tr>

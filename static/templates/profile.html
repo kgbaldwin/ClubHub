@@ -35,8 +35,12 @@
         }
 
         a.clubhub-buttonlink{
-            color: white;
+            color: black;
         }
+        
+        a.clubhub-buttonlink:hover {
+            color: white;
+         }
 
      </style>
      {% include 'header.html' %}
@@ -55,10 +59,10 @@
             <br>
 
             <h1>Your Profile</h1>
-            Netid: {{username}} <br>
-            Name: {{name}}<br>
-            Class Year: {{year}}<br>
-            Subscribed Clubs:
+            <b>Netid:</b> {{username}} <br>
+            <b>Name:</b> {{name}}<br>
+            <b>Class Year:</b> {{year}}<br>
+            <b>Subscribed Clubs:</b>
             {% if subs|length==0: %}
             <br><em>&emsp;&emsp;Subscribe to clubs to see them listed here!</em><br>
             {% else: %}
@@ -86,11 +90,27 @@
 
             {% endif %}
 
+            <!--SUBSCRIBE TO TAGS DROPDOWN-->
+            <br>
+         <div class="btn-group dropright" style="padding-top:10px;">
+            <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Subscribe Tags</button>
+            <ul id="tagdropdownAAA" class="dropdown-menu scrollable-menu-dropdown">
+               <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Subscribing to a tag will subscribe you to all clubs containing the specified tag.</a></li>
+               {% for tag in sub_tags: %}
+               <li onclick="sub_tag('{{tag[0]}}')">
+                  <a class="dropdown-item" style="white-space:normal;">
+                     <label for={{tag[0]}}>{{tag[0]}}</label>
+                  </a>
+               </li>
+               {% endfor %}
+            </ul>
+            </div> <br>
+         </div>
             <div class="btn-group dropright" style="padding-top:10px;">
                <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Unsubscribe From Tags</button>
-               <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+               <ul id="tagdropdownDDD" class="dropdown-menu scrollable-menu-dropdown">
                   <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Unsubscribing to a tag will unsubscribe you to all clubs containing the specified tag.</a></li>
-                  {% for tag in tags: %}
+                  {% for tag in unsub_tags: %}
                   <li onclick="unsub_tag('{{tag[0]}}')">
                      <a class="dropdown-item" style="white-space:normal;">
                         <label for={{tag[0]}}>{{tag[0]}}</label>
@@ -105,7 +125,7 @@
             <!--small><em>&emsp;&emsp;You are automatically subscribed to any clubs for which you are an officer.</em></small>
             <br--><br>
 
-            Officer of Clubs:<br>
+            <b>Officer of Clubs:</b><br>
 
             {% if officerships|length==0: %}
             <em>&emsp;&emsp;You are not an officer of any clubs.</em>

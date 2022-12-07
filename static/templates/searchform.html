@@ -100,13 +100,13 @@
                <!--SEARCH WITH TAGS-->
                <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
                   {% for tag in tags: %}
-                  <li onClick="toggle('{{tag[0]}}')">
+                  <li onclick="toggle('{{tag[0]}}')">
                      <a class="dropdown-item">
                         <label>{{tag[0]}}</label>
                         {% if tag[0] in checked: %}
-                        <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle('{{tag[0]}}')">
+                        <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
                         {% else: %}
-                        <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onClick="toggle('{{tag[0]}}')">
+                        <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
                         {% endif %}
                      </a>
                   </li>
@@ -114,72 +114,6 @@
                </ul>
             </div>
          </form>
-
-         <!--SUBSCRIBE TO TAGS DROPDOWN-->
-         <div style="padding-top:8px;">
-            <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Subscribe To Tags</button>
-
-            <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
-               <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Subscribing to a tag will subscribe you to all clubs containing the specified tag.</a></li>
-               {% for tag in tags: %}
-               <li onClick="sub_tag('{{tag[0]}}')">
-                  <a class="dropdown-item" style="white-space:normal;">
-                     <label for={{tag[0]}}>{{tag[0]}}</label>
-                  </a>
-               </li>
-               {% endfor %}
-            </ul>
-
-            <script>
-               document.getElementById("tagdropdown").addEventListener("click", function(e) {
-                  e.stopPropagation();
-               });
-
-               function toggle(tag) {
-                  checkbox = document.getElementById(tag);
-                  checkbox.checked = !checkbox.checked;
-                  const findInd = (element) => element == tag;
-                  if (checkbox.checked){
-                     tags_tf[tags_selection.findIndex(findInd)] = true;
-                  }
-                  else{
-                     tags_tf[tags_selection.findIndex(findInd)] = false;
-                  }
-                  let htmlBuilder = "";
-                  selected_tags = get_selected_tags();
-                  for (let i = 0; i < selected_tags.length; i++){
-                     htmlBuilder += selected_tags[i];
-                     if (selected_tags.length - i > 1)
-                        htmlBuilder += ', ';
-                  }
-                  document.getElementById('selected_tags').innerHTML = htmlBuilder;
-               }
-
-               function get_selected_tags(){
-                  let selected_tags = [];
-                  // append all selected tags
-                  for (let i = 0; i < tags_selection.length; i++){
-                     if (tags_tf[i]) {
-                        selected_tags.push(tags_selection[i]);
-                     }
-                  }
-                  return selected_tags
-               }
-
-               function sub_tag(tag) {
-                  fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=1")
-                  .then((response) => response.text())
-                  .then((text) => {
-                     if (text=="success"){
-                        alert("Successfully subscribed to tag " + tag + "!")
-                     }
-                     else alert("Error - unable to subscribe to tag " + tag)
-                  });
-               }
-               
-            </script>
-         </div>
-         <!--Split Screen-->
 
       <!---Keep the JS below at the bottom of body. For loading bootstrap-->
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

@@ -21,8 +21,18 @@
         }
 
         a.clubhub-buttonlink{
-            color: white;
+            color: black;
         }
+
+        a.clubhub-buttonlink:hover {
+            color: white;
+         }
+
+        .inputSpec:invalid {
+            background-color: rgb(240, 173, 151);
+            width: 15rem;
+        }
+
         </style>
 
     {% include 'header.html' %}
@@ -69,16 +79,16 @@
                     <textarea id="clubgoals" name="clubgoals" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
 
                     <label for="clubimlink">Image link: </label><br>
-                    <input type="text" id="clubimlink" name="clubimlink" style="width: 15rem"><br><br>
+                    <input type="text" id="clubimlink" name="clubimlink" class="inputSpec"><br><br>
 
                     <label for="clubemail">Email: </label><br>
-                    <input type="text" id="clubemail" name="clubemail" style="width: 15rem"><br><br>
+                    <input type="text" id="clubemail" name="clubemail" class="inputSpec"><br><br>
 
                     <label for="clubinstagram">Instagram: </label><br>
-                    <input type="text" id="clubinstagram" name="clubinstagram" style="width: 15rem"><br><br>
+                    <input type="text" id="clubinstagram" name="clubinstagram" class="inputSpec"><br><br>
 
                     <label for="clubyoutube">YouTube: </label><br>
-                    <input type="text" id="clubyoutube" name="clubyoutube" style="width: 15rem"><br>
+                    <input type="text" id="clubyoutube" name="clubyoutube" class="inputSpec"><br>
 
                     <br>
                     <input onclick="update_data()" type="submit" value="Update info">
