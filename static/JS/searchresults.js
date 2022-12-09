@@ -24,25 +24,27 @@ function changeInfo() {
 
     // CLUB MISSION
     document.getElementById("clubmission").innerHTML = info[1];
+    const missioncard = document.getElementById("missioncard");
+    const clubmission = document.getElementById('clubmission');
     if (info[1] != ""){
-        document.getElementById("clubmission").style.display = "inline";
-        document.getElementById("missiontd").style.display = "";
+        missioncard.style.display = "";
+        clubmission.style.display="";
     }
     else{
-        document.getElementById("missiontd").style.display = "none";
+        missioncard.style.display = "none";
+        clubmission.style.display="none";
     }
-    // CLUB GOALS
+    // CLUB GOALS 
     document.getElementById("clubgoals").innerHTML = info[2];
-    const goalstr = document.getElementsByClassName("goals")[0];
-    const goalstd = document.getElementsByClassName("goals")[1];
+    const goalscard = document.getElementById("goalscard");
+    const clubgoals = document.getElementById("clubgoals");
     if (info[2] != "") {
-        document.getElementById("clubgoals").style.display = "inline";
-        goalstr.style.display = "";
-        goalstd.style.display = "";
+        goalscard.style.display="";
+        clubgoals.style.display="";
     }
     else{
-        goalstr.style.display = "none";
-        goalstd.style.display = "none";
+        goalscard.style.display="none";
+        clubgoals.style.display="none";
     }
 
     // CLUB EMAIL

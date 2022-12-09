@@ -50,7 +50,7 @@
                   <table>
                      <style> td{padding:10px;} </style>
                      <tr>
-                        <td rowspan = "4">
+                        <td rowspan = "2">
                            <img id = "clubimlink" style="max-width:200px;height:auto;width:200px;max-height:200px;border:0px;border-width:0rem;padding:1rem;"></img>
                         </td>
                         <td style="display:inline-block;"><div class="clubname" id = "clubname"></div></td>
@@ -71,24 +71,27 @@
                         </div>
                         </td>
                      </tr>
-                     <tr>
-                        <td id = "missiontd">
-                        <div class="clubattribute" id = "clubmission"></div><br></td>
-                     </tr>
-                     <tr class="goals" style="display:none;">
-                        <td class = "goals" style="display:none;">
-                        <b>Club Goals: </b><div class="clubattribute" id = "clubgoals"></div><br>
-                        </td>
-                     </tr>
                   </table>
                </div>
-               
-                  <div class="clubattribute" id = "clubmission"></div><br></td>
-               <tr class="goals" style="display:none;">
+
+
+               <br> 
+                  <div class='clubinfo' style="display:none;" id = "missioncard">
+                     <b>Club mission:</b>
+                     <div id = "clubmission" style='display:none;'></div>
+                  </div>
+                  <br> 
+                  <div class='clubinfo' style="display:none;" id = "goalscard">
+                     <b>Club goals:</b>
+                     <div id = "clubgoals" style='display:none;'></div>
+                  </div>
+<!--
+               <class="goals" style="display:none;">
                   <td class = "goals" style="display:none;">
                   <b>Club Goals: </b><div class="clubattribute" id = "clubgoals"></div><br>
                   </td>
-               </tr>
+               -->
+                  
 
 
                <!-- Tags output -->

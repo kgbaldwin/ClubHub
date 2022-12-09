@@ -56,17 +56,18 @@ div.tagscard{
    background-color:white;  
    padding:1rem;
    width:100%;
-   border-radius:8px;
+   border-radius:7px;
 }
-
+div.clubinfo{
+   background-color:lightgrey;
+   padding:1rem;
+   border-radius:7px;
+}
 
 /* for CLUB INFO section of searchresults. */
 div.clubname{
    font-size: 3rem;
    font-weight:bold;
-}
-div.clubattribute{
-   display:none;
 }
 div.namecard{
    background-color:rgb(255, 255, 255);
