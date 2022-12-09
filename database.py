@@ -59,7 +59,7 @@ def get_clubs(clubquery, tags):
                             row = cur.fetchone()
                             if row is not None:
                                 clubs.append(row)
-                    
+
                     else:
                         # get clubnames matching id's
                         script_tag = "select groupname, id from clubs where id=%s"
@@ -440,7 +440,6 @@ def verify_officer(netid, clubid):
         return "server, verify_officer"
 
 
-### not working ?? ###
 def add_officer(netid, clubid):
     try:
         with psycopg2.connect(database_url) as conn:
@@ -458,6 +457,24 @@ def add_officer(netid, clubid):
     except Exception as ex:
         print(ex)
         return "server, add_officer"
+
+
+def remove_officer(netid, clubid):
+    print("in remove_officer")
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "delete from officers where netid=%s and clubid=%s"
+
+                cur.execute(script, [netid, clubid])
+
+                return "success"
+
+    except Exception as ex:
+        print(ex)
+        return "server, remove_officer"
 
 
 # send an announcement to a given club
