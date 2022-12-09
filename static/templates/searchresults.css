@@ -9,7 +9,7 @@ div.search-results-card{
    border-radius: 7px;
 }
 div.search-results-card-selected{
-   background-color:rgba(208, 249, 255, 0.356);
+   background-color:rgba(248,249,250);
    margin-top: 10px;
    border-radius: 7px;
 }
@@ -18,8 +18,8 @@ div.search-results-card-selected{
    border-color: rgb(222, 226, 230);
    border-width: 1px;
 }
-.border-warning {
-   border-color: #ffc107 !important;
+div.border-warning {
+   border-color: darkcyan !important;
 }
 .border-3 {
    border-width: 3px !important;
@@ -80,5 +80,8 @@ td {
 div.ann-card{
    padding:0.5rem;
    background-color:rgb(162, 162, 162);
+   border-radius:7px;
+}
+div.announcements-body{
    border-radius:7px;
 }

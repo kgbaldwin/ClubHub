@@ -10,7 +10,6 @@ import flask
 import urllib
 import database
 import auth
-from req_lib import ReqLib
 from sendemail import send_email, append_address
 # -------------------------------------------------------------------
 
@@ -45,7 +44,7 @@ def profile():
     username = auth.authenticate()
     print("username: ", username)
 
-    info = get_user(username)[0]
+    info = database.get_user(username)[0]
 
     year = info["dn"].split(" ")[3][:4]
 
@@ -125,9 +124,12 @@ def edit_club():
     clubid = flask.request.args.get("clubid")
     clubname = database.get_clubname(clubid)[0]
 
+    officers = database.get_club_officers(clubid)
+
     if database.verify_officer(username, clubid):
         html_code = flask.render_template('editclub.html', username=username,
-                                clubname=clubname, verified=True, clubid=clubid)
+                                clubname=clubname, verified=True, clubid=clubid,
+                                curr_officers=officers)
     else:
         html_code = flask.render_template('editclub.html', username=username,
                                 clubname=clubname, verified=False)
@@ -251,12 +253,24 @@ def add_officer():
     if not clubid or not newofficer:
         return page_not_found('lacking_info')
 
-    if not get_user(newofficer):
+    if not database.get_user(newofficer):
         print("invalid netid")
         return "invalid netid"
 
-    database.add_officer(newofficer, clubid)
-    return ''
+    success = database.add_officer(newofficer, clubid)
+    return success
+
+
+@app.route("/remove_officer", methods=['GET'])
+def remove_officer():
+    username = auth.authenticate()
+
+    clubid = flask.request.args.get('clubid')
+    if not clubid:
+        return page_not_found('lacking_info')
+
+    success = database.remove_officer(username, clubid)
+    return success
 
 
 @app.route("/edit_club_info", methods=['POST'])
@@ -299,20 +313,6 @@ def send_announce():
        return "success"
 
     return "error"
-
-################
-# getting user infos from netid
-#######################
-def get_user(username):
-
-    req_lib = ReqLib()
-
-    reqBasic = req_lib.getJSON(
-        req_lib.configs.USERS_BASIC,
-        uid=username,
-    )
-
-    return reqBasic
 
 
 

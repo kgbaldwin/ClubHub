@@ -93,7 +93,7 @@
             <!--SUBSCRIBE TO TAGS DROPDOWN-->
             <br>
          <div class="btn-group dropright" style="padding-top:10px;">
-            <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Subscribe Tags</button>
+            <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Subscribe To Tags</button>
             <ul id="tagdropdownAAA" class="dropdown-menu scrollable-menu-dropdown">
                <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Subscribing to a tag will subscribe you to all clubs containing the specified tag.</a></li>
                {% for tag in sub_tags: %}
@@ -134,9 +134,9 @@
             {% for each in officerships: %}
                <li>{{each}}&nbsp;&nbsp;
                   <small><em>
-                  <a href="/announce?clubid={{officerships[each]}}"> Send announcement </a>
+                  <a class = 'edit' href="/announce?clubid={{officerships[each]}}"> Send announcement </a>
                   &nbsp;&nbsp;&nbsp;
-                  <a href="/edit_club?clubid={{officerships[each]}}"> Edit your club </a>
+                  <a class = 'edit' href="/edit_club?clubid={{officerships[each]}}"> Edit your club </a>
                   </em></small>
 
                </li>

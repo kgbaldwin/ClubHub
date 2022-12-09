@@ -24,13 +24,13 @@
 
                      {% for each in results: %}
                      <div class="search-results-card" id = "card_{{each[1]}}" style="list-style-type: none;" >
-                        <a class="search-results-link">
+                        <div class="search-results-link">
                            <!--<div class="card-body">-->
                               <li><strong><label style="padding:1rem; width:100%;"for={{each[1]}}>{{each[0]}}</label></strong></li>
                               <input type="radio" id={{each[1]}} name="clubname"
                               value="{{each[1]}}" onclick="changeInfo(); loadAnnouncements()" width="3rem;" style="display: none">
                            <!--</div>-->
-                        </a>
+                           </div>
                      </div>
                      {% endfor %}
 
@@ -82,6 +82,15 @@
                      </tr>
                   </table>
                </div>
+               
+                  <div class="clubattribute" id = "clubmission"></div><br></td>
+               <tr class="goals" style="display:none;">
+                  <td class = "goals" style="display:none;">
+                  <b>Club Goals: </b><div class="clubattribute" id = "clubgoals"></div><br>
+                  </td>
+               </tr>
+
+
                <!-- Tags output -->
                <br>
                <div class="tagscard" style="display:none;">

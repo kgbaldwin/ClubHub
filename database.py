@@ -6,6 +6,7 @@
 #-------------------------------------------------------------------
 
 import psycopg2
+from req_lib import ReqLib
 
 database_url = "postgres://avgqxjcj:lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1@peanut.db.elephantsql.com/avgqxjcj"
 
@@ -387,6 +388,34 @@ def get_officerships(netid):
         print(ex)
         return "server, get_officerships"
 
+# return clubids and clubnames for clubs where netid is an officer
+def get_club_officers(clubid):
+    try:
+        with psycopg2.connect(database_url) as conn:
+
+            with conn.cursor() as cur:
+
+                script = "select netid from officers WHERE clubid=%s"
+
+                cur.execute(script, [clubid])
+
+                row = cur.fetchone()
+                names = []
+                while row is not None:
+                    print("row: ", row)
+                    user = get_user(row)[0]
+                    print(user)
+                    print(user['displayname'])
+                    names.append((user['displayname'], row[0]))
+                    row = cur.fetchone()
+
+                return names
+
+
+    except Exception as ex:
+        print(ex)
+        return "server, get_club_officers"
+
 
 
 ###### ---------------- Club Edit information ------------------ #####
@@ -520,3 +549,17 @@ def get_clubname(clubid):
     except Exception as ex:
         print(ex)
         return "server, get_clubname"
+
+################
+# getting user infos from netid
+#######################
+def get_user(username):
+
+    req_lib = ReqLib()
+
+    reqBasic = req_lib.getJSON(
+        req_lib.configs.USERS_BASIC,
+        uid=username,
+    )
+
+    return reqBasic

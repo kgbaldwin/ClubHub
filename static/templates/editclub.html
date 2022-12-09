@@ -57,6 +57,14 @@
         {% else: %}
             <h2>Edit {{clubname}}</h2> <br>
 
+            <h3>Current Officers:</h3>
+                <ul>
+                    {% for person in curr_officers: %}
+                        <li>{{person[0]}}  ({{person[1]}})</li>
+                    {% endfor %}
+                </ul>
+
+
             <h3> Add an Officer </h3>
 
                 <label for="newofficer">Enter the new officer's netid:</label>
@@ -65,6 +73,8 @@
                 <button> <small onclick="new_officer()"><em>Submit</em></small></button>
 
             <br><hr>
+
+            <div onclick="remove_officer()">Resign as Officer</div>
 
             <h3> Edit Club Details </h3>
 
@@ -78,16 +88,16 @@
                     <label for="clubgoals">Goals: </label><br>
                     <textarea id="clubgoals" name="clubgoals" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
 
-                    <label for="clubimlink">Image link: </label><br>
+                    <label for="clubimlink">Image URL: </label><br>
                     <input type="text" id="clubimlink" name="clubimlink" class="inputSpec"><br><br>
 
                     <label for="clubemail">Email: </label><br>
                     <input type="text" id="clubemail" name="clubemail" class="inputSpec"><br><br>
 
-                    <label for="clubinstagram">Instagram: </label><br>
+                    <label for="clubinstagram">Instagram URL: </label><br>
                     <input type="text" id="clubinstagram" name="clubinstagram" class="inputSpec"><br><br>
 
-                    <label for="clubyoutube">YouTube: </label><br>
+                    <label for="clubyoutube">YouTube URL: </label><br>
                     <input type="text" id="clubyoutube" name="clubyoutube" class="inputSpec"><br>
 
                     <br>

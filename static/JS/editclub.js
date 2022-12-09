@@ -12,8 +12,13 @@ function new_officer() {
         if (out == "invalid netid") {
             alert("Invalid netid")
         }
+        else if (out == "success") {
+            location.reload();
+            alert("Successfully added " + newofficer + " as officer")
+        }
     });
 }
+
 
 function update_data() {
 
@@ -63,3 +68,24 @@ function fillfields() {
 
     })
 }
+
+
+function remove_officer() {
+    let clubid = document.getElementById("clubid").value;
+
+    alert('rEmOvInG oFfIcEr')
+
+    fetch("/remove_officer?clubid="+clubid)
+    .then((response) => response.text())
+    .then((text) => {
+        var out = text;
+        if (out == "invalid netid") {
+            alert("Invalid netid")
+        } 
+        else if (out == "success") {
+            location.reload();
+            alert("Successfully removed as officer")
+        } 
+    });
+}
+
