@@ -5,16 +5,21 @@
 # Authors: Kevin Kim, Priya Naphade, Katie Baldwin, Lance Yoder
 #-------------------------------------------------------------------
 
+import os
 import psycopg2
+import urllib.parse as up
 from req_lib import ReqLib
 
-database_url = "postgres://avgqxjcj:lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1@peanut.db.elephantsql.com/avgqxjcj"
+up.uses_netloc.append("postgres")
+url = up.urlparse(os.environ["DATABASE_URL"])
 
 # gets clubs corresponding matching the given phrase and/or tags
 def get_clubs(clubquery, tags):
 
     try:
-        with psycopg2.connect(database_url) as conn:
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
 
             with conn.cursor() as cur:
 
@@ -99,7 +104,7 @@ def get_clubs(clubquery, tags):
                 return clubs
 
     except Exception as ex:
-        print(ex)
+        print("database.py:", ex)
         return "server get_clubs"
 
 
@@ -107,15 +112,19 @@ def get_clubs(clubquery, tags):
 def database_get_info(clubid):
 
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        print('inside try, database_get_info')
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
+            print('retrieving cursor')
             with conn.cursor() as cur:
-
+                print("about to execute SQL script")
                 script = "select groupname, mission, goals, groupemail, instagram, youtube, imlink from clubs WHERE id=%s"
                 cur.execute(script, [clubid])
+                print("executed script")
 
                 row = cur.fetchone()
-
+                print("fetched one row")
                 info = []
                 while row is not None:
                     info.append(row)
@@ -123,14 +132,16 @@ def database_get_info(clubid):
                 return info
 
     except Exception as ex:
-        print(ex)
+        print("database.py:", ex)
         return "server, get_info"
 
 
 # get tags for displaying on search form
 def get_tags():
     try:
-        with psycopg2.connect(database_url) as conn:
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
 
             with conn.cursor() as cur:
 
@@ -146,15 +157,16 @@ def get_tags():
                 return tags
 
     except Exception as ex:
-        print(ex)
+        print("database.py:", ex)
         return "server get_tags"
 
 
 # get tags linked to a club
 def get_club_tags(clubid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select tag from tags WHERE id=%s order by tag asc"
@@ -169,15 +181,16 @@ def get_club_tags(clubid):
                 return tags
 
     except Exception as ex:
-        print(ex)
+        print("database.py:", ex)
         return "server get_tags"
 
 
 # subscribes user to club
 def add_sub(user, clubid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 # check for existence of row (may not be necessary)
@@ -189,15 +202,16 @@ def add_sub(user, clubid):
                     cur.execute(script, [user, clubid])
 
     except Exception as ex:
-        print(ex)
+        print("database.py:", ex)
         return "server, add_sub"
 
 
 # unsubscribes user from club
 def remove_sub(user, clubid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select * from subscriptions where netid=%s and id=%s"
@@ -211,15 +225,16 @@ def remove_sub(user, clubid):
                 cur.execute(script, [user, clubid])
                 print("remove_sub clubid: ", clubid)
     except Exception as ex:
-        print(ex)
+        print("database.py:", ex)
         return "server, remove_sub"
 
 
 # subscribes user to tag
 def add_sub_tag(user, tag):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 # check for existence of row (may not be necessary)
@@ -236,7 +251,7 @@ def add_sub_tag(user, tag):
                     clubid = cur.fetchone()
 
     except Exception as ex:
-        print(ex)
+        print("database.py:", ex)
         return "server, add_sub_tag"
 
 
@@ -244,8 +259,9 @@ def add_sub_tag(user, tag):
 def remove_sub_tag(user, tag):
     retval = None
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select distinct tags.id from tags, subscriptions where tag=%s and netid=%s and tags.id=subscriptions.id"
@@ -261,7 +277,7 @@ def remove_sub_tag(user, tag):
                     clubid = cur.fetchone()
 
     except Exception as ex:
-        print(ex)
+        print("database.py:", ex)
         return "server, remove_sub_tag"
 
     return retval
@@ -270,8 +286,9 @@ def remove_sub_tag(user, tag):
 # check if a user is subscribed to a club
 def is_subbed(netid, clubid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select netid from subscriptions WHERE netid=%s AND id=%s"
@@ -286,14 +303,15 @@ def is_subbed(netid, clubid):
                 return True
 
     except Exception as ex:
-        print(ex)
+        print("database.py:", ex)
         return "server, is_subbed"
 
 
 def get_user_sub_tags(netid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select distinct tag from tags WHERE id in (select id from subscriptions where netid=%s) order by tag asc"
@@ -310,7 +328,7 @@ def get_user_sub_tags(netid):
                 return tags
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, get_user_sub_tags"
 
 
@@ -321,8 +339,9 @@ def get_club_announcements(clubid):
     script += "WHERE clubid=%s ORDER BY stamp DESC"
 
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 cur.execute(script, [clubid])
@@ -335,7 +354,7 @@ def get_club_announcements(clubid):
                 return rows
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, get_club_announcements"
 
 
@@ -344,8 +363,9 @@ def get_club_announcements(clubid):
 # get all clubs that single user is subscribed to
 def get_subs(netid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select groupname, clubs.id from subscriptions, clubs WHERE netid=%s AND clubs.id=subscriptions.id"
@@ -360,15 +380,16 @@ def get_subs(netid):
                 return clubids
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, get_subs"
 
 
 # return clubids and clubnames for clubs where netid is an officer
 def get_officerships(netid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select groupname, clubs.id from officers, clubs"
@@ -385,14 +406,15 @@ def get_officerships(netid):
                 return clubids
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, get_officerships"
 
 # return clubids and clubnames for clubs where netid is an officer
 def get_club_officers(clubid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select netid from officers WHERE clubid=%s"
@@ -413,7 +435,7 @@ def get_club_officers(clubid):
 
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, get_club_officers"
 
 
@@ -423,8 +445,9 @@ def get_club_officers(clubid):
 # verifies that given netid is an officer of given clubid
 def verify_officer(netid, clubid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select * from officers where netid=%s and clubid=%s"
@@ -436,14 +459,15 @@ def verify_officer(netid, clubid):
                 return False
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, verify_officer"
 
 
 def add_officer(netid, clubid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "insert into officers values (%s, %s)"
@@ -455,15 +479,16 @@ def add_officer(netid, clubid):
                 return "success"
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, add_officer"
 
 
 def remove_officer(netid, clubid):
     print("in remove_officer")
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "delete from officers where netid=%s and clubid=%s"
@@ -473,7 +498,7 @@ def remove_officer(netid, clubid):
                 return "success"
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, remove_officer"
 
 
@@ -482,8 +507,9 @@ def send_announcement(clubid, announcement, officer):
     try:
 
         # update the database of announcements
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "insert into announcements VALUES (%s, %s, CURRENT_TIMESTAMP, %s)"
@@ -494,15 +520,16 @@ def send_announcement(clubid, announcement, officer):
 
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, send_announcements"
 
 
 # get all subscribers for a club
 def get_subscribers(clubid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select netid from subscriptions where id=%s"
@@ -518,7 +545,7 @@ def get_subscribers(clubid):
 
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, get_subscribers"
 
 
@@ -535,20 +562,23 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
     args = [instagram, youtube, email, mission, goals, imlink]
 
     try:
-        with psycopg2.connect(database_url) as conn:
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
                 cur.execute(script, args+[clubid])
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, update_club_info"
 
 
 # get clubname from clubid
 def get_clubname(clubid):
     try:
-        with psycopg2.connect(database_url) as conn:
-
+        with psycopg2.connect(database=url.path[1:], user=url.username,
+                            password=url.password, host=url.hostname,
+                            port=url.port) as conn:
             with conn.cursor() as cur:
 
                 script = "select MAX(id) from clubs"
@@ -564,7 +594,7 @@ def get_clubname(clubid):
                 return cur.fetchone()
 
     except Exception as ex:
-        print(ex)
+        print("database.py", ex)
         return "server, get_clubname"
 
 ################

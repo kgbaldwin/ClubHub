@@ -10,7 +10,10 @@ function changeInfo() {
     fetch("/get_info?clubid="+clubid)
     .then((response) => response.text())
     .then((text) => {
+    console.log(text)
     var info = text.split("`");
+    console.log(info)
+    //alert(info)
 
     // make initial message disappear
     document.getElementById('none-selected').style.display='none';
@@ -34,7 +37,7 @@ function changeInfo() {
         missioncard.style.display = "none";
         clubmission.style.display="none";
     }
-    // CLUB GOALS 
+    // CLUB GOALS
     document.getElementById("clubgoals").innerHTML = info[2];
     const goalscard = document.getElementById("goalscard");
     const clubgoals = document.getElementById("clubgoals");
@@ -103,8 +106,7 @@ function changeInfo() {
 
 
 
-    console.log("INFO 8:");
-    console.log(info[8]);
+    console.log("INFO 8: " + info[8]);
     // CHECK SUBBED
 
     // make sub button appear
@@ -133,7 +135,7 @@ function changeInfo() {
 }
 
 function loadAnnouncements() {
-    
+
     fetch("/get_club_announcements?clubid="+clubid)
         .then((response) => response.text())
         .then((text) => {
