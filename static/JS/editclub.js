@@ -21,20 +21,25 @@ function new_officer() {
 
 
 function remove_officer() {
-    let clubid = document.getElementById("clubid").value;
 
-    fetch("/remove_officer?clubid="+clubid)
-    .then((response) => response.text())
-    .then((text) => {
-        var out = text;
-        if (out == "invalid netid") {
-            alert("Invalid netid")
-        }
-        else if (out == "success") {
-            alert("Successfully removed as officer");
-            location.href = "/profile";
-        }
-    });
+    if (confirm("Are you sure you want to resign as an officer? \
+If you do so mistakenly, a current officer will have to re-add you.")) {
+
+        let clubid = document.getElementById("clubid").value;
+
+        fetch("/remove_officer?clubid="+clubid)
+        .then((response) => response.text())
+        .then((text) => {
+            var out = text;
+            if (out == "invalid netid") {
+                alert("Invalid netid")
+            }
+            else if (out == "success") {
+                alert("Successfully removed as officer");
+                location.href = "/profile";
+            }
+        });
+    }
 }
 
 
