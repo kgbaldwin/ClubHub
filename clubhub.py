@@ -149,9 +149,12 @@ def get_info():
     if not clubid:
         return page_not_found('lacking_info')
 
+    print("inside get_info clubhub.py")
+
     info = database.database_get_info(clubid)
 
-    if info == "server":
+    if info == "server, get_info":
+        print("database.database_getinfo returned a server error")
         html_code = flask.render_template('error.html', error="server",
                                             username=username)
         response = flask.make_response(html_code)
@@ -161,16 +164,21 @@ def get_info():
     for item in info[0]:
         string += str(item) + "`"
 
+    print(string)
     tags = database.get_club_tags(clubid)
     for tag in tags:
         string += str(tag[0]) + "#"
     string += "`"
 
+    print(string)
     subbed = database.is_subbed(username, clubid)
     if subbed:
         string += "subscribed`"
     else:
         string += "not subscribed`"
+    print(string)
+
+    print("leaving get_info clubhub.py")
 
     return string
 
@@ -183,6 +191,8 @@ def get_club_announcements():
     # announcements is a list of tuples [(announcement, stamp, officer,), (ann2, stamp2, officer2,), etc]
     announcements = database.get_club_announcements(clubid)
     response = ""
+
+    print("HELLOOooooooooooooo")
 
     for announcement in announcements:
         response += announcement[0]
