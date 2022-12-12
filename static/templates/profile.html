@@ -94,6 +94,7 @@
             <br>
          <div class="btn-group dropright" style="padding-top:10px;">
             <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Subscribe To Tags</button>
+            <img id ="sub-loading" src="https://media.tenor.com/-n8JvVIqBXkAAAAM/dddd.gif" style="max-height:1.6rem;display:none;"></img>
             <ul id="tagdropdownAAA" class="dropdown-menu scrollable-menu-dropdown">
                <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Subscribing to a tag will subscribe you to all clubs containing the specified tag.</a></li>
                {% for tag in sub_tags: %}
@@ -108,6 +109,7 @@
          </div>
             <div class="btn-group dropright" style="padding-top:10px;">
                <button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">Unsubscribe From Tags</button>
+               <img id ="unsub-loading" src="https://media.tenor.com/-n8JvVIqBXkAAAAM/dddd.gif" style="max-height:1.6rem;display:none;"></img>
                <ul id="tagdropdownDDD" class="dropdown-menu scrollable-menu-dropdown">
                   <li><a class="dropdown-item" style="color:red; font-size:x-small;">*Unsubscribing to a tag will unsubscribe you to all clubs containing the specified tag.</a></li>
                   {% for tag in unsub_tags: %}

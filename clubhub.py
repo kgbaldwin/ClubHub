@@ -38,11 +38,16 @@ def index():
     response = flask.make_response(html_code)
     return response
 
+@app.route('/about', methods=['GET'])
+def about():
+    username = auth.authenticate()
+    html_code = flask.render_template('about.html', username=username)
+    response = flask.make_response(html_code)
+    return response
 
 @app.route('/profile', methods=['GET'])
 def profile():
     username = auth.authenticate()
-    print("username: ", username)
 
     info = database.get_user(username)[0]
 
@@ -77,15 +82,14 @@ def searchresults():
         clubquery = ""  # strip percent signs off empty queries
     tags = flask.request.args.getlist('tags')
     searchpersist = clubquery.lstrip('%').rstrip('%')
-    selected_tags = flask.request.args.get('selected_tags')
-    print(selected_tags)
+    #selected_tags = flask.request.args.get('selected_tags')
+    #print(selected_tags)
 
     for index in range(len(tags)):
         tags[index] = urllib.parse.unquote_plus(tags[index])
 
     clubs = database.get_clubs(clubquery, tags)
     tags_dropdown = database.get_tags()
-    #subbed_clubs = database.get_subs(username)
 
     if clubs == "server":
         html_code = flask.render_template('error.html', error="server",
@@ -149,12 +153,9 @@ def get_info():
     if not clubid:
         return page_not_found('lacking_info')
 
-    print("inside get_info clubhub.py")
-
     info = database.database_get_info(clubid)
 
     if info == "server, get_info":
-        print("database.database_getinfo returned a server error")
         html_code = flask.render_template('error.html', error="server",
                                             username=username)
         response = flask.make_response(html_code)
@@ -178,8 +179,6 @@ def get_info():
         string += "not subscribed`"
     print(string)
 
-    print("leaving get_info clubhub.py")
-
     return string
 
 
@@ -191,8 +190,6 @@ def get_club_announcements():
     # announcements is a list of tuples [(announcement, stamp, officer,), (ann2, stamp2, officer2,), etc]
     announcements = database.get_club_announcements(clubid)
     response = ""
-
-    print("HELLOOooooooooooooo")
 
     for announcement in announcements:
         response += announcement[0]
@@ -217,7 +214,7 @@ def subscribe():
 
     if subscribe=="1":
         response = database.add_sub(username, clubid)
-    else:
+    elif subscribe=="0":
         if not database.verify_officer(username, clubid):
             print("NOT OFFICER")
             response = database.remove_sub(username, clubid)

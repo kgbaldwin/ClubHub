@@ -16,6 +16,7 @@ function unsubscribe(input) {
 
 
  function unsub_tag(tag) {
+   document.getElementById("unsub-loading").style.display="inline";
     fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=0")
     .then((response) => response.text())
     .then((text) => {
@@ -62,6 +63,7 @@ function get_selected_tags(){
 }
 
 function sub_tag(tag) {
+   document.getElementById("sub-loading").style.display="inline";
    fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=1")
    .then((response) => response.text())
    .then((text) => {

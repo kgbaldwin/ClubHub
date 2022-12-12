@@ -15,8 +15,7 @@ up.uses_netloc.append("postgres")
 url = up.urlparse(os.environ["DATABASE_URL"])
 
 pool = simPool(1, 5, database=url.path[1:], user=url.username,
-                            password=url.password, host=url.hostname,
-                            port=url.port)
+            password=url.password, host=url.hostname, port=url.port)
 
 # gets clubs corresponding matching the given phrase and/or tags
 def get_clubs(clubquery, tags):
@@ -51,7 +50,6 @@ def get_clubs(clubquery, tags):
                         if row is not None:
                             clubs.append(row)
 
-                    #print("clubs: ", clubs)
                     # get clubnames matching id's and (mis/goals), but NOT name
                     script_mission_goals_tag = "select groupname, id from clubs where (mission ilike %s or goals ilike %s) and (groupname not ilike %s) and id=%s"
                     for id in tag_ids:
@@ -117,17 +115,13 @@ def get_clubs(clubquery, tags):
 def database_get_info(clubid):
 
     try:
-        print('inside try, database_get_info')
         conn = pool.getconn()
-        print('retrieving cursor')
+
         with conn.cursor() as cur:
-            print("about to execute SQL script")
             script = "select groupname, mission, goals, groupemail, instagram, youtube, imlink from clubs WHERE id=%s"
             cur.execute(script, [clubid])
-            print("executed script")
 
             row = cur.fetchone()
-            print("fetched one row")
             info = []
             while row is not None:
                 info.append(row)
@@ -231,7 +225,7 @@ def remove_sub(user, clubid):
             # check for existence of row (may not be necessary)
             script = "delete from subscriptions where netid=%s and id=%s"
             cur.execute(script, [user, clubid])
-            print("remove_sub clubid: ", clubid)
+            print("remove_sub clubid:", clubid, "user:", user)
 
     except Exception as ex:
         print("__________database.py remove sub:", ex)

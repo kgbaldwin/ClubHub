@@ -29,25 +29,31 @@ function changeInfo() {
     document.getElementById("clubmission").innerHTML = info[1];
     const missioncard = document.getElementById("missioncard");
     const clubmission = document.getElementById('clubmission');
+    const missionbr = document.getElementById("missionbr");
     if (info[1] != ""){
         missioncard.style.display = "";
         clubmission.style.display="";
+        missionbr.style.display="";
     }
     else{
         missioncard.style.display = "none";
         clubmission.style.display="none";
+        missionbr.style.display="none";
     }
     // CLUB GOALS
     document.getElementById("clubgoals").innerHTML = info[2];
     const goalscard = document.getElementById("goalscard");
     const clubgoals = document.getElementById("clubgoals");
+    const goalsbr = document.getElementById("goalsbr");
     if (info[2] != "") {
         goalscard.style.display="";
         clubgoals.style.display="";
+        goalsbr.style.display="";
     }
     else{
         goalscard.style.display="none";
         clubgoals.style.display="none";
+        missionbr.style.display="none";
     }
 
     // CLUB EMAIL
