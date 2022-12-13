@@ -14,19 +14,41 @@ function unsubscribe(input) {
 
 }
 
+function sub_tag(tag) {
+   document.getElementById("sub-loading").style.display="inline";
+   fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=1")
+   .then((response) => response.text())
+   .then((text) => {
+      if (text=="success"){
+         document.getElementById("sub-loading").style.display="none";
+         alert("Successfully subscribed to tag " + tag + "!");
+      }
+      else {
+         document.getElementById("sub-loading").style.display="none";
+         alert("Error - unable to subscribe to tag " + tag)
+      }
+   })
+   .then(() => {location.reload()});
+}
 
- function unsub_tag(tag) {
+
+function unsub_tag(tag) {
    document.getElementById("unsub-loading").style.display="inline";
     fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=0")
     .then((response) => response.text())
     .then((text) => {
        if (text=="success") {
-          alert("Successfully unsubscribed from tag '" + tag + "'!")
+         document.getElementById("unsub-loading").style.display="none";
+         alert("Successfully unsubscribed from tag '" + tag + "'!")
        }
        else if (text=="success_isofficer") {
+         document.getElementById("unsub-loading").style.display="none";
          alert("Successfully unsubscribed from tag '" + tag + "', except for clubs you are an officer of.")
       }
-       else alert("Error - unable to unsubscribe from tag " + tag)
+       else {
+         document.getElementById("unsub-loading").style.display="none";
+         alert("Error - unable to unsubscribe from tag " + tag)
+      }
     })
     .then(() => {location.reload()});
 }
@@ -62,15 +84,3 @@ function get_selected_tags(){
    return selected_tags
 }
 
-function sub_tag(tag) {
-   document.getElementById("sub-loading").style.display="inline";
-   fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=1")
-   .then((response) => response.text())
-   .then((text) => {
-      if (text=="success"){
-         alert("Successfully subscribed to tag " + tag + "!")
-      }
-      else alert("Error - unable to subscribe to tag " + tag)
-   })
-   .then(() => {location.reload()});
-}

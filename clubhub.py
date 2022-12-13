@@ -34,7 +34,8 @@ def index():
     username = auth.authenticate()
     tags = database.get_tags()
     selected_tags = ''
-    html_code = flask.render_template('index.html', username=username,tags=tags, selected_tags=selected_tags)
+    html_code = flask.render_template('index.html', username=username,
+                    tags=tags, selected_tags=selected_tags)
     response = flask.make_response(html_code)
     return response
 
@@ -66,7 +67,8 @@ def profile():
 
     html_code = flask.render_template('profile.html', username=username,
             name=info["displayname"], year=year, subs=subs,
-            officerships=officerships, sub_tags=sub_tags, unsub_tags=unsub_tags, edit=edit)
+            officerships=officerships, sub_tags=sub_tags,
+            unsub_tags=unsub_tags, edit=edit)
     response = flask.make_response(html_code)
     return response
 
@@ -98,8 +100,8 @@ def searchresults():
         return response
 
     html_code = flask.render_template('searchresults.html', results=clubs,
-                                        username=username,tags=tags_dropdown,
-                                        checked=tags, clubquery=searchpersist)
+                            username=username,tags=tags_dropdown,
+                            checked=tags, clubquery=searchpersist)
     response = flask.make_response(html_code)
     return response
 
@@ -111,8 +113,9 @@ def announce():
     clubname = database.get_clubname(clubid)[0]
 
     if database.verify_officer(username, clubid):
-        html_code = flask.render_template('announce.html', username=username,
-                                clubname=clubname, verified=True, clubid=clubid)
+        html_code = flask.render_template('announce.html',
+                            username=username, clubname=clubname,
+                            verified=True, clubid=clubid)
 
     else:
         html_code = flask.render_template('announce.html', username=username,

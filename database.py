@@ -201,6 +201,7 @@ def add_sub(user, clubid):
             if cur.rowcount == 0:
                 script = "insert into subscriptions values (%s, %s)"
                 cur.execute(script, [user, clubid])
+                conn.commit()
 
     except Exception as ex:
         print("__________database.py add sub:", ex)
@@ -225,6 +226,7 @@ def remove_sub(user, clubid):
             # check for existence of row (may not be necessary)
             script = "delete from subscriptions where netid=%s and id=%s"
             cur.execute(script, [user, clubid])
+            conn.commit()
             print("remove_sub clubid:", clubid, "user:", user)
 
     except Exception as ex:
@@ -385,7 +387,7 @@ def get_subs(netid):
     except Exception as ex:
         print("__________database.py get subs: ", ex)
         return "server, get_subs"
-    
+
     finally:
         pool.putconn(conn)
 
@@ -467,7 +469,7 @@ def verify_officer(netid, clubid):
     except Exception as ex:
         print("__________database.py verify officer: ", ex)
         return "server, verify_officer"
-        
+
     finally:
         pool.putconn(conn)
 
@@ -480,6 +482,7 @@ def add_officer(netid, clubid):
             script = "insert into officers values (%s, %s)"
 
             cur.execute(script, [netid, clubid])
+            conn.commit()
 
             add_sub(netid, clubid)
 
@@ -502,6 +505,7 @@ def remove_officer(netid, clubid):
             script = "delete from officers where netid=%s and clubid=%s"
 
             cur.execute(script, [netid, clubid])
+            conn.commit()
 
             return "success"
 
@@ -524,6 +528,7 @@ def send_announcement(clubid, announcement, officer):
             script = "insert into announcements VALUES (%s, %s, CURRENT_TIMESTAMP, %s)"
 
             cur.execute(script, [clubid, announcement, officer])
+            conn.commit()
 
             return "success"
 
@@ -578,6 +583,7 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
         conn = pool.getconn()
         with conn.cursor() as cur:
             cur.execute(script, args+[clubid])
+            conn.commit()
 
     except Exception as ex:
         print("__________database.py update club info: ", ex)
