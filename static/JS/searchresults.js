@@ -53,7 +53,7 @@ function changeInfo() {
     else{
         goalscard.style.display="none";
         clubgoals.style.display="none";
-        missionbr.style.display="none";
+        goalsbr.style.display="none";
     }
 
     // CLUB EMAIL
