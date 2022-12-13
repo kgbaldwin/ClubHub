@@ -69,7 +69,7 @@
 
                <!-- Regular Mode -->
                {% if edit == 0: %}
-                  <a class="edit" href="/profile?edit=1">Click here to edit</a><br>
+                  <em><a class="edit" href="/profile?edit=1">Click here to edit</a></em><br>
                   <ul style="margin-bottom:0;">
                   {% for each in subs: %}
                      <li><label>{{each[0]}}</label>
@@ -77,7 +77,7 @@
 
                <!-- Editing mode -->
                {% else: %}
-                  <a class="edit" href="/profile?edit=0">Stop editing</a><br>
+                  <em><a class="edit" href="/profile?edit=0">Stop editing</a></em><br>
                   <div style="color:red;size:small;">*Click on a club to unsubscribe</div>
                   <ul style="margin-bottom:0;">
                   {% for each in subs: %}
