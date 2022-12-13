@@ -19,12 +19,11 @@ function sub_tag(tag) {
    fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=1")
    .then((response) => response.text())
    .then((text) => {
+      document.getElementById("sub-loading").style.display="none";
       if (text=="success"){
-         document.getElementById("sub-loading").style.display="none";
          alert("Successfully subscribed to tag " + tag + "!");
       }
       else {
-         document.getElementById("sub-loading").style.display="none";
          alert("Error - unable to subscribe to tag " + tag)
       }
    })
@@ -37,16 +36,15 @@ function unsub_tag(tag) {
     fetch("/subscribe_tag?tag="+encodeURIComponent(tag)+"&subscribe_tag=0")
     .then((response) => response.text())
     .then((text) => {
-       if (text=="success") {
-         document.getElementById("unsub-loading").style.display="none";
+      document.getElementById("unsub-loading").style.display="none";
+
+      if (text=="success") {
          alert("Successfully unsubscribed from tag '" + tag + "'!")
        }
        else if (text=="success_isofficer") {
-         document.getElementById("unsub-loading").style.display="none";
          alert("Successfully unsubscribed from tag '" + tag + "', except for clubs you are an officer of.")
       }
        else {
-         document.getElementById("unsub-loading").style.display="none";
          alert("Error - unable to unsubscribe from tag " + tag)
       }
     })
@@ -64,7 +62,7 @@ function toggle(tag) {
       tags_tf[tags_selection.findIndex(findInd)] = false;
    }
    let htmlBuilder = "";
-   selected_tags = get_selected_tags();
+   let selected_tags = get_selected_tags();
    for (let i = 0; i < selected_tags.length; i++){
       htmlBuilder += selected_tags[i];
       if (selected_tags.length - i > 1)
