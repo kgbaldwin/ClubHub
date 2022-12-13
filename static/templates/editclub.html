@@ -4,38 +4,17 @@
     <head>
         <title>ClubHub.com</title>
         <link rel="icon" href="/static/images/clubhub-logo.jpeg">
-
+        <link rel="stylesheet" href="{{ url_for('static', filename='templates/general.css') }}">
     </head>
 
-    <body>
+    <body onload="fillfields()">
 
     <style>
-        td.main{
-            border-collapse: collapse;
-            padding: 2rem;
-        }
-
-            div.clubhub-button{
-            padding:0.5rem;
-            background-color: darkcyan;
-            margin-top: 10px;
-            border-radius: 7px;
-        }
-
-        a.clubhub-buttonlink{
-            color: black;
-        }
-
-        a.clubhub-buttonlink:hover {
-            color: white;
-         }
-
         .inputSpec:invalid {
             background-color: rgb(240, 173, 151);
             width: 15rem;
         }
-
-        </style>
+    </style>
 
     {% include 'header.html' %}
 

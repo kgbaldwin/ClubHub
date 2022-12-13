@@ -3,13 +3,11 @@
   <head>
      <title>ClubHub.com</title>
      <link rel="icon" href="/static/images/clubhub-logo.jpeg">
-  </head>
+     <link rel="stylesheet" href="{{ url_for('static', filename='templates/general.css') }}">
+   </head>
   <body>
      <style>
-        td.main{
-           border-collapse: collapse;
-           padding: 2rem;
-        }
+
         .scrollable-menu-dropdown {
             height: auto;
             max-height: 200px;
@@ -26,21 +24,6 @@
             padding-right:0.5rem;
             padding-top:0.1rem;
             padding-bottom:0.1rem;
-         }
-
-         div.clubhub-button{
-            padding:0.5rem;
-            background-color: darkcyan;
-            margin-top: 10px;
-            border-radius: 7px;
-        }
-
-        a.clubhub-buttonlink{
-            color: black;
-        }
-
-        a.clubhub-buttonlink:hover {
-            color: white;
          }
 
      </style>

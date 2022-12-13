@@ -1,3 +1,11 @@
+
+document.getElementById("tagdropdown").addEventListener('click',
+    function (event) {
+        event.stopPropagation();
+    }
+);
+
+
 function toggle(tag) {
     checkbox = document.getElementById(tag);
     checkbox.checked = !checkbox.checked;

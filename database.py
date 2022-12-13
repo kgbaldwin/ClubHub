@@ -145,8 +145,6 @@ def get_tags():
     try:
         conn = pool.getconn()
 
-        print("size:", pool.__sizeof__())
-
         with conn.cursor() as cur:
 
             script = "select DISTINCT tag from tags order by tag asc"
@@ -230,13 +228,12 @@ def remove_sub(user, clubid):
             cur.execute(script, [user, clubid])
             row = cur.fetchone()
             if row is None:
-                print("NOT SUBBED!!!!")
+                print("Not Subscribed!")
 
             # check for existence of row (may not be necessary)
             script = "delete from subscriptions where netid=%s and id=%s"
             cur.execute(script, [user, clubid])
             conn.commit()
-            print("remove_sub clubid:", clubid, "user:", user)
 
     except Exception as ex:
         print("__________database.py remove sub:", ex)
@@ -291,7 +288,6 @@ def remove_sub_tag(user, tag):
                 if verify_officer(user, clubid):
                     retval = "isofficer"
                 else:
-                    print("removing sub: ", user, clubid[0])
                     remove_sub(user, clubid)
                 clubid = cur.fetchone()
 
@@ -305,7 +301,7 @@ def remove_sub_tag(user, tag):
         if 'conn' in locals():
             pool.putconn(conn)
 
-    
+
 
 
 # check if a user is subscribed to a club
@@ -348,7 +344,6 @@ def get_user_sub_tags(netid):
             while row is not None:
                 tags.append(row)
                 row = cur.fetchone()
-            print("TAGS IN GET: ", tags)
 
             return tags
 
@@ -452,10 +447,7 @@ def get_club_officers(clubid):
             row = cur.fetchone()
             names = []
             while row is not None:
-                print("row: ", row)
                 user = get_user(row)[0]
-                print(user)
-                print(user['displayname'])
                 names.append((user['displayname'], row[0]))
                 row = cur.fetchone()
 
@@ -522,7 +514,6 @@ def add_officer(netid, clubid):
 
 
 def remove_officer(netid, clubid):
-    print("in remove_officer")
     try:
         conn = pool.getconn()
         with conn.cursor() as cur:
@@ -601,8 +592,6 @@ def get_subscribers(clubid):
 def update_club_info(clubid, instagram=None, youtube=None, email=None,
             mission=None, goals=None, imlink=None):
 
-    print("entering update_club_info in database")
-
     script = "UPDATE clubs SET "
     script += "instagram=%s, youtube=%s, groupemail=%s, "
     script += "mission=%s, goals=%s, imlink=%s "
@@ -662,5 +651,5 @@ def get_user(username):
         req_lib.configs.USERS_BASIC,
         uid=username,
     )
-    print("get user????")
+
     return reqBasic

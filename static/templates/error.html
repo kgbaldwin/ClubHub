@@ -4,27 +4,17 @@
 <head>
     <title>ClubHub.com</title>
     <link rel="icon" href="/static/images/clubhub-logo.jpeg">
+    <link rel="stylesheet" href="{{ url_for('static', filename='templates/general.css') }}">
 </head>
 
 <body>
     <style>
-
         td.main{
-           border-collapse: collapse;
            padding-top: 1rem;
         }
-
-         div.clubhub-button{
-            padding:0.5rem;
-            background-color: darkcyan;
-            margin-top: 10px;
-            border-radius: 7px;
-        }
-
         a.clubhub-buttonlink{
             color: white;
         }
-
      </style>
 
     {% include 'header.html' %}

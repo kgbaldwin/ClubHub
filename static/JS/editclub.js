@@ -1,6 +1,4 @@
 
-window.onload = fillfields;
-
 function new_officer() {
     let clubid = document.getElementById("clubid").value;
     let newofficer = document.getElementById("newofficer").value;

@@ -1,0 +1,19 @@
+td.main{
+    border-collapse: collapse;
+    padding: 2rem;
+}
+
+div.clubhub-button{
+    padding:0.5rem;
+    background-color: darkcyan;
+    margin-top: 10px;
+    border-radius: 7px;
+}
+
+a.clubhub-buttonlink{
+    color: black;
+}
+
+a.clubhub-buttonlink:hover {
+    color: white;
+ }
