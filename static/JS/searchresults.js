@@ -141,14 +141,12 @@ function changeInfo() {
 }
 
 function loadAnnouncements() {
-
     fetch("/get_club_announcements?clubid="+clubid)
         .then((response) => response.text())
         .then((text) => {
             var ann_array = text.split("`");
             const ann_div = document.getElementById("club-announcements");
             var htmlBuilder = "";
-
             let announcements = [];
             let timestamps = [];
             let dates = [];

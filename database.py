@@ -6,6 +6,7 @@
 #-------------------------------------------------------------------
 
 import os
+from datetime import datetime
 import psycopg2
 import urllib.parse as up
 from req_lib import ReqLib
@@ -14,7 +15,7 @@ from psycopg2.pool import SimpleConnectionPool as simPool
 up.uses_netloc.append("postgres")
 url = up.urlparse(os.environ["DATABASE_URL"])
 
-pool = simPool(0, 2, database=url.path[1:], user=url.username,
+pool = simPool(1, 5, database=url.path[1:], user=url.username,
             password=url.password, host=url.hostname, port=url.port)
 
 # gets clubs corresponding matching the given phrase and/or tags
@@ -22,9 +23,6 @@ def get_clubs(clubquery, tags):
 
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            pool.closeall()
-            return get_clubs(clubquery, tags)
 
         print("size:", pool.__sizeof__)
 
@@ -113,8 +111,7 @@ def get_clubs(clubquery, tags):
         print("__________database.py:", ex)
         return "server get_clubs"
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 # get club details of a selected club
@@ -124,9 +121,6 @@ def database_get_info(clubid):
         conn = pool.getconn()
 
         print("size:", pool.__sizeof__)
-        if 'conn' not in locals():
-            pool.closeall()
-            return database_get_info(clubid)
 
         with conn.cursor() as cur:
             script = "select groupname, mission, goals, groupemail, instagram, youtube, imlink from clubs WHERE id=%s"
@@ -144,8 +138,7 @@ def database_get_info(clubid):
 
         return "server, get_info"
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
     ############ catch general exception?
 
 
@@ -155,8 +148,6 @@ def get_tags():
         conn = pool.getconn()
 
         print("size:", pool.__sizeof__())
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
 
         with conn.cursor() as cur:
 
@@ -176,16 +167,13 @@ def get_tags():
         return "server get_tags"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 # get tags linked to a club
 def get_club_tags(clubid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "select tag from tags WHERE id=%s order by tag asc"
@@ -204,16 +192,13 @@ def get_club_tags(clubid):
         return "server get_tags"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 # subscribes user to club
 def add_sub(user, clubid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             # check for existence of row (may not be necessary)
@@ -239,8 +224,6 @@ def add_sub(user, clubid):
 def remove_sub(user, clubid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "select * from subscriptions where netid=%s and id=%s"
@@ -269,8 +252,6 @@ def remove_sub(user, clubid):
 def add_sub_tag(user, tag):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
 
         with conn.cursor() as cur:
 
@@ -291,8 +272,7 @@ def add_sub_tag(user, tag):
         print("__________database.py add sub tag:", ex)
         return "server, add_sub_tag"
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 # unsubscribes user from tag
@@ -300,8 +280,6 @@ def remove_sub_tag(user, tag):
     retval = None
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "select distinct tags.id from tags, subscriptions where tag=%s and netid=%s and tags.id=subscriptions.id"
@@ -323,8 +301,7 @@ def remove_sub_tag(user, tag):
         return "server, remove_sub_tag"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
     
 
@@ -333,9 +310,6 @@ def remove_sub_tag(user, tag):
 def is_subbed(netid, clubid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            pool.closeall()
-            return is_subbed(netid, clubid)
         with conn.cursor() as cur:
 
             script = "select netid from subscriptions WHERE netid=%s AND id=%s"
@@ -354,16 +328,12 @@ def is_subbed(netid, clubid):
         return "server, is_subbed"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 def get_user_sub_tags(netid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            pool.closeall()
-            return get_user_sub_tags(netid)
         with conn.cursor() as cur:
 
             script = "select distinct tag from tags WHERE id in (select id from subscriptions where netid=%s) order by tag asc"
@@ -384,8 +354,7 @@ def get_user_sub_tags(netid):
         return "server, get_user_sub_tags"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 # gets all announcements from club with given clubid and returns
@@ -396,23 +365,18 @@ def get_club_announcements(clubid):
 
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            pool.closeall()
-            return get_club_announcements(clubid)
         with conn.cursor() as cur:
 
             cur.execute(script, [clubid])
             rows = cur.fetchall()
-
-            return rows
+            return [rows, "", ""]
 
     except Exception as ex:
         print("__________database.py get club announcements: ", ex)
-        return ["server, get_club_announcements","",""]
+        return ["server, get_club_announcements",datetime.now(),""]
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 ###### -------------- Profile Information -------------------- ######
@@ -421,8 +385,6 @@ def get_club_announcements(clubid):
 def get_subs(netid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "select groupname, clubs.id from subscriptions, clubs WHERE netid=%s AND clubs.id=subscriptions.id"
@@ -441,16 +403,13 @@ def get_subs(netid):
         return "server, get_subs"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 # return clubids and clubnames for clubs where netid is an officer
 def get_officerships(netid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "select groupname, clubs.id from officers, clubs"
@@ -471,15 +430,12 @@ def get_officerships(netid):
         return "server, get_officerships"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 # return clubids and clubnames for clubs where netid is an officer
 def get_club_officers(clubid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "select netid from officers WHERE clubid=%s"
@@ -504,8 +460,7 @@ def get_club_officers(clubid):
         return "server, get_club_officers"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 
@@ -515,8 +470,6 @@ def get_club_officers(clubid):
 def verify_officer(netid, clubid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "select * from officers where netid=%s and clubid=%s"
@@ -532,15 +485,12 @@ def verify_officer(netid, clubid):
         return "server, verify_officer"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 def add_officer(netid, clubid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "insert into officers values (%s, %s)"
@@ -566,8 +516,6 @@ def remove_officer(netid, clubid):
     print("in remove_officer")
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "delete from officers where netid=%s and clubid=%s"
@@ -593,8 +541,6 @@ def send_announcement(clubid, announcement, officer):
 
         # update the database of announcements
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "insert into announcements VALUES (%s, %s, CURRENT_TIMESTAMP, %s)"
@@ -619,8 +565,6 @@ def send_announcement(clubid, announcement, officer):
 def get_subscribers(clubid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "select netid from subscriptions where id=%s"
@@ -640,8 +584,7 @@ def get_subscribers(clubid):
         return "server, get_subscribers"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 
 # updates club info in database
@@ -658,8 +601,6 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
 
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
             cur.execute(script, args+[clubid])
             conn.commit()
@@ -678,8 +619,6 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
 def get_clubname(clubid):
     try:
         conn = pool.getconn()
-        if 'conn' not in locals():
-            raise psycopg2.OperationalError()
         with conn.cursor() as cur:
 
             script = "select MAX(id) from clubs"
@@ -699,8 +638,7 @@ def get_clubname(clubid):
         return "server, get_clubname"
 
     finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
+        pool.putconn(conn)
 
 ################
 # getting user infos from netid

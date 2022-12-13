@@ -168,19 +168,19 @@ def get_info():
     for item in info[0]:
         string += str(item) + "`"
 
-    print(string)
+    #print(string)
     tags = database.get_club_tags(clubid)
     for tag in tags:
         string += str(tag[0]) + "#"
     string += "`"
 
-    print(string)
+    #print(string)
     subbed = database.is_subbed(username, clubid)
     if subbed:
         string += "subscribed`"
     else:
         string += "not subscribed`"
-    print(string)
+    #print(string)
 
     return string
 
@@ -191,7 +191,12 @@ def get_club_announcements():
     if not clubid:
         return page_not_found('_')
     # announcements is a list of tuples [(announcement, stamp, officer,), (ann2, stamp2, officer2,), etc]
-    announcements = database.get_club_announcements(clubid)
+    announcements, err, _ = database.get_club_announcements(clubid)
+
+    if err:
+        print("eRoRReD")
+        return ""
+
     response = ""
 
     for announcement in announcements:
@@ -202,7 +207,7 @@ def get_club_announcements():
         response += announcement[2]
         response += '`'
 
-    print(response)
+    #print(response)
     return response
 
 
