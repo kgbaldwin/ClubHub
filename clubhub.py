@@ -195,7 +195,7 @@ def get_club_announcements():
 
     if err:
         print("eRoRReD")
-        return ""
+        return "announcements error"
 
     response = ""
 

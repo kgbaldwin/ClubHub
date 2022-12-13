@@ -15,7 +15,7 @@ from psycopg2.pool import SimpleConnectionPool as simPool
 up.uses_netloc.append("postgres")
 url = up.urlparse(os.environ["DATABASE_URL"])
 
-pool = simPool(1, 5, database=url.path[1:], user=url.username,
+pool = simPool(1, 10, database=url.path[1:], user=url.username,
             password=url.password, host=url.hostname, port=url.port)
 
 # gets clubs corresponding matching the given phrase and/or tags
@@ -23,8 +23,6 @@ def get_clubs(clubquery, tags):
 
     try:
         conn = pool.getconn()
-
-        print("size:", pool.__sizeof__)
 
         with conn.cursor() as cur:
 
@@ -111,7 +109,8 @@ def get_clubs(clubquery, tags):
         print("__________database.py:", ex)
         return "server get_clubs"
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 # get club details of a selected club
@@ -119,8 +118,6 @@ def database_get_info(clubid):
 
     try:
         conn = pool.getconn()
-
-        print("size:", pool.__sizeof__)
 
         with conn.cursor() as cur:
             script = "select groupname, mission, goals, groupemail, instagram, youtube, imlink from clubs WHERE id=%s"
@@ -138,7 +135,8 @@ def database_get_info(clubid):
 
         return "server, get_info"
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
     ############ catch general exception?
 
 
@@ -167,7 +165,8 @@ def get_tags():
         return "server get_tags"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 # get tags linked to a club
@@ -192,7 +191,8 @@ def get_club_tags(clubid):
         return "server get_tags"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 # subscribes user to club
@@ -272,7 +272,8 @@ def add_sub_tag(user, tag):
         print("__________database.py add sub tag:", ex)
         return "server, add_sub_tag"
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 # unsubscribes user from tag
@@ -301,7 +302,8 @@ def remove_sub_tag(user, tag):
         return "server, remove_sub_tag"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
     
 
@@ -328,7 +330,8 @@ def is_subbed(netid, clubid):
         return "server, is_subbed"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 def get_user_sub_tags(netid):
@@ -354,7 +357,8 @@ def get_user_sub_tags(netid):
         return "server, get_user_sub_tags"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 # gets all announcements from club with given clubid and returns
@@ -376,7 +380,8 @@ def get_club_announcements(clubid):
         return ["server, get_club_announcements",datetime.now(),""]
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 ###### -------------- Profile Information -------------------- ######
@@ -403,7 +408,8 @@ def get_subs(netid):
         return "server, get_subs"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 # return clubids and clubnames for clubs where netid is an officer
@@ -430,7 +436,8 @@ def get_officerships(netid):
         return "server, get_officerships"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 # return clubids and clubnames for clubs where netid is an officer
 def get_club_officers(clubid):
@@ -460,7 +467,8 @@ def get_club_officers(clubid):
         return "server, get_club_officers"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 
@@ -485,7 +493,8 @@ def verify_officer(netid, clubid):
         return "server, verify_officer"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 def add_officer(netid, clubid):
@@ -584,7 +593,8 @@ def get_subscribers(clubid):
         return "server, get_subscribers"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 
 # updates club info in database
@@ -638,7 +648,8 @@ def get_clubname(clubid):
         return "server, get_clubname"
 
     finally:
-        pool.putconn(conn)
+        if 'conn' in locals():
+            pool.putconn(conn)
 
 ################
 # getting user infos from netid
