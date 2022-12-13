@@ -2,6 +2,7 @@
  <html>
    <head>
       <title>ClubHub.com</title>
+      <link rel="icon" href="/static/images/clubhub-logo.jpeg">
    </head>
    <body onload="update_selected()">
       <style>
@@ -15,9 +16,9 @@
             padding: 2rem;
          }
       </style>
-         <h1>Club Search</h1>
+         <div style="font-size:1.5rem"> Club Search</div>
          <form action = "/searchresults" method="get">
-               
+
             <!---<button type="submit"><i class="fa fa-search"></i></button> --->
             <input type="text" placeholder="Search for clubs, keywords..." name="clubquery" value="{{clubquery}}">
             <input type="submit" value="Go">

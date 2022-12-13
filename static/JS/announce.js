@@ -24,9 +24,13 @@ function sendAnnouncement() {
         body: JSON.stringify(data)})
     .then((response) => response.text())
     .then((text) => {
-        if (text=="success")
+        if (text=="success") {
             alert("Successfully sent your announcement!")
-        else alert("Error - unable to send announcement")
+            location.href = "/profile";
+        }
+        else {
+            alert("Error - unable to send announcement")
+    }
     });
 
 }
