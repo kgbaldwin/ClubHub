@@ -59,7 +59,7 @@ def profile():
         year = ou.split(" ")[3][:4]
 
 
-    subs = database.get_subs(username)
+    subs = database.get_subscriptions(username)
     officerships = database.get_officerships(username)
     sub_tags = database.get_tags()
     unsub_tags = database.get_user_sub_tags(username)
@@ -89,8 +89,6 @@ def searchresults():
         clubquery = ""  # strip percent signs off empty queries
     tags = flask.request.args.getlist('tags')
     searchpersist = clubquery.lstrip('%').rstrip('%')
-    #selected_tags = flask.request.args.get('selected_tags')
-    #print(selected_tags)
 
     for index in range(len(tags)):
         tags[index] = urllib.parse.unquote_plus(tags[index])
@@ -173,19 +171,16 @@ def get_info():
     for item in info[0]:
         string += str(item) + "`"
 
-    #print(string)
     tags = database.get_club_tags(clubid)
     for tag in tags:
         string += str(tag[0]) + "#"
     string += "`"
 
-    #print(string)
     subbed = database.is_subbed(username, clubid)
     if subbed:
         string += "subscribed`"
     else:
         string += "not subscribed`"
-    #print(string)
 
     return string
 
@@ -196,10 +191,9 @@ def get_club_announcements():
     if not clubid:
         return page_not_found('_')
     # announcements is a list of tuples [(announcement, stamp, officer,), (ann2, stamp2, officer2,), etc]
-    announcements, err, _ = database.get_club_announcements(clubid)
+    announcements = database.get_club_announcements(clubid)
 
-    if err:
-        print("eRoRReD")
+    if announcements == "server, get_club_announcements":
         return "announcements error"
 
     response = ""
@@ -212,7 +206,6 @@ def get_club_announcements():
         response += announcement[2]
         response += '`'
 
-    #print(response)
     return response
 
 
@@ -325,7 +318,7 @@ def send_announce():
     # update database
     announce_result = database.send_announcement(clubid, announcement, username)
     # send email to subscribers
-    subscribers = database.get_subscribers(clubid)
+    subscribers = database.get_club_subscribers(clubid)
     clubname = database.get_clubname(clubid)[0]
     subscriber_emails = append_address(subscribers)
     email_result = send_email(subscriber_emails, clubname, announcement)

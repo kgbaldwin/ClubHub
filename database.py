@@ -18,6 +18,8 @@ url = up.urlparse(os.environ["DATABASE_URL"])
 pool = simPool(1, 10, database=url.path[1:], user=url.username,
             password=url.password, host=url.hostname, port=url.port)
 
+###### -------------- Club Information -------------------- ######
+
 # gets clubs corresponding matching the given phrase and/or tags
 def get_clubs(clubquery, tags):
 
@@ -112,10 +114,8 @@ def get_clubs(clubquery, tags):
         if 'conn' in locals():
             pool.putconn(conn)
 
-
 # get club details of a selected club
 def database_get_info(clubid):
-
     try:
         conn = pool.getconn()
 
@@ -137,8 +137,59 @@ def database_get_info(clubid):
     finally:
         if 'conn' in locals():
             pool.putconn(conn)
-    ############ catch general exception?
 
+# updates club info in database
+def update_club_info(clubid, instagram=None, youtube=None, email=None,
+            mission=None, goals=None, imlink=None):
+
+    script = "UPDATE clubs SET "
+    script += "instagram=%s, youtube=%s, groupemail=%s, "
+    script += "mission=%s, goals=%s, imlink=%s "
+    script += "WHERE id=%s"
+    args = [instagram, youtube, email, mission, goals, imlink]
+
+    try:
+        conn = pool.getconn()
+        with conn.cursor() as cur:
+            cur.execute(script, args+[clubid])
+            conn.commit()
+
+    except Exception as ex:
+        print("__________database.py update club info: ", ex)
+        return "server, update_club_info"
+
+    finally:
+        if 'conn' in locals():
+            conn.commit()
+            pool.putconn(conn)
+
+# get clubname from clubid
+def get_clubname(clubid):
+    try:
+        conn = pool.getconn()
+        with conn.cursor() as cur:
+
+            script = "select MAX(id) from clubs"
+            cur.execute(script)
+            num = cur.fetchone()[0]
+
+            if int(clubid) > num or int(clubid) < 0:
+                return ("Invalid Clubid",)
+
+            script = "select groupname from clubs where id=%s"
+            cur.execute(script, [clubid])
+
+            return cur.fetchone()
+
+    except Exception as ex:
+        print("__________database.py get clubname: ", ex)
+        return "server, get_clubname"
+
+    finally:
+        if 'conn' in locals():
+            pool.putconn(conn)
+
+###### -------------- Tags -------------------- ######
 
 # get tags for displaying on search form
 def get_tags():
@@ -192,6 +243,7 @@ def get_club_tags(clubid):
         if 'conn' in locals():
             pool.putconn(conn)
 
+###### -------------- Subscribing and Unsubscribing -------------------- ######
 
 # subscribes user to club
 def add_sub(user, clubid):
@@ -301,9 +353,6 @@ def remove_sub_tag(user, tag):
         if 'conn' in locals():
             pool.putconn(conn)
 
-
-
-
 # check if a user is subscribed to a club
 def is_subbed(netid, clubid):
     try:
@@ -355,34 +404,8 @@ def get_user_sub_tags(netid):
         if 'conn' in locals():
             pool.putconn(conn)
 
-
-# gets all announcements from club with given clubid and returns
-# them in sorted time order
-def get_club_announcements(clubid):
-    script = "SELECT announcement, stamp, officer FROM announcements "
-    script += "WHERE clubid=%s ORDER BY stamp DESC"
-
-    try:
-        conn = pool.getconn()
-        with conn.cursor() as cur:
-
-            cur.execute(script, [clubid])
-            rows = cur.fetchall()
-            return [rows, "", ""]
-
-    except Exception as ex:
-        print("__________database.py get club announcements: ", ex)
-        return ["server, get_club_announcements",datetime.now(),""]
-
-    finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
-
-
-###### -------------- Profile Information -------------------- ######
-
 # get all clubs that single user is subscribed to
-def get_subs(netid):
+def get_subscriptions(netid):
     try:
         conn = pool.getconn()
         with conn.cursor() as cur:
@@ -400,12 +423,39 @@ def get_subs(netid):
 
     except Exception as ex:
         print("__________database.py get subs: ", ex)
-        return "server, get_subs"
+        return "server, get_subscriptions"
 
     finally:
         if 'conn' in locals():
             pool.putconn(conn)
 
+# get all subscribers for a club
+def get_club_subscribers(clubid):
+    try:
+        conn = pool.getconn()
+        with conn.cursor() as cur:
+
+            script = "select netid from subscriptions where id=%s"
+            cur.execute(script, [clubid])
+
+            row = cur.fetchone()
+            subscribers = []
+            while row is not None:
+                subscribers.append(row[0])
+                row = cur.fetchone()
+
+            return subscribers
+
+
+    except Exception as ex:
+        print("__________database.py get subscribers: ", ex)
+        return "server, get_club_subscribers"
+
+    finally:
+        if 'conn' in locals():
+            pool.putconn(conn)
+
+###### ---------------- Officers ------------------ #####
 
 # return clubids and clubnames for clubs where netid is an officer
 def get_officerships(netid):
@@ -461,10 +511,6 @@ def get_club_officers(clubid):
     finally:
         if 'conn' in locals():
             pool.putconn(conn)
-
-
-
-###### ---------------- Club Edit information ------------------ #####
 
 # verifies that given netid is an officer of given clubid
 def verify_officer(netid, clubid):
@@ -534,6 +580,7 @@ def remove_officer(netid, clubid):
             conn.commit()
             pool.putconn(conn)
 
+###### ---------------- Announcements ------------------ #####
 
 # send an announcement to a given club
 def send_announcement(clubid, announcement, officer):
@@ -560,89 +607,30 @@ def send_announcement(clubid, announcement, officer):
             conn.commit()
             pool.putconn(conn)
 
+# gets all announcements from club with given clubid and returns
+# them in sorted time order
+def get_club_announcements(clubid):
+    script = "SELECT announcement, stamp, officer FROM announcements "
+    script += "WHERE clubid=%s ORDER BY stamp DESC"
 
-# get all subscribers for a club
-def get_subscribers(clubid):
     try:
         conn = pool.getconn()
         with conn.cursor() as cur:
 
-            script = "select netid from subscriptions where id=%s"
             cur.execute(script, [clubid])
-
-            row = cur.fetchone()
-            subscribers = []
-            while row is not None:
-                subscribers.append(row[0])
-                row = cur.fetchone()
-
-            return subscribers
-
+            rows = cur.fetchall()
+            return rows
 
     except Exception as ex:
-        print("__________database.py get subscribers: ", ex)
-        return "server, get_subscribers"
+        print("__________database.py get club announcements: ", ex)
+        return "server, get_club_announcements"
 
     finally:
         if 'conn' in locals():
             pool.putconn(conn)
 
+###### ---------------- ActiveDirectory access ------------------ #####
 
-# updates club info in database
-def update_club_info(clubid, instagram=None, youtube=None, email=None,
-            mission=None, goals=None, imlink=None):
-
-    script = "UPDATE clubs SET "
-    script += "instagram=%s, youtube=%s, groupemail=%s, "
-    script += "mission=%s, goals=%s, imlink=%s "
-    script += "WHERE id=%s"
-    args = [instagram, youtube, email, mission, goals, imlink]
-
-    try:
-        conn = pool.getconn()
-        with conn.cursor() as cur:
-            cur.execute(script, args+[clubid])
-            conn.commit()
-
-    except Exception as ex:
-        print("__________database.py update club info: ", ex)
-        return "server, update_club_info"
-
-    finally:
-        if 'conn' in locals():
-            conn.commit()
-            pool.putconn(conn)
-
-
-# get clubname from clubid
-def get_clubname(clubid):
-    try:
-        conn = pool.getconn()
-        with conn.cursor() as cur:
-
-            script = "select MAX(id) from clubs"
-            cur.execute(script)
-            num = cur.fetchone()[0]
-
-            if int(clubid) > num or int(clubid) < 0:
-                return ("Invalid Clubid",)
-
-            script = "select groupname from clubs where id=%s"
-            cur.execute(script, [clubid])
-
-            return cur.fetchone()
-
-    except Exception as ex:
-        print("__________database.py get clubname: ", ex)
-        return "server, get_clubname"
-
-    finally:
-        if 'conn' in locals():
-            pool.putconn(conn)
-
-################
-# getting user infos from netid
-#######################
 def get_user(username):
 
     req_lib = ReqLib()

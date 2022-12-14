@@ -40,8 +40,10 @@ div.card-body{
 /* Sub button */
 div.sub-button{
    padding:0.5rem;
-   background-color: darkcyan;
+   background-color: rgb(73, 173, 173);
+   color: white;
    margin-top: 10px;
+   margin-left: 1rem;
    border-radius: 7px;
 }
 div.sub-button-text:hover{
@@ -53,7 +55,7 @@ div.unsub-button-text:hover{
 
 /* Tags card */
 div.tagscard{
-   background-color:white;  
+   background-color:white;
    padding:1rem;
    width:100%;
    border-radius:7px;

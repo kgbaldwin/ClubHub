@@ -10,9 +10,30 @@
     <body onload="fillfields()">
 
     <style>
+        .inputSpec{
+            width: 15rem;
+        }
         .inputSpec:invalid {
             background-color: rgb(240, 173, 151);
-            width: 15rem;
+        }
+        input[type=text] {
+            border-radius: 0.3rem;
+            border: 2px solid lightgray;
+            padding: 0.2rem;
+        }
+        textarea {
+            border-radius: 0.3rem;
+            border: 2px solid lightgray;
+            padding: 0.2rem;
+        }
+        input[type=submit] {
+            padding: 0.5rem;
+            background: rgb(73, 173, 173);
+            color: white;
+            border:0 none;
+            border-radius: 5px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
         }
     </style>
 
@@ -36,56 +57,57 @@
             You are not an officer of <em>{{clubname}}</em>!
 
         {% else: %}
-            <h2>Edit {{clubname}}</h2> <br>
 
-            <h3>Current Officers:</h3>
+            <h3> Edit Club Details for {{clubname}} </h3>
+
+                <form id="editform">
+                    <input type="hidden" name="clubid" value="{{clubid}}">
+                    <input type="hidden" name="clubname" value="{{clubname}}">
+
+                    <label for="clubmission"> <div style="font-size:1.25rem"> Mission: </div> </label><br>
+                    <textarea id="clubmission" name="clubmission" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
+
+                    <label for="clubgoals"> <div style="font-size:1.25rem"> Goals: </div> </label><br>
+                    <textarea id="clubgoals" name="clubgoals" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
+
+                    <label for="clubemail"><div style="font-size:1.25rem"> Email: </div> </label><br>
+                    <input type="text" id="clubemail" name="clubemail" class="inputSpec"><br><br>
+
+                    <label for="clubimlink"><div style="font-size:1.25rem"> Image URL: </div> </label><br>
+                    <input type="text" id="clubimlink" name="clubimlink" class="inputSpec"><br><br>
+
+                    <label for="clubinstagram"><div style="font-size:1.25rem"> Instagram URL: </div> </label><br>
+                    <input type="text" id="clubinstagram" name="clubinstagram" class="inputSpec"><br><br>
+
+                    <label for="clubyoutube"><div style="font-size:1.25rem"> YouTube URL: </div> </label><br>
+                    <input type="text" id="clubyoutube" name="clubyoutube" class="inputSpec"><br>
+
+                    <input onclick="update_data()" type="submit" value="Update info">
+
+                </form>
+
+            <hr>
+
+            <h3> Edit Officers for {{clubname}} </h3>
+            <div style="font-size:1.25rem"> Current Officers</div>
                 <ul>
                     {% for person in curr_officers: %}
                         <li>{{person[0]}}  ({{person[1]}})</li>
                     {% endfor %}
                 </ul>
 
+                <div style="font-size:1.25rem"> Add an Officer </div>
 
-                <button type="button" class="btn btn-danger"><div id ='resign'onclick="remove_officer()">Resign as Officer</div></button>
-                    <br><br>
 
-            <h3> Add an Officer </h3>
-
-                <label for="newofficer">Enter the new officer's netid:</label>
+                <label for="newofficer">Enter the new officer's netid: </label>
                 <input type="text" id="newofficer">
-                <input type="hidden" id="clubid"value="{{clubid}}"> &nbsp
+                <input type="hidden" id="clubid"value="{{clubid}}"> &nbsp <br>
                 <button> <small onclick="new_officer()"><em>Submit</em></small></button>
 
-            <br><hr>
+                <br><br>
 
-            <h3> Edit Club Details </h3>
-
-                <form id="editform">
-                    <input type="hidden" name="clubid" value="{{clubid}}">
-                    <input type="hidden" name="clubname" value="{{clubname}}">
-
-                    <label for="clubmission">Mission: </label><br>
-                    <textarea id="clubmission" name="clubmission" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
-
-                    <label for="clubgoals">Goals: </label><br>
-                    <textarea id="clubgoals" name="clubgoals" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
-
-                    <label for="clubimlink">Image URL: </label><br>
-                    <input type="text" id="clubimlink" name="clubimlink" class="inputSpec"><br><br>
-
-                    <label for="clubemail">Email: </label><br>
-                    <input type="text" id="clubemail" name="clubemail" class="inputSpec"><br><br>
-
-                    <label for="clubinstagram">Instagram URL: </label><br>
-                    <input type="text" id="clubinstagram" name="clubinstagram" class="inputSpec"><br><br>
-
-                    <label for="clubyoutube">YouTube URL: </label><br>
-                    <input type="text" id="clubyoutube" name="clubyoutube" class="inputSpec"><br>
-
-                    <br>
-                    <input onclick="update_data()" type="submit" value="Update info">
-
-                </form>
+                <button type="button" class="btn btn-danger">
+                    <div id ='resign'onclick="remove_officer()">Resign as Officer</div></button>
 
         {% endif %}
 

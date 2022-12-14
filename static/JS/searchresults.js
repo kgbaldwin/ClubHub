@@ -53,7 +53,7 @@ function changeInfo() {
     else{
         goalscard.style.display="none";
         clubgoals.style.display="none";
-        goalsbr.style.display="none";
+        missionbr.style.display="none";
     }
 
     // CLUB EMAIL
@@ -141,16 +141,18 @@ function changeInfo() {
 }
 
 function loadAnnouncements() {
+
     fetch("/get_club_announcements?clubid="+clubid)
         .then((response) => response.text())
         .then((text) => {
-            const ann_div = document.getElementById("club-announcements");
-            if (text == "announcements error") {
-                ann_div.innerHTML = "A server error occurred. Please wait a few seconds, and reload.";
-            }
-            else {
+
+            if (text !== 'announcements error') {
+
+
                 var ann_array = text.split("`");
+                const ann_div = document.getElementById("club-announcements");
                 var htmlBuilder = "";
+
                 let announcements = [];
                 let timestamps = [];
                 let dates = [];
