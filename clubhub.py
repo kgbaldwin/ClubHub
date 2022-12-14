@@ -52,7 +52,12 @@ def profile():
 
     info = database.get_user(username)[0]
 
-    year = info["dn"].split(" ")[3][:4]
+    ou = info["dn"].split(",")[1]
+    if not ou.split(" ")[0] == "OU=Undergraduate":
+        year = 'N/A'
+    else:
+        year = ou.split(" ")[3][:4]
+
 
     subs = database.get_subs(username)
     officerships = database.get_officerships(username)
