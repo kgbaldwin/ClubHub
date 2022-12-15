@@ -5,7 +5,9 @@ td {
  }
 
 
-
+ /* table, th, td {
+    border: 1px solid black;
+  }
  /* Sizing for labels in ClubHub pages */
 .clubhub-biglabel{
     font-size:2rem;
@@ -84,7 +86,13 @@ a.clubhub-buttonlink{
 }
 
 a.clubhub-buttonlink:hover {
+    padding: 0.5rem;
     color: white;
+    border:0 none;
+    border-radius: 5px;
+}
+.decoration{
+    background-color:rgb(204, 239, 239)
 }
 
 
