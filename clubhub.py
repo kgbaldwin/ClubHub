@@ -105,6 +105,24 @@ def searchresults():
     return response
 
 
+@app.route('/announce_page', methods=['GET'])
+def announce_page():
+    username = auth.authenticate()
+    clubid = flask.request.args.get('clubid')
+    clubname = database.get_clubname(clubid)[0]
+
+    if database.verify_officer(username, clubid):
+        html_code = flask.render_template('announce.html',
+                            username=username, clubname=clubname,
+                            verified=True, clubid=clubid)
+
+    else:
+        html_code = flask.render_template('announce.html', username=username,
+                                clubname=clubname, verified=False)
+    response = flask.make_response(html_code)
+    return response
+
+
 @app.route('/edit_club', methods=['GET'])
 def edit_club():
     username = auth.authenticate()
@@ -206,24 +224,6 @@ def send_announce():
        return "success"
 
     return "error"
-
-
-@app.route('/announce', methods=['GET'])
-def announce():
-    username = auth.authenticate()
-    clubid = flask.request.args.get('clubid')
-    clubname = database.get_clubname(clubid)[0]
-
-    if database.verify_officer(username, clubid):
-        html_code = flask.render_template('announce.html',
-                            username=username, clubname=clubname,
-                            verified=True, clubid=clubid)
-
-    else:
-        html_code = flask.render_template('announce.html', username=username,
-                                clubname=clubname, verified=False)
-    response = flask.make_response(html_code)
-    return response
 
 
 # subscribes user to club or unsubscribes from
