@@ -3,13 +3,22 @@
   <head>
      <title>ClubHub.com</title>
      <link rel="icon" href="/static/images/clubhub-logo.jpeg">
+     <link rel="stylesheet" href="{{ url_for('static', filename='templates/general.css') }}">
   </head>
   <body>
 
     {% include 'header.html' %}
 
     <table>
-    <td class="main" style="padding: 1.5rem; padding-right:25rem">
+    <td class="main" style="padding: 2rem; padding-right:25rem">
+
+        <div class="clubhub-button" style="width:fit-content;display:inline-block;">
+            <a class="clubhub-buttonlink" href = "/index">
+                <div style="display:inline-block;">
+                    Back to club search</div>
+            </a>
+         </div>
+         <br><br>
 
         <div style="font-size:2rem; padding-bottom: 0.5rem;"> About ClubHub</div>
         ClubHub is a platform to streamline communication between Princeton clubs and interested students.

@@ -10,33 +10,39 @@
 
   <body>
 
+    <style>
+        input[type=submit] {
+        padding: 0.5rem;
+        background: rgb(73, 173, 173);
+        color: white;
+        border:0 none;
+        border-radius: 5px;
+    }
+    </style>
+
     {% include 'header.html' %}
 
-    <table>
-        <td class="main">
-            <div class="clubhub-button" style="width:fit-content;display:inline-block;">
-                <a class="clubhub-buttonlink" href = "/profile?edit=0">
-                    <div style="display:inline-block;">
-                    Back to profile</div>
-                </a>
-            </div>
-        </td>
-    </table>
+    <div style="padding-left: 2rem; padding-top: 2rem; padding-right: 1.5rem">
 
-
-    <div style="padding-left: 2rem; padding-right: 1.5rem">
+        <div class="clubhub-button">
+            <a class="clubhub-buttonlink" href="/profile?edit=0">
+                Back to profile
+            </a>
+        </div>
+        <br><br>
 
         {% if verified == false: %}
             You are not an officer of <em>{{clubname}}</em>!
 
         {% else: %}
 
-            <h2>Send an announcement to <em>{{clubname}}</em></h2>
+            <div style="font-size:2rem; padding-bottom: 0.5rem;"> Send an announcement to {{clubname}}</div>
 
-                <hr><br>
+
+                <br>
 
                 <div class="form-group">
-                    <label><h5>Your announcement</h5></label>
+                    <label><div style="font-size:1.25rem"> Your Announcement </div></label>
                     <textarea class="form-control" id="announcetext" rows="3"></textarea>
                 </div>
 

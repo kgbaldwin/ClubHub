@@ -1,16 +1,18 @@
-function unsubscribe(input) {
+function unsubscribe(clubname, clubid) {
 
-    fetch("/subscribe?subscribe=0&clubid="+input)
-    .then((response) => response.text())
-    .then((text) => {
-       if (text=="cannot unsubscribe officer"){
-         alert("Cannot unsubscribe officer from club")
-       }
-       else if (text=="error"){
-         alert(text)
-       }
-    })
-    .then(() => {location.reload();})
+    if (window.confirm("Are you sure you want to unsubscribe from " + clubname + "?")) {
+        fetch("/subscribe?subscribe=0&clubid="+clubid)
+        .then((response) => response.text())
+        .then((text) => {
+        if (text=="cannot unsubscribe officer"){
+            alert("Cannot unsubscribe officer from club")
+        }
+        else if (text=="error"){
+            alert(text)
+        }
+        })
+        .then(() => {location.reload();})
+    }
 
 }
 

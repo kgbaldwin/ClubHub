@@ -13,10 +13,75 @@ div.clubhub-button{
     margin-top: 0.5rem;
 }
 
+.clubhub-button{
+    padding: 0.5rem;
+    background: rgb(73, 173, 173);
+    color: white;
+    border:0 none;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+    width:fit-content;
+    display:inline-block;
+}
+
+
 a.clubhub-buttonlink{
     color: white;
+    text-decoration: none;
 }
 
 a.clubhub-buttonlink:hover {
     color: white;
  }
+
+ .clubedit-button{
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    background: lightgray;
+    color: black;
+    border:0 none;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+    width:fit-content;
+    display:inline-block;
+}
+
+ a.clubedit-buttonlink{
+    color: black;
+    font-size: small;
+    text-decoration: none;
+}
+
+a.clubedit-buttonlink:hover {
+    color: black;
+    font-size: small;
+}
+
+#tags {
+    background-color: lightgray;
+    color: black;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: none;
+    width: 16rem;
+}
+
+#tags_sub{
+    background-color: rgb(73, 173, 173);
+    color: white;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: none;
+    width: 16rem;
+}
+
+#tags_unsub{
+    background-color: rgb(220,53,69);
+    color: white;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: none;
+    width: 16rem;
+}
+
+

@@ -39,26 +39,21 @@
 
     {% include 'header.html' %}
 
+    <div style="padding-left: 2rem; padding-top:2rem; padding-right: 1.5rem">
 
-    <table>
-        <td class="main">
-            <div class="clubhub-button" style="width:fit-content;display:inline-block;">
-                <a class="clubhub-buttonlink" href = "/profile?edit=0">
-                    <div style="display:inline-block;">
-                    Back to profile</div>
-                </a>
-            </div>
-        </td>
-    </table>
-
-    <div style="padding-left: 2rem; padding-right: 1.5rem">
+        <div class="clubhub-button">
+            <a class="clubhub-buttonlink" href="/profile?edit=0">
+                Back to profile
+            </a>
+        </div>
+        <br><br>
 
         {% if verified == false: %}
             You are not an officer of <em>{{clubname}}</em>!
 
         {% else: %}
 
-            <h3> Edit Club Details for {{clubname}} </h3>
+        <div style="font-size:2rem; padding-bottom: 0.5rem;"> Edit Club Details for {{clubname}}</div>
 
                 <form id="editform">
                     <input type="hidden" name="clubid" value="{{clubid}}">
@@ -88,7 +83,7 @@
 
             <hr>
 
-            <h3> Edit Officers for {{clubname}} </h3>
+            <div style="font-size:2rem; padding-bottom: 0.5rem;"> Edit Officers for {{clubname}}</div>
             <div style="font-size:1.25rem"> Current Officers</div>
                 <ul>
                     {% for person in curr_officers: %}
@@ -102,7 +97,7 @@
                 <label for="newofficer">Enter the new officer's netid: </label>
                 <input type="text" id="newofficer">
                 <input type="hidden" id="clubid"value="{{clubid}}"> &nbsp <br>
-                <button> <small onclick="new_officer()"><em>Submit</em></small></button>
+                <button class="clubhub-button" onclick="new_officer()">Submit</button>
 
                 <br><br>
 
