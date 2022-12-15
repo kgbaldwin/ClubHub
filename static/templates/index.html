@@ -6,36 +6,38 @@
    <title>ClubHub.com</title>
    <link rel="icon" href="/static/images/clubhub-logo.jpeg">
    <link rel="stylesheet" href="{{ url_for('static', filename='templates/general.css') }}">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
 </head>
 <body>
-   {% include 'header.html' %}
-   <table width=100%>
-      <tr>
-         <td max-width=30% width=30% style="overflow:scroll;vertical-align: top;">
-            <div style="padding:2rem;">
-            {% include 'searchform.html'%}
-         </div>
-         </td>
 
-         <td max-width = "70%" width="70%" style="table-layout:fixed; overflow:scroll; white-space: nowrap;vertical-align: top;">
-            <div style="padding:2rem;">
-            <table> 
-               <tbody><tr>
-                  <td><div class="clubhub-biglabel decoration"> ✨ Welcome to ClubHub! ✨ </div>
-                  Enter a search query and/or select some tags to clubs at Princeton.<br><br>
-                  </td></tr>
-                  <tr><td>
-                     <div class="bigemoji">🔡</div>
-                  </td>
-                  <td>
-                     <div class="bigemoji">🏷</div>
-                  </td></tr>
-               </tbody>
-            </table>
-         </div>
-         </td>
-      </tr>
-    </table>
+    {% include 'header.html' %}
+
+<table width = 100%>
+    <tr>
+        <td max-width=30% width=30% style="vertical-align:top;padding:2rem;">
+            {% include 'searchform.html'%}
+        </td>
+
+        <!--Split Screen-->
+        <td max-width = "70%" width="70%" style="vertical-align: top; padding-top:2rem">
+            <table>
+                <tbody><tr>
+                   <td><div class="clubhub-biglabel decoration"> ✨ Welcome to ClubHub! ✨ </div>
+                   Enter a search query and/or select some tags to clubs at Princeton.<br><br>
+                   </td></tr>
+                   <tr><td>
+                      <div class="bigemoji">🔡</div>
+                   </td>
+                   <td>
+                      <div class="bigemoji">🏷</div>
+                   </td></tr>
+                </tbody>
+             </table>
+        </td>
+
+    </tr>
+
+</table>
 
    {% include 'footer.html' %}
    <!---Keep the JS below at the bottom of body. For loading bootstrap and jquery-->

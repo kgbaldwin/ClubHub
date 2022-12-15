@@ -39,14 +39,12 @@ def index():
     response = flask.make_response(html_code)
     return response
 
-
 @app.route('/about', methods=['GET'])
 def about():
     username = auth.authenticate()
     html_code = flask.render_template('about.html', username=username)
     response = flask.make_response(html_code)
     return response
-
 
 @app.route('/profile', methods=['GET'])
 def profile():
@@ -105,8 +103,8 @@ def searchresults():
     return response
 
 
-@app.route('/announce_page', methods=['GET'])
-def announce_page():
+@app.route('/announce', methods=['GET'])
+def announce():
     username = auth.authenticate()
     clubid = flask.request.args.get('clubid')
     clubname = database.get_clubname(clubid)[0]
@@ -142,6 +140,7 @@ def edit_club():
 
     response = flask.make_response(html_code)
     return response
+
 
 
 #### ------------- Back-end Information Delivery ----------------- ####
@@ -204,28 +203,6 @@ def get_club_announcements():
     return response
 
 
-@app.route('/send_announce', methods=['POST'])
-def send_announce():
-    username = auth.authenticate()
-
-    # Get data embedded in the post request body
-    data = flask.request.json
-    clubid = data['clubid']
-    announcement = data['announcement']
-
-    # update database
-    announce_result = database.send_announcement(clubid, announcement, username)
-    # send email to subscribers
-    subscribers = database.get_club_subscribers(clubid)
-    clubname = database.get_clubname(clubid)[0]
-    subscriber_emails = append_address(subscribers)
-    email_result = send_email(subscriber_emails, clubname, announcement)
-    if announce_result == "success" and email_result == "success":
-       return "success"
-
-    return "error"
-
-
 # subscribes user to club or unsubscribes from
 @app.route('/subscribe', methods=['GET'])
 def subscribe():
@@ -271,6 +248,7 @@ def subscribe_tag():
         return "error"
 
     return "success"
+
 
 
 @app.route("/add_officer", methods=['GET'])
@@ -321,9 +299,55 @@ def edit_club_info():
 
     return ''
 
+
+@app.route('/send_announce', methods=['POST'])
+def send_announce():
+    username = auth.authenticate()
+
+    # Get data embedded in the post request body
+    data = flask.request.json
+    clubid = data['clubid']
+    announcement = data['announcement']
+
+    # update database
+    announce_result = database.send_announcement(clubid, announcement, username)
+    # send email to subscribers
+    subscribers = database.get_club_subscribers(clubid)
+    clubname = database.get_clubname(clubid)[0]
+    subscriber_emails = append_address(subscribers)
+    email_result = send_email(subscriber_emails, clubname, announcement)
+    if announce_result == "success" and email_result == "success":
+       return "success"
+
+    return "error"
+
+
+
+##########################################################
+'''
+@app.route('/register_club', methods=['GET'])
+def register_club():
+    return page_not_found('_')
+    req_lib = ReqLib()
+
+    username = auth.authenticate()
+
+    reqBasic = req_lib.getJSON(
+        req_lib.configs.USERS_BASIC,
+        uid=username,
+    )
+    #print("req2: ", reqBasic)
+
+    return reqBasic
+'''
+
 @app.errorhandler(404)
 def page_not_found(e):
-    username = auth.authenticate()
+    print("entering page not found")
+    try:
+        username = auth.authenticate()
+    except:
+        username = "False"
     if e == "lacking_info":
         error = "lacking_info"
     else: error = "404"

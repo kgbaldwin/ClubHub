@@ -8,37 +8,57 @@
     </head>
    <body onload="update_selected()">
         <div class="clubhub-bigishlabel"> Search for Clubs </div>
-        <form action = "/searchresults" method="get" style="max-width:100%;">
-        <div class="grid-container">
+        <form action = "/searchresults" method="get" style="max-width:100%;" class="form-inline my-0">
+        <!-- <div class="grid-container"> -->
 
             <!-- Keyword search -->
-            <input type="text" id="query" placeholder="climbing, Nassoons, improv..." name="clubquery" value="{{clubquery}}">
+            <div style="position:relative; display:flex; flex-wrap:wrap; align-items: stretch; width: 100%;">
+            <div class="container-fluid">
+            <div class="row">
+                <div class="col-8">
 
-            <!-- Tag search -->
-            <button class="btn btn-secondary btn-sm dropdown-toggle" id="tags" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
-              
-                Search with Tags
+                    <div class="row" style="padding-bottom:0.5rem">
+                        <input type="text" id="query" placeholder="climbing, Nassoons, improv..." name="clubquery" value="{{clubquery}}">
+                    </div>
 
-                </button>
-                <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
-                {% for tag in tags: %}
-                <li onclick="toggle('{{tag[0]}}')">
-                    <a class="dropdown-item">
-                        <label>{{tag[0]}}</label>
-                        {% if tag[0] in checked: %}
-                        <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
-                        {% else: %}
-                        <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
-                        {% endif %}
-                    </a>
-                </li>
-                {% endfor %}
-                </ul>
+                    <div class="row">
+                        <!-- Tag search -->
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" id="tags" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
+                            Search with Tags
+                        </button>
+                            <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+                            {% for tag in tags: %}
+                            <li onclick="toggle('{{tag[0]}}')">
+                                <a class="dropdown-item">
+                                    <label>{{tag[0]}}</label>
+                                    {% if tag[0] in checked: %}
+                                    <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
+                                    {% else: %}
+                                    <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
+                                    {% endif %}
+                                </a>
+                            </li>
+                            {% endfor %}
+                            </ul>
+                    </div>
 
-                <!-- Submit -->
-                <input class="clubhub-button" type="submit" value="Find Clubs" id="search" style="width: 6rem">
+                </div>
+
+                <div class="col-3">
+                    <!-- Submit -->
+                    <div style="margin: auto">
+                        <input class="clubhub-button" type="submit" value="Find Clubs" id="search">
+                    </div>
+                </div>
+
+            </div>
+            </div>
+            </div>
+
+                <!-- </div> -->
+        <div style="position:relative; display:flex; flex-wrap:wrap; align-items: stretch; width: 100%;">
+            <div id="selected_tags" style="word-wrap:break-word;"></div>
         </div>
-        <div id="selected_tags" style="word-wrap:break-word;"></div>
 
         </form>
 
