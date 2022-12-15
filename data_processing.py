@@ -1,13 +1,17 @@
 import psycopg2
+import urllib.parse as up
+import os
 
-database_url = "postgres://avgqxjcj:lg3PfhN5-G_5-KH1XleCGMAJgHkZfcN1@peanut.db.elephantsql.com/avgqxjcj"
+url = up.urlparse(os.environ["DATABASE_URL"])
 
 try:
-    with psycopg2.connect(database_url) as conn:
+    with psycopg2.connect(database=url.path[1:], user=url.username, password=url.password,
+                            host=url.hostname, port=url.port) as conn:
 
         with conn.cursor() as cur:
 
-            '''allTags = set()
+            ### -------- extract tags ---------
+            allTags = set()
 
             script = "select distinct category from clubsall"
             cur.execute(script)
@@ -24,24 +28,21 @@ try:
             allTags.discard('')
 
 
-            # insert
+            # insert tags into new "tags" table
             for tag in allTags:
 
                 script = "select id from clubsall where category ilike %s"
                 cur.execute(script, ['%' + tag + '%'])
 
                 rows = cur.fetchall()
-                #print(rows)
 
                 for row in rows:
                     script = "insert into tagsall values(%s, %s)"
 
                     cur.execute(script, [tag, row[0]])
 
-                #print("_____________")
-                '''
 
-
+            ### ----------- fill officers table ----------------
             script = "select distinct groupname from clubs"
             cur.execute(script)
             rows = cur.fetchall()
@@ -52,7 +53,6 @@ try:
                 script += "and clubs.groupname=%s"
 
                 cur.execute(script, [row])
-
 
 
 except:
