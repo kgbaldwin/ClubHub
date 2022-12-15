@@ -64,16 +64,10 @@ def profile():
     sub_tags = database.get_tags()
     unsub_tags = database.get_user_sub_tags(username)
 
-    edit = flask.request.args.get("edit")
-    if not edit:
-        edit = 0
-    else:
-        edit = int(edit)
-
     html_code = flask.render_template('profile.html', username=username,
             name=info["displayname"], year=year, subs=subs,
             officerships=officerships, sub_tags=sub_tags,
-            unsub_tags=unsub_tags, edit=edit)
+            unsub_tags=unsub_tags)
     response = flask.make_response(html_code)
     return response
 

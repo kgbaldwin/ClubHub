@@ -8,22 +8,22 @@
 </head>
 
 <body>
-    <style>
-        td.main{
-           padding-top: 1rem;
-        }
-        a.clubhub-buttonlink{
-            color: white;
-        }
-     </style>
 
     {% include 'header.html' %}
 
-    <div style="padding-top: 2rem; padding-left: 2rem;">
+    <table>
+    <td>
+
+    <div class="clubhub-button">
+        <a class="clubhub-buttonlink" href = "/index">
+            Back to club search </a>
+    </div>
+
+    <br><br>
+
 
     {% if error == "server" %}
         A server error ocurred. Please contact the system administrator.
-        <br>
 
     {% elif error == "404" %}
         Ruh-roh! It seems like the page you were looking for doesn't exist.
@@ -33,20 +33,11 @@
 
     {% elif error == "lacking_info" %}
         Either you've tried to access a page you shouldn't (tsk tsk), or something is broken. If it's the second, please contact the system administrator.
-        <br><br>
 
     {%endif%}
 
-   <table>
-    <td class="main">
-        <div class="clubhub-button" style="width:fit-content;display:inline-block;">
-            <a class="clubhub-buttonlink" href = "/index">
-                <div style="display:inline-block;"> Back to club search</div>
-            </a>
-        </div>
     </td>
     </table>
-    </div>
 
    {% include 'footer.html' %}
 

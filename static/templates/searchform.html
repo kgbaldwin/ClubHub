@@ -4,95 +4,43 @@
       <title>ClubHub.com</title>
       <link rel="icon" href="/static/images/clubhub-logo.jpeg">
       <link rel="stylesheet" href="{{ url_for('static', filename='templates/general.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='templates/searchresults.css') }}">
     </head>
    <body onload="update_selected()">
-      <style>
-         .scrollable-menu-dropdown {
-            height: auto;
-            max-height: 200px;
-            overflow-x: hidden;
-         }
-         td {
-            border-collapse: collapse;
-            padding: 2rem;
-         }
-        input[type=submit] {
-            padding: 0.5rem;
-            background: rgb(73, 173, 173);
-            color: white;
-            border:0 none;
-            border-radius: 5px;
-        }
-        input[type=text] {
-            border-radius: 0.3rem;
-            border: 2px solid lightgray;
-            padding: 0.3rem;
-            width: 16rem;
-            height: 2.25rem;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: 16rem 1rem 1rem;
-            grid-template-rows: 1rem 1rem 1rem 1rem 1rem 0.5rem;
 
-        }
-        #query{
-            grid-column-start: 1
+        <div class="clubhub-bigishlabel"> Search for Clubs </div>
+        <form action = "/searchresults" method="get">
 
-        }
-        #tags{
-            grid-column-start: 1;
-            grid-row-start: 4;
-            grid-row-end: 7;
-        }
-        #search{
-            grid-column-start: 3;
-            grid-column-end: 4;
-            grid-row-start: 1;
-            grid-row-end: 6;
-            font-weight: bold;
-        }
+        <div class="grid-container">
 
+            <!-- Keyword search -->
+            <input type="text" id="query" placeholder="climbing, Nassoons, improv..." name="clubquery" value="{{clubquery}}">
 
-      </style>
-         <div style="font-size:1.5rem; padding-bottom: 0.5rem;"> Search for Clubs </div>
-         <form action = "/searchresults" method="get">
+            <!-- Tag search -->
+            <button class="btn btn-secondary btn-sm dropdown-toggle" id="tags" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
+                Search with Tags
+                </button>
+                <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
+                {% for tag in tags: %}
+                <li onclick="toggle('{{tag[0]}}')">
+                    <a class="dropdown-item">
+                        <label>{{tag[0]}}</label>
+                        {% if tag[0] in checked: %}
+                        <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
+                        {% else: %}
+                        <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+                </ul>
 
-            <div class="grid-container">
+                <!-- Submit -->
+                <input class="clubhub-button" type="submit" value="Find Clubs" id="search" style="width: 6rem">
+        </div>
+        <div id="selected_tags"></div>
 
-                <!-- Keyword search -->
-                <input type="text" id="query" placeholder="climbing, Nassoons, improv..." name="clubquery" value="{{clubquery}}">
-
-                <!-- Tag search -->
-                <button class="btn btn-secondary btn-sm dropdown-toggle" id="tags" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
-                    Search with Tags
-                 </button>
-                 <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
-                    {% for tag in tags: %}
-                    <li onclick="toggle('{{tag[0]}}')">
-                       <a class="dropdown-item">
-                          <label>{{tag[0]}}</label>
-                          {% if tag[0] in checked: %}
-                          <input type="checkbox" checked name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
-                          {% else: %}
-                          <input type="checkbox" name="tags" id='{{tag[0]}}' value='{{tag[0]}}' onclick="toggle('{{tag[0]}}')">
-                          {% endif %}
-                       </a>
-                    </li>
-                    {% endfor %}
-                 </ul>
-
-                 <!-- Submit -->
-                 <input type="submit" value="Find Clubs" id="search" style="width: 6rem">
-            </div>
-            <div id="selected_tags"></div>
-
-
-            <div>
-
-
-            </div>
-         </form>
+        </form>
 
       <!---Keep the JS below at the bottom of body. For loading bootstrap-->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

@@ -9,37 +9,10 @@
 
     <body onload="fillfields()">
 
-    <style>
-        .inputSpec{
-            width: 15rem;
-        }
-        .inputSpec:invalid {
-            background-color: rgb(240, 173, 151);
-        }
-        input[type=text] {
-            border-radius: 0.3rem;
-            border: 2px solid lightgray;
-            padding: 0.2rem;
-        }
-        textarea {
-            border-radius: 0.3rem;
-            border: 2px solid lightgray;
-            padding: 0.2rem;
-        }
-        input[type=submit] {
-            padding: 0.5rem;
-            background: rgb(73, 173, 173);
-            color: white;
-            border:0 none;
-            border-radius: 5px;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-    </style>
-
     {% include 'header.html' %}
 
-    <div style="padding-left: 2rem; padding-top:2rem; padding-right: 1.5rem">
+    <table>
+    <td>
 
         <div class="clubhub-button">
             <a class="clubhub-buttonlink" href="/profile?edit=0">
@@ -49,21 +22,21 @@
         <br><br>
 
         {% if verified == false: %}
-            You are not an officer of <em>{{clubname}}</em>!
+            <div class="clubhub-mediumlabel"> You are not an officer of this club. </div>
 
         {% else: %}
 
-        <div style="font-size:2rem; padding-bottom: 0.5rem;"> Edit Club Details for {{clubname}}</div>
+        <div class="clubhub-biglabel"> Edit Club Details for {{clubname}}</div>
 
                 <form id="editform">
                     <input type="hidden" name="clubid" value="{{clubid}}">
                     <input type="hidden" name="clubname" value="{{clubname}}">
 
                     <label for="clubmission"> <div style="font-size:1.25rem"> Mission: </div> </label><br>
-                    <textarea id="clubmission" name="clubmission" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
+                    <textarea id="clubmission" name="clubmission" form="editform" rows="4"></textarea><br><br>
 
                     <label for="clubgoals"> <div style="font-size:1.25rem"> Goals: </div> </label><br>
-                    <textarea id="clubgoals" name="clubgoals" form="editform" rows="4" style="width: 40rem"></textarea><br><br>
+                    <textarea id="clubgoals" name="clubgoals" form="editform" rows="4"></textarea><br><br>
 
                     <label for="clubemail"><div style="font-size:1.25rem"> Email: </div> </label><br>
                     <input type="text" id="clubemail" name="clubemail" class="inputSpec"><br><br>
@@ -77,21 +50,21 @@
                     <label for="clubyoutube"><div style="font-size:1.25rem"> YouTube URL: </div> </label><br>
                     <input type="text" id="clubyoutube" name="clubyoutube" class="inputSpec"><br>
 
-                    <input onclick="update_data()" type="submit" value="Update info">
+                    <br>
+                    <input class="clubhub-button" onclick="update_data()" type="submit" value="Update info">
 
                 </form>
+            <br><br>
 
-            <hr>
-
-            <div style="font-size:2rem; padding-bottom: 0.5rem;"> Edit Officers for {{clubname}}</div>
-            <div style="font-size:1.25rem"> Current Officers</div>
+            <div class="clubhub-biglabel"> Edit Officers for {{clubname}}</div>
+            <div class="clubhub-mediumlabel"> Current Officers</div>
                 <ul>
                     {% for person in curr_officers: %}
                         <li>{{person[0]}}  ({{person[1]}})</li>
                     {% endfor %}
                 </ul>
 
-                <div style="font-size:1.25rem"> Add an Officer </div>
+                <div class="clubhub-mediumlabel"> Add an Officer </div>
 
 
                 <label for="newofficer">Enter the new officer's netid: </label>
@@ -102,11 +75,12 @@
                 <br><br>
 
                 <button type="button" class="btn btn-danger">
-                    <div id ='resign'onclick="remove_officer()">Resign as Officer</div></button>
+                    <div id ="resign" onclick="remove_officer()">Resign as Officer</div></button>
 
         {% endif %}
 
-        </div>
+    </td>
+    </table>
 
 
          {% include 'footer.html' %}

@@ -10,52 +10,40 @@
 
   <body>
 
-    <style>
-        input[type=submit] {
-        padding: 0.5rem;
-        background: rgb(73, 173, 173);
-        color: white;
-        border:0 none;
-        border-radius: 5px;
-    }
-    </style>
-
     {% include 'header.html' %}
 
-    <div style="padding-left: 2rem; padding-top: 2rem; padding-right: 1.5rem">
+    <table>
+    <td>
 
         <div class="clubhub-button">
             <a class="clubhub-buttonlink" href="/profile?edit=0">
                 Back to profile
             </a>
         </div>
+
         <br><br>
 
         {% if verified == false: %}
-            You are not an officer of <em>{{clubname}}</em>!
+            <div class="clubhub-mediumlabel"> You are not an officer of this club. </div>
 
         {% else: %}
 
-            <div style="font-size:2rem; padding-bottom: 0.5rem;"> Send an announcement to {{clubname}}</div>
+            <div class="clubhub-biglabel"> Send an announcement to {{clubname}}</div>
+            <br>
 
+            <div class="form-group">
+                <label><div class="clubhub-mediumlabel"> Your Announcement </div></label>
+                <textarea class="form-control" id="announcetext" rows="3"></textarea>
+            </div>
 
-                <br>
-
-                <div class="form-group">
-                    <label><div style="font-size:1.25rem"> Your Announcement </div></label>
-                    <textarea class="form-control" id="announcetext" rows="3"></textarea>
-                </div>
-
-                <br>
-                <input type="hidden" id="clubid" value="{{clubid}}">
-                <input type="submit" value="Send my announcement" onclick="sendAnnouncement()">
-
-                <br>
+            <br>
+            <input type="hidden" id="clubid" value="{{clubid}}">
+            <input class="clubhub-button" type="submit" value="Send my announcement" onclick="sendAnnouncement()">
 
         {% endif %}
 
-    </div>
-
+    </td>
+    </table>
 
 
      {% include 'footer.html' %}

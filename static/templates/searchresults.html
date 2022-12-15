@@ -5,6 +5,7 @@
       <title>ClubHub.com</title>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+      <link rel="stylesheet" href="{{ url_for('static', filename='templates/general.css') }}">
       <link rel="stylesheet" href="{{ url_for('static', filename='templates/searchresults.css') }}">
       <link rel="icon" href="/static/images/clubhub-logo.jpeg">
    </head>
@@ -13,10 +14,10 @@
       {% include 'header.html' %}
       <table width = 100%>
          <tr>
-            <td max-width = 30% width = 30% style="vertical-align:top;padding:2rem;">
+            <td max-width=30% width=30% style="vertical-align:top;padding:2rem;">
                {% include 'searchform.html'%}
                <br>
-               <div style="font-size:1.5rem;"> Results </div>
+               <div class="clubhub-bigishlabel"> Results </div>
                <div id="search-results" class="scrollable-menu-results">
                   <div class="search_results_background">
                   {% if results|length == 0: %}
@@ -24,13 +25,11 @@
                   {% else %}
 
                      {% for each in results: %}
-                     <div class="search-results-card" id = "card_{{each[1]}}" style="list-style-type: none;" >
+                     <div class="search-results-card" id = "card_{{each[1]}}">
                         <div class="search-results-link">
-                           <!--<div class="card-body">-->
                               <li><strong><label style="padding:1rem; width:100%;"for={{each[1]}}>{{each[0]}}</label></strong></li>
                               <input type="radio" id={{each[1]}} name="clubname"
                               value="{{each[1]}}" onclick="changeInfo(); loadAnnouncements()" width="3rem;" style="display: none">
-                           <!--</div>-->
                            </div>
                      </div>
                      {% endfor %}
@@ -41,8 +40,7 @@
             </td>
 
             <!--Split Screen-->
-            <td max-width = "70%" width="70%" style="vertical-align: top;">
-              <!-- <h1>Club Info</h1>-->
+            <td max-width = "70%" width="70%" style="vertical-align: top; padding-top:2rem">
                <div id="none-selected" style="padding:2rem;">
                   Select a club, and its info will appear here...
                </div>
@@ -75,40 +73,33 @@
                   </table>
                </div>
 
+               <!-- Mission -->
+               <div id="missionbr" style="display:none;"> </div>
+               <div class='clubinfo' style="display:none;" id = "missioncard">
+                    <b>Club mission:</b>
+                    <div id = "clubmission" style='display:none;'></div>
+               </div>
 
-               <div id="missionbr" style="display:none;"><br> </div>
-                  <div class='clubinfo' style="display:none;" id = "missioncard">
-
-                     <b>Club mission:</b>
-                     <div id = "clubmission" style='display:none;'></div>
-                  </div>
-                  <div id="goalsbr" style="display:none;"><br> </div>
-                  <div class='clubinfo' style="display:none;" id = "goalscard">
+               <!-- Goals -->
+                <div id="goalsbr" style="display:none;"> </div>
+                <div class='clubinfo' style="display:none;" id = "goalscard">
                    <b>Club goals:</b>
                      <div id = "clubgoals" style='display:none;'></div>
-                  </div>
-<!--
-               <class="goals" style="display:none;">
-                  <td class = "goals" style="display:none;">
-                  <b>Club Goals: </b><div class="clubattribute" id = "clubgoals"></div><br>
-                  </td>
-               -->
+                </div>
 
-
-
-               <!-- Tags output -->
-               <br>
+               <!-- Tags -->
                <div class="tagscard" style="display:none;">
-
                   <b>🏷 Tags:</b>
                   <div id = tagsdiv style="display:none;"></div>
                </div>
-               <!-- announcements feed for club -->
+
+               <!-- Announcements -->
                <br><br>
                <div class="announcements-body scrollable-menu-results" style="width:100%;padding:1rem;display:none;">
                   <h2><b>Announcements:</b></h2>
                   <div id="club-announcements" style="width:100%;"></div>
                </div>
+
             </td>
          </tr>
    </table>

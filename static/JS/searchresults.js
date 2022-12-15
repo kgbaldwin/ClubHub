@@ -13,7 +13,6 @@ function changeInfo() {
     console.log(text)
     var info = text.split("`");
     console.log(info)
-    //alert(info)
 
     // make initial message disappear
     document.getElementById('none-selected').style.display='none';
@@ -31,7 +30,7 @@ function changeInfo() {
     const clubmission = document.getElementById('clubmission');
     const missionbr = document.getElementById("missionbr");
     if (info[1] != ""){
-        missioncard.style.display = "";
+        missioncard.style.display ="";
         clubmission.style.display="";
         missionbr.style.display="";
     }
@@ -110,9 +109,6 @@ function changeInfo() {
         }
         document.getElementById("tagsdiv").innerHTML = stringBuilder;
 
-
-
-    console.log("INFO 8: " + info[8]);
     // CHECK SUBBED
 
     // make sub button appear
@@ -135,7 +131,7 @@ function changeInfo() {
     for (let i = 0; i < previous.length; i++) {
         previous[i].classList.remove('border', 'search-results-card-selected');
     }
-    document.getElementById("card_"+clubid).classList.add('search-results-card-selected','border','border-warning','border-3');
+    document.getElementById("card_"+clubid).classList.add('search-results-card-selected');
 
 });
 }
