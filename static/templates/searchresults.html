@@ -25,10 +25,10 @@
                   {% else %}
 
                      {% for each in results: %}
-                     <div class="search-results-card" id = "card_{{each[1]}}">
-                        <div class="search-results-link">
-                              <li><strong><label style="padding:1rem; width:100%;"for={{each[1]}}>{{each[0]}}</label></strong></li>
-                              <input type="radio" id={{each[1]}} name="clubname"
+                     <div class="search-results-card clickable" id = "card_{{each[1]}}">
+                        <div class="search-results-link clickable">
+                              <li class="clickable"><strong><label style="padding:1rem; width:100%;"for={{each[1]}}><div class="clickable">{{each[0]}}</div></label></strong></li>
+                              <input type="radio" class="clickable" id={{each[1]}} name="clubname"
                               value="{{each[1]}}" onclick="changeInfo(); loadAnnouncements()" width="3rem;" style="display: none">
                            </div>
                      </div>
@@ -56,8 +56,8 @@
                         <td id="subbutton" style="display:none;">
                            <div class="sub-button" style="width:fit-content;">
                               <input class = "checkSub" id = "check" type="checkbox" name="subscribed" onclick="subscribeUser()" style="display:none;">
-                              <div class="sub-button-text checkSub"><label for="check">Subscribe</label></div>
-                              <div class="unsub-button-text checkUnSub"><label for="check">Unsubscribe</label></div>
+                              <div class="sub-button-text checkSub"><label for="check"><div class="clickable">Subscribe</div></label></div>
+                              <div class="unsub-button-text checkUnSub"><label for="check"><div class="clickable">Unsubscribe</div></label></div>
                            </div>
                         </td>
                      </tr>

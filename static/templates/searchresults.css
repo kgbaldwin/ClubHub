@@ -9,16 +9,19 @@ div.search-results-card{
    margin-top: 10px;
    border-radius: 7px;
    list-style-type: none;
-   border: 2px solid rgb(212, 212, 212)
+   border: 2px solid rgb(212, 212, 212);
+   cursor: pointer;
 }
 div.search-results-card-selected{
    background-color:rgba(248,249,250);
    border-color: darkcyan;
    margin-top: 10px;
    border-radius: 7px;
+   cursor: pointer;
 }
 a.search-results-link {
    border-radius: 7px;
+   cursor: pointer;
 }
 div.search_column{
    background-color: white;;
@@ -28,6 +31,7 @@ div.search_results{
 }
 div.card-body{
    padding: 1rem;
+   cursor: pointer;
 }
 
 /* Sub button */
@@ -38,12 +42,17 @@ div.sub-button{
    margin-top: 10px;
    margin-left: 1rem;
    border-radius: 7px;
+   cursor: pointer;
 }
 div.sub-button-text:hover{
    color:white;
+   cursor: pointer;
+
 }
 div.unsub-button-text:hover{
    color:white;
+   cursor: pointer;
+
 }
 
 /* Tags card */

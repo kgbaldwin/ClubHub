@@ -11,7 +11,9 @@ td {
     font-size:2rem;
     padding-bottom: 0.5rem;
 }
-
+.clickable{
+    cursor: pointer;
+}
 .clubhub-bigishlabel{
     font-size:1.5rem;
     padding-bottom: 0.5rem;
@@ -151,6 +153,10 @@ a.clubedit-buttonlink:hover {
     margin-bottom: 0.5rem;
     border: none;
     width: 16rem;
+}
+#tagdropdown{
+    max-height: 15rem;
+    overflow-x: hidden;
 }
 
 
