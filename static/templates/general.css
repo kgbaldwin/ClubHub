@@ -1,9 +1,11 @@
 /* All pages use td to insert a padding of 2rem */
 td {
     border-collapse: collapse;
-    padding: 2rem;
  }
 
+ .bigemoji{
+    font-size: 10rem;
+ }
 
  /* table, th, td {
     border: 1px solid black;

@@ -7,10 +7,8 @@
       <link rel="stylesheet" href="{{ url_for('static', filename='templates/searchresults.css') }}">
     </head>
    <body onload="update_selected()">
-
         <div class="clubhub-bigishlabel"> Search for Clubs </div>
-        <form action = "/searchresults" method="get">
-
+        <form action = "/searchresults" method="get" style="max-width:100%;">
         <div class="grid-container">
 
             <!-- Keyword search -->
@@ -18,7 +16,9 @@
 
             <!-- Tag search -->
             <button class="btn btn-secondary btn-sm dropdown-toggle" id="tags" type="button" data-bs-toggle="dropdown" data-toggle="dropdown"aria-expanded="false">
+              
                 Search with Tags
+
                 </button>
                 <ul id="tagdropdown" class="dropdown-menu scrollable-menu-dropdown">
                 {% for tag in tags: %}
@@ -38,7 +38,7 @@
                 <!-- Submit -->
                 <input class="clubhub-button" type="submit" value="Find Clubs" id="search" style="width: 6rem">
         </div>
-        <div id="selected_tags"></div>
+        <div id="selected_tags" style="word-wrap:break-word;"></div>
 
         </form>
 

@@ -9,19 +9,30 @@
 </head>
 <body>
    {% include 'header.html' %}
-
-
-   <table style="width:100%; table-layout: fixed;">
+   <table width=100%>
       <tr>
-         <td max-width = 30% width = 30% style="padding:2rem; table-layout:fixed; overflow:scroll; white-space: nowrap">
+         <td max-width=30% width=30% style="overflow:scroll;vertical-align: top;">
+            <div style="padding:2rem;">
             {% include 'searchform.html'%}
+         </div>
          </td>
 
-         <td max-width = "70%" width="70%" style="table-layout:fixed; overflow:scroll; white-space: nowrap">
-            <div class="clubhub-biglabel decoration"> ✨ Welcome to ClubHub! ✨ </div>
-            Enter a search query and/or select some tags to clubs at Princeton.<br><br>
-            You can use ClubHub to...
-
+         <td max-width = "70%" width="70%" style="table-layout:fixed; overflow:scroll; white-space: nowrap;vertical-align: top;">
+            <div style="padding:2rem;">
+            <table> 
+               <tbody><tr>
+                  <td><div class="clubhub-biglabel decoration"> ✨ Welcome to ClubHub! ✨ </div>
+                  Enter a search query and/or select some tags to clubs at Princeton.<br><br>
+                  </td></tr>
+                  <tr><td>
+                     <div class="bigemoji">🔡</div>
+                  </td>
+                  <td>
+                     <div class="bigemoji">🏷</div>
+                  </td></tr>
+               </tbody>
+            </table>
+         </div>
          </td>
       </tr>
     </table>

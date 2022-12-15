@@ -1,6 +1,6 @@
 .scrollable-menu-results {
    height: auto;
-   max-height: 50rem;
+   max-height: 25rem;
    overflow-x: hidden;
 }
 div.search-results-card{
