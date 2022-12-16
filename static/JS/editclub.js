@@ -51,9 +51,9 @@ function update_data() {
     let instagram = document.getElementById("clubinstagram").value;
     let youtube = document.getElementById("clubyoutube").value;
 
-    // Validate Instagram URL if one is provided
-
+    // Validate inputs if they are provided
     if (email) {
+        // https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
         var email_regex = /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
         if (!(email.match(email_regex))) {
             alert("Please enter a valid email.");
@@ -72,7 +72,7 @@ function update_data() {
     if (instagram) {
         var instagram_regex = /^https?:\/\/www.instagram.com.*/;
         if (!(instagram.match(instagram_regex))) {
-            alert("Please enter a valid Instagram URL. All Instagram URLs must begin with 'https://instagram.com'");
+            alert("Please enter a valid Instagram URL. All Instagram URLs must begin with 'https://www.instagram.com'");
             return;
         }
     }
@@ -81,7 +81,7 @@ function update_data() {
     if (youtube) {
         var youtube_regex = /^https?:\/\/www.youtube.com.*/;
         if (!(youtube.match(youtube_regex))) {
-            alert("Please enter a valid YouTube URL. All YouTube URLs must begin with 'https://youtube.com'");
+            alert("Please enter a valid YouTube URL. All YouTube URLs must begin with 'https://www.youtube.com'");
             return;
         }
     }
