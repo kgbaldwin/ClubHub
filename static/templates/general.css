@@ -4,7 +4,15 @@ td {
  }
 
  .bigemoji{
-    font-size: 10rem;
+    font-size: 6rem;
+ }
+ .emojicard{
+    background-color:rgb(231, 231, 231);
+    text-align:center;
+    border-radius:8px;
+    border-color:gray;
+    box-shadow:0 8px 6px -6px rgb(103, 103, 103);
+    margin:0px;
  }
 
  /* table, th, td {
@@ -43,7 +51,6 @@ td {
 
 #query{
     grid-column-start: 1
-
 }
 
 #tags{
@@ -93,7 +100,7 @@ a.clubhub-buttonlink:hover {
     border-radius: 5px;
 }
 .decoration{
-    background-color:rgb(204, 239, 239)
+    background-color:rgb(221, 240, 240);
 }
 
 
