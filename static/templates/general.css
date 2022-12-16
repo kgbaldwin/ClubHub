@@ -44,6 +44,11 @@ td {
     display: inline;
 }
 
+.clubhub-smalllabel{
+    font-size:1.1rem;
+    display: inline;
+}
+
 
 
 /* Container and ids for organizing buttons on searchform */
