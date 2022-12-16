@@ -51,6 +51,24 @@ function update_data() {
     let instagram = document.getElementById("clubinstagram").value;
     let youtube = document.getElementById("clubyoutube").value;
 
+    // Validate Instagram URL if one is provided
+    if (instagram) {
+        var instagram_regex = /^https?:\/\/www.instagram.com.*/;
+        if (!(instagram.match(instagram_regex))) {
+            alert("Please enter a valid Instagram URL. All YouTube URLs must begin with 'https://instagram.com'");
+            return;
+        }
+    }
+
+    // Validate YouTube URL if one is provided
+    if (youtube) {
+        var youtube_regex = /^https?:\/\/www.youtube.com.*/;
+        if (!(youtube.match(youtube_regex))) {
+            alert("Please enter a valid YouTube URL. All YouTube URLs must begin with 'https://youtube.com'");
+            return;
+        }
+    }
+
     let data = {
         "clubid": clubid,
         "mission": mission,
