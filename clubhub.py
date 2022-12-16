@@ -107,6 +107,9 @@ def searchresults():
 def announce_page():
     username = auth.authenticate()
     clubid = flask.request.args.get('clubid')
+    subscribers = database.get_club_subscribers(clubid)
+    subscriber_emails = append_address(subscribers)
+
     if clubid == '' or not clubid.isnumeric():
         html_code = flask.render_template('announce.html', username=username,
                                 verified=False)
@@ -118,7 +121,7 @@ def announce_page():
         if database.verify_officer(username, clubid):
             html_code = flask.render_template('announce.html',
                                 username=username, clubname=clubname,
-                                verified=True, clubid=clubid)
+                                verified=True, clubid=clubid, subscriber_emails=subscriber_emails)
 
         else:
             html_code = flask.render_template('announce.html', username=username,
@@ -273,8 +276,7 @@ def add_officer():
     if not clubid or not newofficer:
         return page_not_found('lacking_info')
 
-    if not database.get_user(newofficer):
-        print("invalid netid")
+    if not database.get_user(newofficer) or not newofficer.isalnum():
         return "invalid netid"
 
     success = database.add_officer(newofficer, clubid)

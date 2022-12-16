@@ -5,6 +5,7 @@
      <title>ClubHub.com</title>
      <link rel="icon" href="/static/images/clubhub-logo.jpeg">
      <link rel="stylesheet" href="{{ url_for('static', filename='templates/general.css') }}">
+
     </head>
 
 
@@ -45,7 +46,15 @@
 
             <br>
             <input type="hidden" id="clubid" value="{{clubid}}">
+
             <input class="clubhub-button" type="submit" value="Send my announcement" onclick="sendAnnouncement()">
+            <br> <br>
+
+
+            Your email will be sent to subscribers of {{clubname}}:
+            {% for email in subscriber_emails: %}
+                    <li>{{email}}</li>
+            {% endfor %}
 
         {% endif %}
 
@@ -60,6 +69,7 @@
      <script type="text/javascript" src="{{ url_for('static', filename='JS/announce.js') }}"></script>
      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+
 
   </body>
 </html>
