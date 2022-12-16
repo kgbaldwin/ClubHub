@@ -25,19 +25,30 @@
 
 
     {% if error == "server" %}
+        <div class="clubhub-mediumlabel">
         A server error ocurred. Please contact the system administrator.
+        </div>
 
     {% elif error == "404" %}
+        <div class="clubhub-mediumlabel">
         Ruh-roh! It seems like the page you were looking for doesn't exist.
+        </div>
 
     {% elif error == "query" %}
-        Please enter a club query.
+        <div class="clubhub-mediumlabel">
+            Please enter a club query.
+        </div>
 
     {% elif error == "lacking_info" %}
-        Either you've tried to access a page you shouldn't (tsk tsk), or something is broken. If it's the second, please contact the system administrator.
+        <div class="clubhub-mediumlabel">
+            Either you've tried to access a page you shouldn't (tsk tsk), or something is broken. <br>
+            If it's the second, please contact us at <a href="mailto:clubhub-admin@princeton.edu">clubhub-admin@princeton.edu</a>.
+        </div>
 
     {% elif error == "invalid_clubid"%}
-        Invalid clubid.
+        <div class="clubhub-mediumlabel">
+            Invalid clubid.
+        </div>
 
     {%endif%}
 
