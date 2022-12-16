@@ -47,6 +47,9 @@ function update_data() {
     fetch('/edit_club_info', {
         method: 'POST',
         body: form
+    }).then((response) => response.text())
+    .then((text) => {
+        
     });
 
 }

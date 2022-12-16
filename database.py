@@ -152,7 +152,8 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
         conn = pool.getconn()
         with conn.cursor() as cur:
             cur.execute(script, args+[clubid])
-            conn.commit()
+            rows = cur.rowcount()
+            
 
     except Exception as ex:
         print("__________database.py update club info: ", ex)
@@ -497,8 +498,9 @@ def get_club_officers(clubid):
             row = cur.fetchone()
             names = []
             while row is not None:
-                user = get_user(row)[0]
-                names.append((user['displayname'], row[0]))
+                user = get_user(row)
+                if len(user) > 0:
+                    names.append((user[0]['displayname'], row[0]))
                 row = cur.fetchone()
 
             return names

@@ -103,8 +103,8 @@ def searchresults():
     return response
 
 
-@app.route('/announce', methods=['GET'])
-def announce():
+@app.route('/announce_page', methods=['GET'])
+def announce_page():
     username = auth.authenticate()
     clubid = flask.request.args.get('clubid')
     clubname = database.get_clubname(clubid)[0]
@@ -293,11 +293,11 @@ def edit_club_info():
     instagram = flask.request.form.get('clubinstagram')
     youtube = flask.request.form.get('clubyoutube')
 
-    database.update_club_info(clubid=clubid, mission=mission, goals=goals,
+    success = database.update_club_info(clubid=clubid, mission=mission, goals=goals,
         imlink=imlink, email=email, instagram=instagram,
         youtube=youtube)
 
-    return ''
+    return success
 
 
 @app.route('/send_announce', methods=['POST'])

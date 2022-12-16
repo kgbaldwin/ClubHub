@@ -6,6 +6,9 @@ td {
  .bigemoji{
     font-size: 6rem;
  }
+ .bigemoji-text{
+    font-weight:600;
+ }
  .emojicard{
     background-color:rgb(231, 231, 231);
     text-align:center;
@@ -13,6 +16,7 @@ td {
     border-color:gray;
     box-shadow:0 8px 6px -6px rgb(103, 103, 103);
     margin:0px;
+    height:100%;
  }
 
  /* table, th, td {
