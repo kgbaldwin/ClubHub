@@ -43,13 +43,36 @@ If you do so mistakenly, a current officer will have to re-add you.")) {
 
 function update_data() {
 
-    const form = new FormData(document.getElementById('editform'));
-    fetch('/edit_club_info', {
-        method: 'POST',
-        body: form
-    }).then((response) => response.text())
+    let clubid = document.getElementById("clubid").value;
+    let mission = document.getElementById("clubmission").value;
+    let goals = document.getElementById("clubgoals").value;
+    let imlink = document.getElementById("clubimlink").value;
+    let email = document.getElementById("clubemail").value;
+    let instagram = document.getElementById("clubinstagram").value;
+    let youtube = document.getElementById("clubyoutube").value;
+
+    let data = {
+        "clubid": clubid,
+        "mission": mission,
+        "goals": goals,
+        "imlink": imlink,
+        "email": email,
+        "instagram": instagram,
+        "youtube":youtube
+    };
+
+    fetch('/edit_club_info', {method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)})
+    .then((response) => response.text())
     .then((text) => {
-        
+        if (text === "success") {
+            alert("Successfully updated info!");
+            location.href = '/profile';
+        }
+        else
+            alert("Failed to update club info - please wait a few seconds and try again");
+            location.href = '/edit_club?clubid='+clubid;
     });
 
 }
@@ -58,7 +81,6 @@ function update_data() {
 function fillfields() {
 
     let clubid = document.getElementById("clubid").value;
-
     fetch("/get_info?clubid="+clubid)
     .then((response) => response.text())
     .then((text) => {

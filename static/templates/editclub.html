@@ -9,6 +9,12 @@
 
     <body onload="fillfields()">
 
+        <style>
+            .inputlabel {
+                font-size:1.25rem;
+            }
+        </style>
+
     {% include 'header.html' %}
 
     <div style="padding:2rem">
@@ -21,6 +27,11 @@
                 Back to profile
             </a>
         </div>
+        <div class="clubhub-button">
+            <a class="clubhub-buttonlink" href="/index">
+                    Back to club search
+            </a>
+        </div>
         <br><br>
 
         {% if verified == false: %}
@@ -30,32 +41,34 @@
 
         <div class="clubhub-biglabel"> Edit Club Details for {{clubname}}</div>
 
-                <form id="editform">
-                    <input type="hidden" name="clubid" value="{{clubid}}">
-                    <input type="hidden" name="clubname" value="{{clubname}}">
+            <div class="form-group" id="editform">
+                    <input id="clubid" type="hidden" name="clubid" value="{{clubid}}">
+                    <input id="clubname" type="hidden" name="clubname" value="{{clubname}}">
 
-                    <label for="clubmission"> <div style="font-size:1.25rem"> Mission: </div> </label><br>
+                    <label for="clubmission" class="inputlabel"> Mission: </label><br>
                     <textarea id="clubmission" name="clubmission" form="editform" rows="4"></textarea><br><br>
 
-                    <label for="clubgoals"> <div style="font-size:1.25rem"> Goals: </div> </label><br>
+                    <label for="clubgoals" class="inputlabel"> Goals: </label><br>
                     <textarea id="clubgoals" name="clubgoals" form="editform" rows="4"></textarea><br><br>
 
-                    <label for="clubemail"><div style="font-size:1.25rem"> Email: </div> </label><br>
-                    <input type="text" id="clubemail" name="clubemail" class="inputSpec"><br><br>
+                    <label for="clubemail" class="inputlabel"> Email: </label><br>
+                    <input type="text" id="clubemail" name="clubemail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="inputSpec"><br><br>
 
-                    <label for="clubimlink"><div style="font-size:1.25rem"> Image URL: </div> </label><br>
+                    <label for="clubimlink" class="inputlabel"> Image URL: </label><br>
                     <input type="text" id="clubimlink" name="clubimlink" class="inputSpec"><br><br>
 
-                    <label for="clubinstagram"><div style="font-size:1.25rem"> Instagram URL: </div> </label><br>
+                    <label for="clubinstagram" class="inputlabel"> Instagram URL: </label><br>
                     <input type="text" id="clubinstagram" name="clubinstagram" class="inputSpec"><br><br>
 
-                    <label for="clubyoutube"><div style="font-size:1.25rem"> YouTube URL: </div> </label><br>
+                    <label for="clubyoutube" class="inputlabel"> YouTube URL: </label><br>
                     <input type="text" id="clubyoutube" name="clubyoutube" class="inputSpec"><br>
 
                     <br>
-                    <input class="clubhub-button" onclick="update_data()" type="submit" value="Update info">
+                    <input class="clubhub-button" type="submit" value="Update info" onclick="update_data()">
 
-                </form>
+
+                </div>
+            </div>
             <br><br>
 
             <div class="clubhub-biglabel"> Edit Officers for {{clubname}}</div>
@@ -85,9 +98,7 @@
     </table>
     </div>
 
-
          {% include 'footer.html' %}
-
 
          <!---Keep the JS below at the bottom of body. For loading bootstrap-->
          <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

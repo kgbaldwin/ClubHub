@@ -107,16 +107,22 @@ def searchresults():
 def announce_page():
     username = auth.authenticate()
     clubid = flask.request.args.get('clubid')
-    clubname = database.get_clubname(clubid)[0]
-
-    if database.verify_officer(username, clubid):
-        html_code = flask.render_template('announce.html',
-                            username=username, clubname=clubname,
-                            verified=True, clubid=clubid)
-
-    else:
+    if clubid == '' or not clubid.isnumeric():
         html_code = flask.render_template('announce.html', username=username,
-                                clubname=clubname, verified=False)
+                                verified=False)
+    else:
+        clubname = database.get_clubname(clubid)
+        if clubname:
+            clubname = clubname[0]
+
+        if database.verify_officer(username, clubid):
+            html_code = flask.render_template('announce.html',
+                                username=username, clubname=clubname,
+                                verified=True, clubid=clubid)
+
+        else:
+            html_code = flask.render_template('announce.html', username=username,
+                                    clubname=clubname, verified=False)
     response = flask.make_response(html_code)
     return response
 
@@ -126,17 +132,24 @@ def edit_club():
     username = auth.authenticate()
 
     clubid = flask.request.args.get("clubid")
-    clubname = database.get_clubname(clubid)[0]
-
-    officers = database.get_club_officers(clubid)
-
-    if database.verify_officer(username, clubid):
+    if clubid == '' or not clubid.isnumeric():
         html_code = flask.render_template('editclub.html', username=username,
-                                clubname=clubname, verified=True, clubid=clubid,
-                                curr_officers=officers)
+                                verified=False)
+
     else:
-        html_code = flask.render_template('editclub.html', username=username,
-                                clubname=clubname, verified=False)
+        clubname = database.get_clubname(clubid)
+        if clubname:
+            clubname = clubname[0]
+
+        officers = database.get_club_officers(clubid)
+
+        if database.verify_officer(username, clubid):
+            html_code = flask.render_template('editclub.html', username=username,
+                                    clubname=clubname, verified=True, clubid=clubid,
+                                    curr_officers=officers)
+        else:
+            html_code = flask.render_template('editclub.html', username=username,
+                                    clubname=clubname, verified=False)
 
     response = flask.make_response(html_code)
     return response
@@ -283,15 +296,19 @@ def remove_officer():
 @app.route("/edit_club_info", methods=['POST'])
 def edit_club_info():
     auth.authenticate()
-    clubid = flask.request.form.get("clubid")
+
+    data = flask.request.json
+
+    clubid = data['clubid']
     if not clubid:
-            return page_not_found('lacking_info')
-    mission = flask.request.form.get('clubmission')
-    goals = flask.request.form.get('clubgoals')
-    imlink = flask.request.form.get('clubimlink')
-    email = flask.request.form.get('clubemail')
-    instagram = flask.request.form.get('clubinstagram')
-    youtube = flask.request.form.get('clubyoutube')
+        return page_not_found('lacking_info')
+
+    mission = data['mission']
+    goals = data['goals']
+    imlink = data['imlink']
+    email = data['email']
+    instagram = data['instagram']
+    youtube = data['youtube']
 
     success = database.update_club_info(clubid=clubid, mission=mission, goals=goals,
         imlink=imlink, email=email, instagram=instagram,

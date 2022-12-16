@@ -152,8 +152,11 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
         conn = pool.getconn()
         with conn.cursor() as cur:
             cur.execute(script, args+[clubid])
-            rows = cur.rowcount()
-            
+            rows = cur.rowcount
+            if rows == 1:
+                return "success"
+            else:
+                return "failure"
 
     except Exception as ex:
         print("__________database.py update club info: ", ex)
