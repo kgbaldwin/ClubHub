@@ -52,10 +52,27 @@ function update_data() {
     let youtube = document.getElementById("clubyoutube").value;
 
     // Validate Instagram URL if one is provided
+
+    if (email) {
+        var email_regex = /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+        if (!(email.match(email_regex))) {
+            alert("Please enter a valid email.");
+            return;
+        }
+    }
+
+    if (imlink){
+        var image_regex = /^https?:\/\/*/;
+        if (!(imlink.match(image_regex))) {
+            alert("Please enter a valid image URL. Your URL must begin with 'https://'");
+            return;
+        }
+    }
+
     if (instagram) {
         var instagram_regex = /^https?:\/\/www.instagram.com.*/;
         if (!(instagram.match(instagram_regex))) {
-            alert("Please enter a valid Instagram URL. All YouTube URLs must begin with 'https://instagram.com'");
+            alert("Please enter a valid Instagram URL. All Instagram URLs must begin with 'https://instagram.com'");
             return;
         }
     }

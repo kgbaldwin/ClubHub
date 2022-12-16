@@ -33,9 +33,7 @@ def logoutcas():
 def index():
     username = auth.authenticate()
     tags = database.get_tags()
-    selected_tags = ''
-    html_code = flask.render_template('index.html', username=username,
-                    tags=tags, selected_tags=selected_tags)
+    html_code = flask.render_template('index.html', username=username, tags=tags)
     response = flask.make_response(html_code)
     return response
 
@@ -64,6 +62,12 @@ def profile():
     sub_tags = database.get_tags()
     unsub_tags = database.get_user_sub_tags(username)
 
+    if (subs == "server get_subscriptions") \
+        or (officerships == "server get_officerships") \
+        or (sub_tags == "server get_tags") \
+        or (unsub_tags == "server get_user_sub_tags"):
+            html_code = flask.render_template('error.html', error="server", username=username)
+
     html_code = flask.render_template('profile.html', username=username,
             name=info["displayname"], year=year, subs=subs,
             officerships=officerships, sub_tags=sub_tags,
@@ -75,12 +79,14 @@ def profile():
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
     username = auth.authenticate()
+
     clubquery = flask.request.args.get('clubquery')
     if not clubquery:
         clubquery = ''
     clubquery = '%' + str(clubquery) + '%'
     if len(clubquery) == 2:
         clubquery = ""  # strip percent signs off empty queries
+
     tags = flask.request.args.getlist('tags')
     searchpersist = clubquery.lstrip('%').rstrip('%')
 
@@ -90,7 +96,7 @@ def searchresults():
     clubs = database.get_clubs(clubquery, tags)
     tags_dropdown = database.get_tags()
 
-    if clubs == "server":
+    if clubs == "server get_clubs" or tags_dropdown == "server get_tags":
         html_code = flask.render_template('error.html', error="server",
                                             username=username)
         response = flask.make_response(html_code)
@@ -107,21 +113,34 @@ def searchresults():
 def announce_page():
     username = auth.authenticate()
     clubid = flask.request.args.get('clubid')
-    subscribers = database.get_club_subscribers(clubid)
-    subscriber_emails = append_address(subscribers)
 
-    if clubid == '' or not clubid.isnumeric():
+    if not clubid or not clubid.isnumeric() or database.get_clubname(clubid)[0] == "Invalid Clubid":
         html_code = flask.render_template('announce.html', username=username,
                                 verified=False)
+
     else:
+
+        subscribers = database.get_club_subscribers(clubid)
+        subscriber_emails = append_address(subscribers)
+
         clubname = database.get_clubname(clubid)
         if clubname:
             clubname = clubname[0]
 
-        if database.verify_officer(username, clubid):
+
+        verified = database.verify_officer(username, clubid)
+
+        if (clubname == "server get_clubname") or (clubname[0] == "Invalid Clubid") or (verified == "server verify_officer"):
+            html_code = flask.render_template('error.html', error="server",
+                                            username=username)
+            response = flask.make_response(html_code)
+            return response
+
+
+        if verified:
             html_code = flask.render_template('announce.html',
-                                username=username, clubname=clubname,
-                                verified=True, clubid=clubid, subscriber_emails=subscriber_emails)
+                        username=username, clubname=clubname,verified=True,
+                        clubid=clubid, subscriber_emails=subscriber_emails)
 
         else:
             html_code = flask.render_template('announce.html', username=username,
@@ -135,7 +154,7 @@ def edit_club():
     username = auth.authenticate()
 
     clubid = flask.request.args.get("clubid")
-    if clubid == '' or not clubid.isnumeric():
+    if not clubid or not clubid.isnumeric() or database.get_clubname(clubid)[0] == "Invalid Clubid":
         html_code = flask.render_template('editclub.html', username=username,
                                 verified=False)
 
@@ -146,7 +165,18 @@ def edit_club():
 
         officers = database.get_club_officers(clubid)
 
-        if database.verify_officer(username, clubid):
+        verified = database.verify_officer(username, clubid)
+
+        if (clubname == "server get_clubname")\
+            or (clubname == "Invalid Clubid")\
+            or (verified == "server verify_officer") \
+            or (officers == "server get_club_officers"):
+                html_code = flask.render_template('error.html', error="server",
+                                                username=username)
+                response = flask.make_response(html_code)
+                return response
+
+        if verified:
             html_code = flask.render_template('editclub.html', username=username,
                                     clubname=clubname, verified=True, clubid=clubid,
                                     curr_officers=officers)
@@ -171,7 +201,7 @@ def get_info():
 
     info = database.database_get_info(clubid)
 
-    if info == "server, get_info":
+    if info == "server get_info":
         html_code = flask.render_template('error.html', error="server",
                                             username=username)
         response = flask.make_response(html_code)
@@ -203,7 +233,7 @@ def get_club_announcements():
     # announcements is a list of tuples [(announcement, stamp, officer,), (ann2, stamp2, officer2,), etc]
     announcements = database.get_club_announcements(clubid)
 
-    if announcements == "server, get_club_announcements":
+    if announcements == "server get_club_announcements":
         return "announcements error"
 
     response = ""
@@ -232,10 +262,8 @@ def subscribe():
         response = database.add_sub(username, clubid)
     elif subscribe=="0":
         if not database.verify_officer(username, clubid):
-            print("NOT OFFICER")
             response = database.remove_sub(username, clubid)
         else:
-            print("IS OFFICER")
             return "cannot unsubscribe officer"
 
     if response:  # errored
@@ -341,28 +369,8 @@ def send_announce():
     return "error"
 
 
-
-##########################################################
-'''
-@app.route('/register_club', methods=['GET'])
-def register_club():
-    return page_not_found('_')
-    req_lib = ReqLib()
-
-    username = auth.authenticate()
-
-    reqBasic = req_lib.getJSON(
-        req_lib.configs.USERS_BASIC,
-        uid=username,
-    )
-    #print("req2: ", reqBasic)
-
-    return reqBasic
-'''
-
 @app.errorhandler(404)
 def page_not_found(e):
-    print("entering page not found")
     try:
         username = auth.authenticate()
     except:

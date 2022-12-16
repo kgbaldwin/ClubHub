@@ -133,7 +133,7 @@ def database_get_info(clubid):
     except psycopg2.OperationalError as ex:
         print("__________database.py get info: ", ex)
 
-        return "server, get_info"
+        return "server get_info"
     finally:
         if 'conn' in locals():
             pool.putconn(conn)
@@ -160,7 +160,7 @@ def update_club_info(clubid, instagram=None, youtube=None, email=None,
 
     except Exception as ex:
         print("__________database.py update club info: ", ex)
-        return "server, update_club_info"
+        return "server update_club_info"
 
     finally:
         if 'conn' in locals():
@@ -177,7 +177,9 @@ def get_clubname(clubid):
             cur.execute(script)
             num = cur.fetchone()[0]
 
-            if int(clubid) > num or int(clubid) < 0:
+            if clubid is None or clubid=='':
+                return ("Invalid Clubid",)
+            elif (not clubid.isnumeric()) or (int(clubid) > num) or (int(clubid) < 2):
                 return ("Invalid Clubid",)
 
             script = "select groupname from clubs where id=%s"
@@ -187,7 +189,7 @@ def get_clubname(clubid):
 
     except Exception as ex:
         print("__________database.py get clubname: ", ex)
-        return "server, get_clubname"
+        return "server get_clubname"
 
     finally:
         if 'conn' in locals():
@@ -266,7 +268,7 @@ def add_sub(user, clubid):
 
     except Exception as ex:
         print("__________database.py add sub:", ex)
-        return "server, add_sub"
+        return "server add_sub"
 
     finally:
         if 'conn' in locals():
@@ -293,7 +295,7 @@ def remove_sub(user, clubid):
 
     except Exception as ex:
         print("__________database.py remove sub:", ex)
-        return "server, remove_sub"
+        return "server remove_sub"
 
     finally:
         if 'conn' in locals():
@@ -323,7 +325,7 @@ def add_sub_tag(user, tag):
 
     except Exception as ex:
         print("__________database.py add sub tag:", ex)
-        return "server, add_sub_tag"
+        return "server add_sub_tag"
     finally:
         if 'conn' in locals():
             pool.putconn(conn)
@@ -351,7 +353,7 @@ def remove_sub_tag(user, tag):
 
     except Exception as ex:
         print("__________database.py remove sub tag:", ex)
-        return "server, remove_sub_tag"
+        return "server remove_sub_tag"
 
     finally:
         if 'conn' in locals():
@@ -376,7 +378,7 @@ def is_subbed(netid, clubid):
 
     except Exception as ex:
         print("__________database.py is subbed:", ex)
-        return "server, is_subbed"
+        return "server is_subbed"
 
     finally:
         if 'conn' in locals():
@@ -402,7 +404,7 @@ def get_user_sub_tags(netid):
 
     except Exception as ex:
         print("__________database.py get user sub tags: ", ex)
-        return "server, get_user_sub_tags"
+        return "server get_user_sub_tags"
 
     finally:
         if 'conn' in locals():
@@ -427,7 +429,7 @@ def get_subscriptions(netid):
 
     except Exception as ex:
         print("__________database.py get subs: ", ex)
-        return "server, get_subscriptions"
+        return "server get_subscriptions"
 
     finally:
         if 'conn' in locals():
@@ -453,7 +455,7 @@ def get_club_subscribers(clubid):
 
     except Exception as ex:
         print("__________database.py get subscribers: ", ex)
-        return "server, get_club_subscribers"
+        return "server get_club_subscribers"
 
     finally:
         if 'conn' in locals():
@@ -482,7 +484,7 @@ def get_officerships(netid):
 
     except Exception as ex:
         print("__________database.py get officerships: ", ex)
-        return "server, get_officerships"
+        return "server get_officerships"
 
     finally:
         if 'conn' in locals():
@@ -511,7 +513,7 @@ def get_club_officers(clubid):
 
     except Exception as ex:
         print("__________database.py get club officers: ", ex)
-        return "server, get_club_officers"
+        return "server get_club_officers"
 
     finally:
         if 'conn' in locals():
@@ -533,7 +535,7 @@ def verify_officer(netid, clubid):
 
     except Exception as ex:
         print("__________database.py verify officer: ", ex)
-        return "server, verify_officer"
+        return "server verify_officer"
 
     finally:
         if 'conn' in locals():
@@ -556,7 +558,7 @@ def add_officer(netid, clubid):
 
     except Exception as ex:
         print("__________database.py add officer: ", ex)
-        return "server, add_officer"
+        return "server add_officer"
 
     finally:
         if 'conn' in locals():
@@ -578,7 +580,7 @@ def remove_officer(netid, clubid):
 
     except Exception as ex:
         print("__________database.py reomve officer: ", ex)
-        return "server, remove_officer"
+        return "server remove_officer"
 
     finally:
         if 'conn' in locals():
@@ -605,7 +607,7 @@ def send_announcement(clubid, announcement, officer):
 
     except Exception as ex:
         print("__________database.py send announcement: ", ex)
-        return "server, send_announcements"
+        return "server send_announcements"
 
     finally:
         if 'conn' in locals():
@@ -628,7 +630,7 @@ def get_club_announcements(clubid):
 
     except Exception as ex:
         print("__________database.py get club announcements: ", ex)
-        return "server, get_club_announcements"
+        return "server get_club_announcements"
 
     finally:
         if 'conn' in locals():
