@@ -20,18 +20,19 @@ app.secret_key = os.environ['APP_SECRET_KEY']
 
 @app.route('/logoutapp', methods=['GET'])
 def logoutapp():
-    return auth.logoutapp()
+    return
+    #return auth.logoutapp()
 
 
 @app.route('/logoutcas', methods=['GET'])
 def logoutcas():
-    return auth.logoutcas()
+    return #auth.logoutcas()
 
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
     tags = database.get_tags()
     html_code = flask.render_template('index.html', username=username, tags=tags)
     response = flask.make_response(html_code)
@@ -39,14 +40,14 @@ def index():
 
 @app.route('/about', methods=['GET'])
 def about():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
     html_code = flask.render_template('about.html', username=username)
     response = flask.make_response(html_code)
     return response
 
 @app.route('/profile', methods=['GET'])
 def profile():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
 
     info = database.get_user(username)[0]
 
@@ -78,7 +79,7 @@ def profile():
 
 @app.route('/searchresults', methods=['GET'])
 def searchresults():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
 
     clubquery = flask.request.args.get('clubquery')
     if not clubquery:
@@ -111,7 +112,7 @@ def searchresults():
 
 @app.route('/announce_page', methods=['GET'])
 def announce_page():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
     clubid = flask.request.args.get('clubid')
 
     if not clubid or not clubid.isnumeric() or database.get_clubname(clubid)[0] == "Invalid Clubid":
@@ -151,7 +152,7 @@ def announce_page():
 
 @app.route('/edit_club', methods=['GET'])
 def edit_club():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
 
     clubid = flask.request.args.get("clubid")
     if not clubid or not clubid.isnumeric() or database.get_clubname(clubid)[0] == "Invalid Clubid":
@@ -194,7 +195,7 @@ def edit_club():
 
 @app.route('/get_info', methods=['GET'])
 def get_info():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
     clubid = flask.request.args.get('clubid')
     if not clubid:
         return page_not_found('lacking_info')
@@ -252,7 +253,7 @@ def get_club_announcements():
 # subscribes user to club or unsubscribes from
 @app.route('/subscribe', methods=['GET'])
 def subscribe():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
     clubid = flask.request.args.get('clubid')
     subscribe = flask.request.args.get('subscribe')
     if not clubid or not subscribe:
@@ -275,7 +276,7 @@ def subscribe():
 # subscribes user to tag or unsubscribes from tag
 @app.route('/subscribe_tag', methods=['GET'])
 def subscribe_tag():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
     tag = flask.request.args.get('tag')
     subscribe_tag = flask.request.args.get('subscribe_tag')
     if not tag or not subscribe_tag:
@@ -297,7 +298,7 @@ def subscribe_tag():
 
 @app.route("/add_officer", methods=['GET'])
 def add_officer():
-    auth.authenticate()
+    #auth.authenticate()
 
     newofficer = flask.request.args.get('newofficer')
     clubid = flask.request.args.get('clubid')
@@ -313,7 +314,7 @@ def add_officer():
 
 @app.route("/remove_officer", methods=['GET'])
 def remove_officer():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
 
     clubid = flask.request.args.get('clubid')
     if not clubid:
@@ -325,7 +326,7 @@ def remove_officer():
 
 @app.route("/edit_club_info", methods=['POST'])
 def edit_club_info():
-    auth.authenticate()
+    #auth.authenticate()
 
     data = flask.request.json
 
@@ -349,7 +350,7 @@ def edit_club_info():
 
 @app.route('/send_announce', methods=['POST'])
 def send_announce():
-    username = auth.authenticate()
+    username = 'lyoder'#auth.authenticate()
 
     # Get data embedded in the post request body
     data = flask.request.json
@@ -372,7 +373,7 @@ def send_announce():
 @app.errorhandler(404)
 def page_not_found(e):
     try:
-        username = auth.authenticate()
+        username = 'lyoder'#auth.authenticate()
     except:
         username = "False"
     if e == "lacking_info":
